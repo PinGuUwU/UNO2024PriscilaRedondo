@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Mezclador {
+    /*
+    El mezclador no mezcla (xDn't) Sirve para generar el mazo desde cero,
+    El mazo queda siempre ordenado porque serían muchas iteraciones el mezclarlo
+    Es más rápido generar un número random y entregar la carta que se encuentre en esa posicion¿
+     */
     private ArrayList<Integer> cantCartas = new ArrayList<>();
     public Mezclador(){
         cantCartas.addAll(Arrays.asList(1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2));
