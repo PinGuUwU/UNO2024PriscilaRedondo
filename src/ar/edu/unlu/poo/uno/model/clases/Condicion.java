@@ -15,7 +15,8 @@ public class Condicion {
      */
     public boolean sePuedeTirar(Carta cartaDescarte, Carta cartaTirar){//Se asume que ambos tienen valores, son notnull
         boolean decision = false;
-        switch (cartaTirar.valor()){ //Compruebo primero los que no tienen color
+        switch (cartaTirar.valor()){ //Compruebo primero los especiales
+            //Podria comprobarlo por el color, pero mas facil por su valor
             case 14, 15: decision = true; //+4 y cambio color
                 break;
         }

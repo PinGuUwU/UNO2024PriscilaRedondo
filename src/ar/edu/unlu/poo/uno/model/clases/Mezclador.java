@@ -47,8 +47,9 @@ public class Mezclador {
 
         //Agrego los especiales
         int esp=14;
+        String color ="especial";
         for(int i=0; i<2; i++){
-            carta = new Carta(esp);
+            carta = new Carta(esp,color);
             for(int j=0; j<4; j++){
                 nuevoMazo.add(carta);
             }
