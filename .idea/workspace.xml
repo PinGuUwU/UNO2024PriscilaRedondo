@@ -5,13 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fbc73718-ef9d-4267-986d-1866a4d5820a" name="Changes" comment="UNO version 1 12/08/2024 sin mvc, solo las clases y un poquito de testeo">
-      <change afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaEleccion.form" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaEleccion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaConsola.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaConsola.form" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaConsola.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaConsola.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaPerfil.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaPerfil.form" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaPerfil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaPerfil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaEleccion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaEleccion.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
