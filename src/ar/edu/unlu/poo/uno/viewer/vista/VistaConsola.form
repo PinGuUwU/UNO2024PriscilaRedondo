@@ -55,16 +55,16 @@
               <text value="Perfil"/>
             </properties>
           </component>
-          <component id="f06de" class="javax.swing.JButton" binding="button3" default-binding="true">
-            <constraints/>
-            <properties>
-              <text value="Fuera de Servicio"/>
-            </properties>
-          </component>
           <component id="772cf" class="javax.swing.JButton" binding="ranking">
             <constraints/>
             <properties>
               <text value="Ranking"/>
+            </properties>
+          </component>
+          <component id="f06de" class="javax.swing.JButton" binding="button3" default-binding="true">
+            <constraints/>
+            <properties>
+              <text value="Fuera de Servicio"/>
             </properties>
           </component>
         </children>

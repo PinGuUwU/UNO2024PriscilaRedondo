@@ -1,5 +1,5 @@
 import ar.edu.unlu.poo.uno.model.clases.Partida;
-import ar.edu.unlu.poo.uno.viewer.vista.VistaConsola;
+import ar.edu.unlu.poo.uno.viewer.vista.VistaEleccion;
 
 import javax.swing.*;
 
@@ -8,7 +8,7 @@ public class Main {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                VistaConsola consola = new VistaConsola();
+                VistaEleccion consola = new VistaEleccion();
             }
         });
 

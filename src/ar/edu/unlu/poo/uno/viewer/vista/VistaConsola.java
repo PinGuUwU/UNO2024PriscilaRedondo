@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class VistaConsola implements ActionListener {
+public class VistaConsola {
     JFrame frame;
     private JButton enter;
     private JTextField entradaDeTexto;
@@ -23,7 +23,6 @@ public class VistaConsola implements ActionListener {
     private void iniciarConsola() {
         frame = new JFrame("UNO");
         frame.setLocation(720, 480);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(720, 480);
         frame.setLocationRelativeTo(null);
 
@@ -54,7 +53,7 @@ public class VistaConsola implements ActionListener {
         perfil.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                VistaPerfil perfil = new VistaPerfil();
             }
         });
         ranking.addActionListener(new ActionListener() {
@@ -69,9 +68,5 @@ public class VistaConsola implements ActionListener {
 
             }
         });
-    }
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
     }
 }
