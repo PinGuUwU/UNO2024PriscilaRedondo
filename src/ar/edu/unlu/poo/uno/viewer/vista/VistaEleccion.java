@@ -30,6 +30,7 @@ public class VistaEleccion {
             @Override
             public void actionPerformed(ActionEvent e) {
                 VistaConsola consola = new VistaConsola();
+                //Hacer que solo se cree una consola, lo mismo con perfil y ranking
             }
         });
         pantalla.addActionListener(new ActionListener() {
