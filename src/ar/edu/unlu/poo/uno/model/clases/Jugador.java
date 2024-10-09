@@ -1,6 +1,10 @@
 package ar.edu.unlu.poo.uno.model.clases;
 
-public class Jugador {
+import java.io.Serializable;
+
+public class Jugador implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private int id; //id unico
     private String username;
     private int partidasGanadas;
     private int partidasPerdidas;
@@ -84,4 +88,7 @@ public class Jugador {
         */
         return mano.leerCartaMano(pos);
     }
+    public String name(){ return this.username; }
+    public int partidasGanadas(){ return this.partidasGanadas; }
+    public int partidasPerdidas(){ return this.partidasPerdidas; }
 }

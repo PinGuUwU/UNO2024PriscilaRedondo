@@ -19,14 +19,6 @@
           <text value="Elige cómo quieres jugar:"/>
         </properties>
       </component>
-      <component id="3a0bc" class="javax.swing.JButton" binding="consola">
-        <constraints>
-          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="consola"/>
-        </properties>
-      </component>
       <component id="913db" class="javax.swing.JButton" binding="pantalla">
         <constraints>
           <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
@@ -45,6 +37,14 @@
           <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
         </constraints>
       </vspacer>
+      <component id="c78c3" class="javax.swing.JButton" binding="consola">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="CONSOLA"/>
+        </properties>
+      </component>
     </children>
   </grid>
 </form>

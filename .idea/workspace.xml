@@ -5,7 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fbc73718-ef9d-4267-986d-1866a4d5820a" name="Changes" comment="UNO version 1 12/08/2024 sin mvc, solo las clases y un poquito de testeo">
+      <change afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/controller/ControladorRanking.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/Ranking.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/observer/VentanaListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaInterfazGrafica.form" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaInterfazGrafica.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/Jugador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/Jugador.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaConsola.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaConsola.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaConsola.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaConsola.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaEleccion.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaEleccion.form" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaEleccion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaEleccion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaPerfil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaPerfil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaRanking.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaRanking.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaRanking.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaRanking.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,6 +30,7 @@
       <list>
         <option value="JUnit5 Test Class" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -34,30 +48,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Downloaded.Files.Path.Enabled": "false",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "false",
-    "Repository.Attach.Sources": "false",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "UI_DESIGNER_EDITOR_MODE.PaletteManager.SHOW": "true",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "master",
-    "onboarding.tips.debug.path": "C:/Users/Pri/IdeaProjects/UNO2024PriscilaRedondo/src/Main.java",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "GitLink.ProjectSettings"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;UI_DESIGNER_EDITOR_MODE.PaletteManager.SHOW&quot;: &quot;true&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/Pri/IdeaProjects/UNO2024PriscilaRedondo/src/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;GitLink.ProjectSettings&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Pri\IdeaProjects\UNO2024PriscilaRedondo\src\ar\edu\unlu\poo\uno\viewer\vista" />
+      <recent name="C:\Users\Pri\IdeaProjects\UNO2024PriscilaRedondo\src\ar\edu\unlu\poo\uno\model\clases" />
       <recent name="C:\Users\Pri\IdeaProjects\UNO2024PriscilaRedondo\src\ar\edu\unlu\poo\uno\controller" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
