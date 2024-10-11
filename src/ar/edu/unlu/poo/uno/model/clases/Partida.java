@@ -1,16 +1,21 @@
 package ar.edu.unlu.poo.uno.model.clases;
 
+import ar.edu.unlu.poo.uno.controller.ControladorPartida;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Partida {
+    private ControladorPartida controlador;
     private Scanner leer = new Scanner(System.in);
+    private ArrayList<Boolean> jugadoresListos;
     private ArrayList<Jugador> jugadores = new ArrayList<>();
     private boolean sentido = true;//true = incrementa turno. false = decrementa turno;
     private int turno; //Quizá podría servir hacer una clase que lleve esto
     private MazoDeRobo mazoDeRobo;
     public MazoDeDescarte mazoDeDescarte;
     public Partida(){
+        controlador = new ControladorPartida();
         mazoDeDescarte = new MazoDeDescarte();
         mazoDeRobo = new MazoDeRobo();
     }
@@ -105,23 +110,42 @@ public class Partida {
     public void tirarCarta(Jugador j, int pos){//Quizá debería devolver la carta para luego mostrarla?
         mazoDeDescarte.agregar(j.tirarCarta(pos));
     }
-    public void agregarJugador(){
+    public String agregarJugador(){
         //Esto inicia una instancia de pedir datos al jugador?
         //O quizá rellena una ventana con sus datos y ahí pues
         //(Pido datos)
-        String username = leer.nextLine();
-        Jugador jugador = new Jugador(username);
+        Jugador jugador;
+        String idStr;
+        String username = "Jugador_2";
+        if(controlador.existeJugador(username) != null){
+            //Lo leo
+            String[] datos = (controlador.datosJugadorName(username)).split(",");
+            jugador = new Jugador(datos[0], datos[1], datos[2], datos[3]);
+            idStr = datos[0];
+        } else {//lo creo
+            int idInt = Integer.parseInt(controlador.ultimoID()) + 1;
+            idStr = String.valueOf(idInt);
+            jugador = new Jugador(idStr, username);
+            controlador.cargarJugador(jugador);
+        }
         jugadores.add(jugador);
         //reset partida?
         turno = 1;
         //Si se suma un jugador se resetea la partida?
         //Entonces tendría que hacer:
         //turno=1; y también en el main un "partida = new Partida();"
+        return idStr;
     }
     /*
     Mas que nada comprueba el valor de turno y lo actualiza
      */
     public int siguienteTurno(int turnoActual){//Turno del 1-4
+        //Debo corroborar que todos tengan cartas
+        for(Jugador j : jugadores){
+            if(j.cantCartasMano() == 0){
+                finalizarPartida(j);
+            }
+        }
         if(sentido){
             if(turnoActual== jugadores.size()){
                 return 1;
@@ -136,4 +160,17 @@ public class Partida {
             }
         }
     }
+    public void finalizarPartida(Jugador ganador){
+        for(Jugador j : jugadores){
+            if(j == ganador){
+                ganador.actualizarPartidasGanadas();
+                controlador.actualizarPartidasGanadas(ganador);
+            } else {
+                j.actualizarPartidasPerdidas();
+                controlador.actualizarPartidasPerdidas(j);
+            }
+        }
+
+    }
+
 }

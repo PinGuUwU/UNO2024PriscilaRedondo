@@ -9,8 +9,6 @@ public class Contador {
     //No sé qué utilidad darle
     //Podría ser que le paso los jugadores y devuelve los jugadores en orden de punto, pero no sé
     //Sería para encapsular más, pero no creo que sea muy largo de hacer en el programa
-    public Contador(){
-    }
     /*
     Orden de cartas:
     0=1, 1=2, 2=3, 3=4, 4=5, 5=6, 6=7, 7=8, 8=9, 9=10, +2=11, sentido=12, bloqueo=13, +4=14, cambioColor=15;

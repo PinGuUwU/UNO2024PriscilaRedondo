@@ -1,9 +1,10 @@
 package ar.edu.unlu.poo.uno.viewer.vista;
 
+import ar.edu.unlu.poo.uno.controller.ControladorPartida;
+import ar.edu.unlu.poo.uno.controller.ControladorRanking;
 import ar.edu.unlu.poo.uno.observer.VentanaListener;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -12,6 +13,8 @@ import java.awt.event.WindowEvent;
 import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 
 public class VistaConsola implements VentanaListener{
+    private String idJugador;
+    ControladorPartida controladorP;
     VentanaListener listener;
     JFrame frame;
     VistaRanking iRanking;
@@ -24,7 +27,9 @@ public class VistaConsola implements VentanaListener{
     private JButton ranking;
     private JPanel principal;
 
-    public VistaConsola(VentanaListener listener) {
+    public VistaConsola(VentanaListener listener, String idJugador) {
+        controladorP = new ControladorPartida();
+        this.idJugador = idJugador;
         this.listener = listener;
         iniciarConsola();
     }
@@ -39,7 +44,8 @@ public class VistaConsola implements VentanaListener{
             @Override
             public void windowClosing(WindowEvent e) {
                 if(listener != null){
-                    listener.onVentanaCerrada();
+                    listener.onVentanaCerrada("consola");
+                    frame.setVisible(false);
                 }
             }
         });
@@ -56,6 +62,7 @@ public class VistaConsola implements VentanaListener{
             @Override
             public void actionPerformed(ActionEvent e) {
                 consola.append(entradaDeTexto.getText());
+                buscarComando(entradaDeTexto.getText());
                 consola.append("\n");
                 entradaDeTexto.setText("");
             }
@@ -72,25 +79,48 @@ public class VistaConsola implements VentanaListener{
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(iPerfil == null){
-                    iPerfil = new VistaPerfil();
-                } else {
+                    iPerfil = new VistaPerfil(VistaConsola.this, idJugador);
+                } else if(!iPerfil.frame.isVisible()){
+                    iPerfil.frame.setVisible(true);
                     iPerfil.setInTop();
                 }
+                iPerfil.actualizarPerfil(controladorP.datosJugadorID(idJugador));
             }
         });
         ranking.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(iRanking == null){
-                    iRanking = new VistaRanking();
+                    iRanking = new VistaRanking(VistaConsola.this);
+                } else if(!iRanking.frame.isVisible()){
+                    iRanking.frame.setVisible(true);
+                    iRanking.setInTop();
+                    //Tengo qeu volver a agregar el item "elige opcion"
                 }
             }
         });
     }
+    private void bienvenida(){
+        consola.append("Bienvenido al juego del UNO \n si quieres saber los comandos ingresa '/help'\n");
+        consola.append("Para iniciar la partida coloca '/iniciar'\n");
+
+    }
+    private void buscarComando(String comando){
+        if(comando.equalsIgnoreCase("/iniciar")){
+            //Aca debería corroborar que todos los jugadores hayan puesto /iniciar
+            controladorP.
+        }
+    }
 
     @Override
-    public void onVentanaCerrada() {
-        //Debería averiguar cómo sé cuando al ventana que se cerro es perfil y cuando ranking
-        iPerfil = null;
+    public void onVentanaCerrada(String ventana) {
+        if(ventana.equalsIgnoreCase("perfil")){
+            iPerfil = null;
+        } else if(ventana.equalsIgnoreCase("ranking")){
+            iRanking = null;
+        }
+    }
+    public void setInTop(){
+        frame.setAlwaysOnTop(true);
     }
 }

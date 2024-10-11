@@ -4,17 +4,24 @@ import java.io.Serializable;
 
 public class Jugador implements Serializable {
     private static final long serialVersionUID = 1L;
-    private int id; //id unico
+    private final String id; //id unico
     private String username;
-    private int partidasGanadas;
+    private int partidasGanadas; //PUEDE QUE NO NECESITE GUARDARLAS, YA QUE ESTAN EN EL ARCHIVO, NO SE
     private int partidasPerdidas;
     private int puntosPartidaActual;
     private Mano mano = new Mano();
-
-    public Jugador(String username){
-        this.username = username;
+    public Jugador(String id, String name, String pg, String pp){
+        this.id = id;
+        username = name;
+        partidasGanadas = Integer.parseInt(String.valueOf(pg));
+        partidasPerdidas = Integer.parseInt(String.valueOf(pp));
     }
-
+    public Jugador(String id, String name){
+        this.username = name;
+        this.id = id;
+        partidasPerdidas = 0;
+        partidasGanadas = 0;
+    }
     public void levantarCarta(Carta nuevaCarta){
         mano.recibeCarta(nuevaCarta);
     }
@@ -50,7 +57,8 @@ public class Jugador implements Serializable {
     public int actualizarPuntosActuales(){
         //Caso que hay una clase contador
         Contador cont = new Contador();
-        return cont.contar(mano);
+        puntosPartidaActual = cont.contar(mano);
+        return puntosPartidaActual;
     }
     /*
     Pienso que los puntos debería de llevarlos el programa
@@ -91,4 +99,6 @@ public class Jugador implements Serializable {
     public String name(){ return this.username; }
     public int partidasGanadas(){ return this.partidasGanadas; }
     public int partidasPerdidas(){ return this.partidasPerdidas; }
+    public void cambiarNombre(String username){ this.username = username; }
+    public String jugadorID(){ return this.id; }
 }

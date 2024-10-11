@@ -2,6 +2,7 @@ package ar.edu.unlu.poo.uno.controller;
 
 import ar.edu.unlu.poo.uno.model.clases.Jugador;
 import ar.edu.unlu.poo.uno.model.clases.Ranking;
+import ar.edu.unlu.poo.uno.observer.VentanaListener;
 import ar.edu.unlu.poo.uno.viewer.vista.VistaRanking;
 
 import java.util.ArrayList;
@@ -11,9 +12,9 @@ public class ControladorRanking {
     Ranking ranking;
     VistaRanking vista;
 
-    public ControladorRanking(){
+    public ControladorRanking(VistaRanking vista){
+        this.vista = vista;
         ranking = new Ranking();
-        vista = new VistaRanking();
     }
     //Tambien debe poder hacer ABM, pero le deja to-do el trabajo al ranking
     //Controlador se encarga de mandarle mensajes a la vista y de "traducir" ciertos mensajes
@@ -21,8 +22,8 @@ public class ControladorRanking {
 
     public void top5Ganadores(){
         ArrayList<Jugador> jugadores = ranking.getTopGanadores();
-        List<String> nombres = null;
-        List<Integer> cantidad = null;
+        List<String> nombres = new ArrayList<>();
+        List<Integer> cantidad = new ArrayList<>();
         for(int i=0; i<jugadores.size();i++){
             nombres.add(jugadores.get(i).name());
             cantidad.add(jugadores.get(i).partidasGanadas());
@@ -31,8 +32,8 @@ public class ControladorRanking {
     }
     public void top5Perdedores(){
         ArrayList<Jugador> jugadores = ranking.getTopPerdedores();
-        List<String> nombres = null;
-        List<Integer> cantidad = null;
+        List<String> nombres = new ArrayList<>();
+        List<Integer> cantidad = new ArrayList<>();
         for(int i=0; i<jugadores.size();i++){
             nombres.add(jugadores.get(i).name());
             cantidad.add(jugadores.get(i).partidasPerdidas());
