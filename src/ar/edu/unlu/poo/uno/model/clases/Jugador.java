@@ -102,4 +102,7 @@ public class Jugador implements Serializable {
     public int partidasPerdidas(){ return this.partidasPerdidas; }
     public void cambiarNombre(String username){ this.username = username; }
     public String jugadorID(){ return this.id; }
+    public void tirarCartaCambioColor(){
+        mano.tirarCambioColor();
+    }
 }

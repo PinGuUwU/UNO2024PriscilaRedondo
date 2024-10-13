@@ -1,7 +1,7 @@
 package ar.edu.unlu.poo.uno.viewer.vista;
 
 import ar.edu.unlu.poo.uno.controller.ControladorPartida;
-import ar.edu.unlu.poo.uno.observer.VentanaListener;
+import ar.edu.unlu.poo.uno.listener.VentanaListener;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -33,10 +33,9 @@ public class VistaInicio implements VentanaListener {
         confirmarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(controlador.existeJugador(usuario.getText()) == null){
+                idJugador = controlador.existeJugador(usuario.getText());
+                if( idJugador == null){
                     idJugador = controlador.agregarJugador(usuario.getText());
-                } else {
-                    idJugador = controlador.buscarIdName(usuario.getText());
                 }
                 abrirEleccion();
                 frame.setVisible(false);
@@ -44,6 +43,7 @@ public class VistaInicio implements VentanaListener {
         });
     }
     public void abrirEleccion(){
+        controlador.agregarJugador(controlador.buscarIdName(idJugador));
         VistaEleccion eleccion = new VistaEleccion(idJugador, controlador.partida(), VistaInicio.this);
     }
     public String IdJugador(){ return idJugador; }

@@ -15,6 +15,10 @@ public class Carta {
         color = null;
         this.valor = valor;
     }
+    public Carta(String color){
+        this.color = color;
+        valor = 15;
+    }
 
     public int valor(){
         return valor;

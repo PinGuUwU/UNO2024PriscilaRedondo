@@ -1,7 +1,7 @@
 package ar.edu.unlu.poo.uno.viewer.vista;
 
 import ar.edu.unlu.poo.uno.controller.ControladorRanking;
-import ar.edu.unlu.poo.uno.observer.VentanaListener;
+import ar.edu.unlu.poo.uno.listener.VentanaListener;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

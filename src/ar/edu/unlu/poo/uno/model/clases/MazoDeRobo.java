@@ -16,4 +16,12 @@ public class MazoDeRobo {
         Mezclador mezclar = new Mezclador();
         mazoActual = mezclar.mezclar();
     }
+    public boolean sinCartas(){
+        //retorna true si no tiene cartas
+        if(mazoActual.size() == 0){
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

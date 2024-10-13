@@ -22,4 +22,14 @@ public class Mano {
     public int cantCartas(){
         return manoActual.size();
     }
+    public void tirarCambioColor(){
+        for(int i=0; i< manoActual.size(); i++){
+            boolean encontrada = false;
+            Carta carta = manoActual.get(i);
+            if(carta.valor() == 15 && !encontrada){
+                manoActual.remove(i);
+                encontrada = true;
+            }
+        }
+    }
 }

@@ -2,7 +2,6 @@ package ar.edu.unlu.poo.uno.controller;
 
 import ar.edu.unlu.poo.uno.model.clases.Jugador;
 import ar.edu.unlu.poo.uno.model.clases.Ranking;
-import ar.edu.unlu.poo.uno.observer.VentanaListener;
 import ar.edu.unlu.poo.uno.viewer.vista.VistaRanking;
 
 import java.util.ArrayList;
