@@ -26,7 +26,7 @@ public class Jugador implements Serializable {
         mano.recibeCarta(nuevaCarta);
     }
 
-    public Carta tirarCarta(int tirar){
+    public Carta tirarCarta(int pos){
         /*
         Posibilidades:
         void tirarCarta(Carta) //voy a hacer esta versión por ahora 11/09
@@ -46,7 +46,7 @@ public class Jugador implements Serializable {
             mano.remove(tirar);
         }
          */
-        return mano.entregarCarta(tirar);
+        return mano.entregarCarta(pos);
     }
     public void actualizarPartidasPerdidas(){
         partidasPerdidas++;
@@ -96,6 +96,7 @@ public class Jugador implements Serializable {
         */
         return mano.leerCartaMano(pos);
     }
+    public Mano mostrarCartas(){ return mano; }
     public String name(){ return this.username; }
     public int partidasGanadas(){ return this.partidasGanadas; }
     public int partidasPerdidas(){ return this.partidasPerdidas; }

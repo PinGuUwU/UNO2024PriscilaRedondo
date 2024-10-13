@@ -8,16 +8,35 @@ import java.util.Scanner;
 public class Partida {
     private ControladorPartida controlador;
     private Scanner leer = new Scanner(System.in);
-    private ArrayList<Boolean> jugadoresListos;
+    private int jugadoresListos = 0;
     private ArrayList<Jugador> jugadores = new ArrayList<>();
     private boolean sentido = true;//true = incrementa turno. false = decrementa turno;
     private int turno; //Quizá podría servir hacer una clase que lleve esto
     private MazoDeRobo mazoDeRobo;
     public MazoDeDescarte mazoDeDescarte;
     public Partida(){
-        controlador = new ControladorPartida();
         mazoDeDescarte = new MazoDeDescarte();
         mazoDeRobo = new MazoDeRobo();
+    }
+    public void conectar(ControladorPartida controlador){
+        this.controlador = controlador;
+    }
+    public void iniciarPartida(){
+        mazoDeRobo.mezclar(); //Inicializo el mazo de cartas de robo
+        for(int i=0; i<7; i++){//Cada jugador levanta 7 cartas
+            for(Jugador j : jugadores){
+                Carta carta = mazoDeRobo.robar(); //Voy levantando cartas y repartiendolas
+                j.levantarCarta(carta);
+            }
+        }
+        turno = 1;
+        iniciarTurno();
+    }
+    public int cantJugadoresListos(){
+        return jugadoresListos;
+    }
+    public void agregarJugadorListo(){
+        jugadoresListos++;
     }
     /*
     Debo leer y comprobar la condicion de la mano del jugador
@@ -55,6 +74,7 @@ public class Partida {
             /*Si no tengo cartas validas, pido que levante cartas
             Aca pienso, si levanta una valida, lo dejo seguir levantando?
             */
+
         }
         /*
         Aca enviaria un mensaje a la interfaz para que le pida al jugador que ingrese
@@ -84,12 +104,13 @@ public class Partida {
         }
         return carta;
     }
+    public ControladorPartida controlador(){ return controlador; }
     public void actualizarCartasVista(Jugador jugadorActual){
 
         int cantCartas = jugadorActual.cantCartasMano();
         Condicion condiciones = new Condicion();
         ArrayList<Boolean> estadoMano = new ArrayList<>();
-
+        controlador.actualizarCartasEnMano(jugadorActual.mostrarCartas());
         /*
         Voy a hacer un Array Boolean que diga que cartas se pueden tirar
         Luego cuando haga la interfaz sabre como manejar ese array, si es que sigue siendo un array,ç
@@ -110,13 +131,18 @@ public class Partida {
     public void tirarCarta(Jugador j, int pos){//Quizá debería devolver la carta para luego mostrarla?
         mazoDeDescarte.agregar(j.tirarCarta(pos));
     }
-    public String agregarJugador(){
+    public String agregarJugador(String username){
         //Esto inicia una instancia de pedir datos al jugador?
         //O quizá rellena una ventana con sus datos y ahí pues
         //(Pido datos)
+        //Devuelve el id
+        /* Debo ver como manejo con RMI el tema de agregar jugadores
+        if(jugadores.size() == 4){
+            System.out.println("Ya hay demasiados jugadores, intente entrando en otra partida.");
+            return null;
+        }*/
         Jugador jugador;
         String idStr;
-        String username = "Jugador_2";
         if(controlador.existeJugador(username) != null){
             //Lo leo
             String[] datos = (controlador.datosJugadorName(username)).split(",");
@@ -173,4 +199,30 @@ public class Partida {
 
     }
 
+    public int buscarJugador(String idJugador){
+        int encontrado = -1;
+        for(int i=0; i<jugadores.size(); i++){
+            if((jugadores.get(i).jugadorID()).equals(idJugador)){
+                encontrado = i;
+            }
+        }
+        return encontrado;
+    }
+    //Ingresos posibles en consola del jugador
+    public void tirarCarta(int pos){
+        Jugador j = jugadores.get(turno);
+        Carta carta = j.tirarCarta(pos);
+        mazoDeDescarte.agregar(carta);
+        actualizarCartaDescarte(carta);
+        siguienteTurno(turno);
+        /*controlador.actualizarSiguienteJugador();
+        Aca debería poder acceder a la vista del jugador que le toca el siguiente turno para que le muestre
+        que es su turno, muestre sus cartas y le pida una opcion
+         */
+    }
+    public void actualizarCartaDescarte(Carta carta){
+        String color = carta.color();
+        int valor = carta.valor();
+        controlador.actualizarCartaTirada(color, valor);
+    }
 }

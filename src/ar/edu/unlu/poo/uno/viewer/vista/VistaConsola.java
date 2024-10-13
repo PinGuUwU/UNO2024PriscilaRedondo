@@ -1,7 +1,9 @@
 package ar.edu.unlu.poo.uno.viewer.vista;
 
+import ar.edu.unlu.poo.uno.controller.ControladorConsola;
 import ar.edu.unlu.poo.uno.controller.ControladorPartida;
 import ar.edu.unlu.poo.uno.controller.ControladorRanking;
+import ar.edu.unlu.poo.uno.model.clases.Partida;
 import ar.edu.unlu.poo.uno.observer.VentanaListener;
 
 import javax.swing.*;
@@ -14,7 +16,7 @@ import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 
 public class VistaConsola implements VentanaListener{
     private String idJugador;
-    ControladorPartida controladorP;
+    ControladorConsola controlador;
     VentanaListener listener;
     JFrame frame;
     VistaRanking iRanking;
@@ -27,8 +29,8 @@ public class VistaConsola implements VentanaListener{
     private JButton ranking;
     private JPanel principal;
 
-    public VistaConsola(VentanaListener listener, String idJugador) {
-        controladorP = new ControladorPartida();
+    public VistaConsola(VentanaListener listener, String idJugador, ControladorPartida controladorP) {
+        controlador = new ControladorConsola(controladorP, VistaConsola.this);
         this.idJugador = idJugador;
         this.listener = listener;
         iniciarConsola();
@@ -84,7 +86,7 @@ public class VistaConsola implements VentanaListener{
                     iPerfil.frame.setVisible(true);
                     iPerfil.setInTop();
                 }
-                iPerfil.actualizarPerfil(controladorP.datosJugadorID(idJugador));
+                iPerfil.actualizarPerfil(controlador.datosJugadorID(idJugador));
             }
         });
         ranking.addActionListener(new ActionListener() {
@@ -108,7 +110,10 @@ public class VistaConsola implements VentanaListener{
     private void buscarComando(String comando){
         if(comando.equalsIgnoreCase("/iniciar")){
             //Aca debería corroborar que todos los jugadores hayan puesto /iniciar
-            controladorP.
+            controlador.iniciar();
+        } else if(esNumero(comando)){
+            //controlador
+            controlador.opcion(comando);
         }
     }
 
@@ -122,5 +127,18 @@ public class VistaConsola implements VentanaListener{
     }
     public void setInTop(){
         frame.setAlwaysOnTop(true);
+    }
+    public boolean esNumero(String valor){
+        boolean resultado;
+        try{
+            Integer.parseInt(valor);
+            resultado = true;
+        } catch(NumberFormatException e){
+            resultado = false;
+        }
+        return resultado;
+    }
+    public void setDescarte(String color, String valor){
+        consola.append("Se tiró la carta: " + color + " " + valor + "\n");
     }
 }
