@@ -8,12 +8,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.rmi.RemoteException;
 
 import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 
 public class VistaEleccion implements VentanaListener{
     private String idJugador;
-    private Partida partida;
     JFrame frame;
     VistaConsola iConsola;
     VistaInterfazGrafica iGrafica;
@@ -22,8 +22,7 @@ public class VistaEleccion implements VentanaListener{
     private JButton pantalla;
     private JPanel ventana;
 
-    public VistaEleccion(String idJugador, Partida partida, VentanaListener listener){
-        this.partida = partida;
+    public VistaEleccion(String idJugador, VentanaListener listener){
         this.idJugador = idJugador;
         frame = new JFrame("UNO");
         frame.setLocation(720, 480);
@@ -56,7 +55,11 @@ public class VistaEleccion implements VentanaListener{
         consola.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                abrirConsola();
+                try {
+                    abrirConsola();
+                } catch (RemoteException ex) {
+                    throw new RuntimeException(ex);
+                }
                 //Hacer que solo se cree una consola, lo mismo con perfil y ranking
             }
         });
@@ -67,9 +70,9 @@ public class VistaEleccion implements VentanaListener{
             }
         });
     }
-    public void abrirConsola(){
+    public void abrirConsola() throws RemoteException {
         if(iConsola == null){
-            iConsola = new VistaConsola(VistaEleccion.this, idJugador, partida.controlador());
+            iConsola = new VistaConsola(VistaEleccion.this, idJugador);
         } else if(!iConsola.frame.isVisible()){
             iConsola.frame.setVisible(true);
             iConsola.setInTop();
@@ -77,7 +80,7 @@ public class VistaEleccion implements VentanaListener{
     }
     public void abrirInterfazGrafica(){
         if(iGrafica == null) {
-            iGrafica = new VistaInterfazGrafica(VistaEleccion.this);
+            iGrafica = new VistaInterfazGrafica(VistaEleccion.this, idJugador);
         } else if(!iGrafica.frame.isVisible()){
             iGrafica.frame.setVisible(true);
             iGrafica.setInTop();

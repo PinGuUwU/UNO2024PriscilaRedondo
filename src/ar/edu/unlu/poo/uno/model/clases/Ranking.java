@@ -40,15 +40,18 @@ public class Ranking {
     }
 
     private String getNombreArchivo(){ return this.nombreArchivo; }
-    public void agregarJugador(Jugador j){
+    public String agregarJugador(String username){
         //Tuve que usar estructura try catch porque a la hora de usar
         //Los metodos (File) de estos objetos me lo exigían y lo busqué en internet
+            int nuevoID = Integer.parseInt(this.ultimoID());
+            nuevoID++;
         try (BufferedWriter estructura = new BufferedWriter(new FileWriter(nombreArchivo, true))){
-            estructura.write(j.jugadorID() + "," + j.name() + "," + j.partidasGanadas() + "," + j.partidasPerdidas());
+            estructura.write( nuevoID + "," + username + "," + 0 + "," + 0);
             estructura.newLine();
         } catch(IOException e){
             e.printStackTrace();
         }
+        return String.valueOf(nuevoID);
     }
     public ArrayList<Jugador> getTopGanadores(){
         ArrayList<Jugador> jugadoresAll = new ArrayList<Jugador>();
@@ -182,7 +185,7 @@ public class Ranking {
         String[] datos = lineaEncontrada.split(",");
         return datos[0];
     }
-    public String buscarDatosJugadorID(String id){
+    public String[] buscarDatosJugadorID(String id){
         File file = new File(nombreArchivo);
         String lineaEncontrada = null;
         try(RandomAccessFile archivo = new RandomAccessFile(file.getPath(), "r")){
@@ -199,7 +202,7 @@ public class Ranking {
         } catch(IOException e){
             e.printStackTrace();
         }
-        return lineaEncontrada;
+        return lineaEncontrada.split(",");
     }
     public String[] buscarDatosJugadorName(String username){
         File file = new File(nombreArchivo);

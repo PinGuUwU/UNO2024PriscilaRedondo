@@ -1,52 +1,61 @@
 package ar.edu.unlu.poo.uno.viewer.vista;
 
-import ar.edu.unlu.poo.uno.controller.ControladorPartida;
+import ar.edu.unlu.poo.uno.controller.ControladorVista;
 import ar.edu.unlu.poo.uno.listener.VentanaListener;
+import ar.edu.unlu.poo.uno.model.clases.Ranking;
+
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class VistaInicio implements VentanaListener {
+public class VistaInicio implements IVista, VentanaListener {
     JFrame frame;
-    ControladorPartida controlador;
+    ControladorVista controlador;
     private JTextArea ingreseSuNombreDeTextArea;
     private JTextField usuario;
     private JButton confirmarButton;
     private JPanel ventana;
     String idJugador;
 
-    public VistaInicio(ControladorPartida controlador){
-        this.controlador = controlador;
+    public VistaInicio(ControladorVista controlador){
+        setControladorVista(controlador);
         frame = new JFrame("UNO");
         frame.setLocation(720, 480);
         frame.setSize(720, 480);
         frame.setLocationRelativeTo(null);
-
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         agregarListeners();
 
         frame.add(ventana);
-
-        frame.setVisible(true);
     }
     public void agregarListeners(){
         confirmarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                idJugador = controlador.existeJugador(usuario.getText());
+                Ranking ranking = new Ranking();
+                idJugador = ranking.buscarIDJugadorName(usuario.getText());
                 if( idJugador == null){
-                    idJugador = controlador.agregarJugador(usuario.getText());
+                    idJugador = ranking.agregarJugador(usuario.getText());
                 }
                 abrirEleccion();
                 frame.setVisible(false);
             }
         });
     }
+    @Override
+    public void iniciar(){
+        frame.setVisible(true);
+    }
     public void abrirEleccion(){
-        controlador.agregarJugador(controlador.buscarIdName(idJugador));
-        VistaEleccion eleccion = new VistaEleccion(idJugador, controlador.partida(), VistaInicio.this);
+        controlador.agregarJugador(idJugador);
+        VistaEleccion eleccion = new VistaEleccion(idJugador, VistaInicio.this);
+    }
+    public void setControladorVista(ControladorVista controlador){
+        this.controlador = controlador;
     }
     public String IdJugador(){ return idJugador; }
+
     @Override
     public void onVentanaCerrada(String ventana) {
 

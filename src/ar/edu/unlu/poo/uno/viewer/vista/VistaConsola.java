@@ -1,7 +1,6 @@
 package ar.edu.unlu.poo.uno.viewer.vista;
 
-import ar.edu.unlu.poo.uno.controller.ControladorConsola;
-import ar.edu.unlu.poo.uno.controller.ControladorPartida;
+import ar.edu.unlu.poo.uno.controller.ControladorVista;
 import ar.edu.unlu.poo.uno.listener.VentanaListener;
 
 import javax.swing.*;
@@ -14,12 +13,11 @@ import java.util.ArrayList;
 
 import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 
-public class VistaConsola implements VentanaListener{
-
+public class VistaConsola implements VentanaListener, IVista{
     private boolean listo = false;
     private boolean pidiendoColor = false;
     private String idJugador;
-    ControladorConsola controlador;
+    ControladorVista controlador;
     VentanaListener listener;
     JFrame frame;
     VistaRanking iRanking;
@@ -32,12 +30,13 @@ public class VistaConsola implements VentanaListener{
     private JButton ranking;
     private JPanel principal;
 
-    public VistaConsola(VentanaListener listener, String idJugador, ControladorPartida controladorP) {
-        controlador = new ControladorConsola(controladorP);
+    public VistaConsola(VentanaListener listener, String idJugador) throws RemoteException {
+        controlador = new ControladorVista();
         controlador.conectar(VistaConsola.this);
         this.idJugador = idJugador;
         this.listener = listener;
         iniciarConsola();
+        controlador.agregarJugador(idJugador);
     }
 
     private void iniciarConsola() {
@@ -61,7 +60,7 @@ public class VistaConsola implements VentanaListener{
         frame.add(principal);
         bienvenida();
 
-        frame.setVisible(true);
+        iniciar();
     }
 
     private void agregarListeners(){
@@ -124,34 +123,46 @@ public class VistaConsola implements VentanaListener{
 
     }
     private void buscarComando(String comando) throws RemoteException {
-        if(comando.equalsIgnoreCase("/iniciar")){
-            consola.append("\n");
-            if(!listo){
-                listo = true;
-                //Aca debería corroborar que todos los jugadores hayan puesto /iniciar
-                consola.append("Se te ha agregado a la partida. Espere a que todos los jugadores estén listos\n");
-                controlador.iniciar(idJugador);
-                //ac á a su vez tengo que avisarle a las demás consolas que hay x/4 listos
-            } else {
-                consola.append("Ya se ha confirmado su particitación, espere a los demás jugadores\n");
-            }
-            consola.append("\n");
-        } else if(comando.equalsIgnoreCase("/help")){
-
-        } else if(esNumero(comando)){
-            if(!pidiendoColor){ //No puede ingresar numeros hasta que cambie de color
-                boolean seTiro = controlador.opcion(comando, idJugador);
-                if(!seTiro) {
-                    consola.append("No se pudo tirar la carta, elija una que sea posible tirar.\n");
+        switch(comando.toLowerCase()){
+            case "/iniciar":
+                consola.append("\n");
+                if(!listo){
+                    listo = true;
+                    //Aca debería corroborar que todos los jugadores hayan puesto /iniciar
+                    consola.append("Se te ha agregado a la partida. Espere a que todos los jugadores estén listos\n");
+                    controlador.iniciar(); //Se podría usar observer? croe que no
+                    //ac á a su vez tengo que avisarle a las demás consolas que hay x/4 listos
+                } else {
+                    consola.append("Ya se ha confirmado su particitación, espere a los demás jugadores\n");
                 }
+                consola.append("\n");
+                break;
+            case "/help":
+                mostrarComandos();
+                break;
+            case "/ultimacarta":
+                mostrarUltimaCarta();
+                break;
+            case "/mostrarmano":
+                mostrarManoJugador();
+                break;
+            default:
+                if(controlador.esNumero(comando)){
+                if(!pidiendoColor && controlador.esSuTurno(idJugador)){
+                    //Si le toca pero no debe ingresar color
+                    boolean seTiro = controlador.opcion(comando, idJugador);
+                    if(!seTiro) {
+                        consola.append("No se pudo tirar la carta, elija una que sea posible tirar.\n");
+                    }
+                }
+            } else if(pidiendoColor){ //Si ingreso y le toca ingresar color
+                isColor(comando);
+            } else {
+                consola.append("No se reconoce el comando ingresado, ingrese algo válido o revise el /help\n");
             }
-
-            //controlador
-        } else if(pidiendoColor){
-          isColor(comando);
-        } else {
-            consola.append("No se reconoce el comando ingresado, ingrese algo válido o revise el /help\n");
+                break;
         }
+
     }
 
     @Override
@@ -165,18 +176,8 @@ public class VistaConsola implements VentanaListener{
     public void setInTop(){
         frame.setAlwaysOnTop(true);
     }
-    public boolean esNumero(String valor){
-        boolean resultado;
-        try{
-            Integer.parseInt(valor);
-            resultado = true;
-        } catch(NumberFormatException e){
-            resultado = false;
-        }
-        return resultado;
-    }
     public void setDescarte(String color, String valor){
-        String esp = tipo(valor, color);
+        String esp = controlador.tipo(valor, color);
         if(esp != null){
             consola.append("Ultima carta tirada: " + esp + "\n");
         } else {
@@ -187,11 +188,11 @@ public class VistaConsola implements VentanaListener{
         String carta = "";
         consola.append("Tu mano de cartas es: \n");
         for(int i=0; i<colores.size(); i++){
-            if(esEspecial(valores.get(i))) {
-                carta = "Carta " + (i + 1) + " | Especial: " + tipo(valores.get(i), colores.get(i)) + " | (se puede tirar)";
+            if(controlador.esEspecial(valores.get(i))) {
+                carta = "Carta " + (i + 1) + " | Especial: " + (controlador.tipo(valores.get(i), colores.get(i))) + " | (se puede tirar)";
             } else {
                 if(Integer.parseInt(valores.get(i))>10){
-                    carta = "Carta " + (i+1) + " | Color: " + tipo(valores.get(i), colores.get(i)) + " | Valor: " + valores.get(i);
+                    carta = "Carta " + (i+1) + " | Color: " + (controlador.tipo(valores.get(i), colores.get(i))) + " | Valor: " + valores.get(i);
                 } else {
                     carta = "Carta " + (i+1) + " | Color: " + colores.get(i) + " | Valor: " + valores.get(i);
                 }
@@ -206,30 +207,10 @@ public class VistaConsola implements VentanaListener{
         consola.append("Ingrese el nro de la carta que desee tirar\n");
 
     }
-    public String tipo(String valor, String color){
-        int esp = Integer.parseInt(valor);
-        String t = "";
-        switch(esp){
-            case 11: t = color + " (+2) ";
-                break;
-            case 12: t = color + " (cambio de sentido) ";
-                break;
-            case 13: t = color + " (bloqueo) ";
-                break;
-            case 14: t = "+4 (cambio de color)";
-                break;
-            case 15: t = "cambio de color";
-                break;
-            default: t = null;
-                break;
-        }
-        return t;
-    }
-    public boolean esEspecial(String valor){
-        return Integer.parseInt(valor)>13;
-    }
-    public void pedirCambioColor(){
+
+    public void pedirCambioColor() throws RemoteException {
         pidiendoColor = true;
+        mostrarManoJugador();
         consola.append("Ingrese el color al que desea cambiar. opciones:\nVerde\nAzul\nAmarillo\nRojo\n");
     }
     public void avisoInicio(){
@@ -252,4 +233,24 @@ public class VistaConsola implements VentanaListener{
                 break;
         }
     }
+
+    @Override
+    public void iniciar() {
+        frame.setVisible(true);
+    }
+    public void mostrarComandos(){
+        consola.append("Lista de comandos:\n1-'/ultimaCarta' -- para mostrar la ultima carta descartada.\n");
+        consola.append("2-'/mostrarMano' -- para mostrar tu mano de cartas.\n");
+    }
+    public void mostrarUltimaCarta() throws RemoteException {
+        if(!controlador.mostrarCartaDescarte()){
+            consola.append("Debes esperar que inicie la partida.");
+        }
+    }
+    public void mostrarManoJugador() throws RemoteException {
+        if(!controlador.mostrarManoJugador()){
+            consola.append("Debes esperar que inicie la partida.");
+        }
+    }
+
 }

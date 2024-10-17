@@ -26,11 +26,6 @@ public class Condicion {
         } else if(cartaDescarte.color().equalsIgnoreCase(cartaTirar.color())){
             return decision = true;
         }
-        if(decision){
-            System.out.println("Se puede tirar la carta");
-        } else {
-            System.out.println("No se puede tirar la carta");
-        }
         return decision;
     }
 }

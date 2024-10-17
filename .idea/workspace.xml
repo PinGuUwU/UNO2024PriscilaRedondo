@@ -5,28 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fbc73718-ef9d-4267-986d-1866a4d5820a" name="Changes" comment="UNO version 1 12/08/2024 sin mvc, solo las clases y un poquito de testeo">
-      <change afterPath="$PROJECT_DIR$/lib/LibreriaRMIMVC.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/observer/Observer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/cliente/AppCliente.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/controller/ControladorEleccion.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/controller/ControladorVista.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/Eventos.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/IPartida.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/TipoCarta.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/servidor/AppServidor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/IVista.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UNO2024PriscilaRedondo.iml" beforeDir="false" afterPath="$PROJECT_DIR$/UNO2024PriscilaRedondo.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/historico.txt" beforeDir="false" afterPath="$PROJECT_DIR$/historico.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/controller/ControladorConsola.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/controller/ControladorConsola.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/controller/ControladorPartida.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/controller/ControladorPartida.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/controller/ControladorRanking.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/controller/ControladorRanking.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/Carta.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/Carta.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/controller/ControladorConsola.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/controller/ControladorPartida.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/Condicion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/Condicion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/Jugador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/Jugador.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/Mano.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/Mano.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/MazoDeRobo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/MazoDeRobo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/Partida.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/Partida.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/Ranking.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/Ranking.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/observer/VentanaListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/listener/VentanaListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/observer/Observer.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaConsola.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaConsola.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaEleccion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaEleccion.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaInicio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaInicio.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaInterfazGrafica.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaInterfazGrafica.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaPerfil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaPerfil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaRanking.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaRanking.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,8 +34,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="JUnit5 Test Class" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -89,6 +87,9 @@
       <recent name="C:\Users\Pri\IdeaProjects\UNO2024PriscilaRedondo\src\ar\edu\unlu\poo\uno\model\clases" />
       <recent name="C:\Users\Pri\IdeaProjects\UNO2024PriscilaRedondo\src\ar\edu\unlu\poo\uno\controller" />
     </key>
+    <key name="ExtractSuperBase.RECENT_KEYS">
+      <recent name="ar.edu.unlu.poo.uno.model.clases" />
+    </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="ar.edu.unlu.poo.uno.model.clases" />
     </key>
@@ -97,7 +98,33 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="Application.AppCliente">
+    <configuration name="AppCliente" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ar.edu.unlu.poo.uno.cliente.AppCliente" />
+      <module name="UNO2024PriscilaRedondo" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ar.edu.unlu.poo.uno.cliente.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AppServidor" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ar.edu.unlu.poo.uno.servidor.AppServidor" />
+      <module name="UNO2024PriscilaRedondo" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ar.edu.unlu.poo.uno.servidor.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="UNO2024PriscilaRedondo" />
@@ -109,37 +136,6 @@
       <module name="UNO2024PriscilaRedondo" />
       <option name="PACKAGE_NAME" value="" />
       <option name="TEST_OBJECT" value="package" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MezcladorTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="UNO2024PriscilaRedondo" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ar.edu.unlu.poo.uno.model.clases.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="ar.edu.unlu.poo.uno.model.clases" />
-      <option name="MAIN_CLASS_NAME" value="ar.edu.unlu.poo.uno.model.clases.MezcladorTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MezcladorTest.cantCartas" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="UNO2024PriscilaRedondo" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ar.edu.unlu.poo.uno.model.clases.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="ar.edu.unlu.poo.uno.model.clases" />
-      <option name="MAIN_CLASS_NAME" value="ar.edu.unlu.poo.uno.model.clases.MezcladorTest" />
-      <option name="METHOD_NAME" value="cantCartas" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -161,11 +157,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.AppCliente" />
+        <item itemvalue="Application.AppServidor" />
         <item itemvalue="Application.Main" />
         <item itemvalue="JUnit.RankingTest" />
         <item itemvalue="JUnit.All in UNO2024PriscilaRedondo" />
-        <item itemvalue="JUnit.MezcladorTest.cantCartas" />
-        <item itemvalue="JUnit.MezcladorTest" />
       </list>
     </recent_temporary>
   </component>
@@ -217,12 +213,32 @@
           </properties>
           <option name="timeStamp" value="20" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/Partida.java</url>
+          <line>141</line>
+          <properties class="ar.edu.unlu.poo.uno.model.clases.Partida" method="tirarCarta">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="55" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/servidor/AppServidor.java</url>
+          <line>32</line>
+          <option name="timeStamp" value="28" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
         <watch expression="jugadorActual.mano.manoActual.get(2)" />
+        <watch expression="mazoDeDescarte.mazoActual" />
       </configuration>
     </watches-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/UNO2024PriscilaRedondo$AppServidor.ic" NAME="AppServidor Coverage Results" MODIFIED="1729177679091" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>ar.edu.unlu.poo.uno.servidor.*</FILTER>
+    </SUITE>
   </component>
 </project>

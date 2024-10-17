@@ -11,12 +11,14 @@ import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 
 public class VistaInterfazGrafica {
     VentanaListener listener;
+    private String idJugador;
     JFrame frame;
     private JPanel ventana;
     private JTextArea acaNoHayNadaTextArea;
 
-    public VistaInterfazGrafica(VentanaListener listener){
+    public VistaInterfazGrafica(VentanaListener listener, String idJugador){
         this.listener = listener;
+        this.idJugador = idJugador;
         frame.setSize(720, 480);
         frame.setLocationRelativeTo(null);
         frame.add(ventana);
