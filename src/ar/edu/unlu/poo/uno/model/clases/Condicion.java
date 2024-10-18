@@ -22,9 +22,9 @@ public class Condicion {
         }
         //Luego por valor y luego por color
         if(cartaDescarte.valor() == cartaTirar.valor()){
-            return decision = true;
+            decision = true;
         } else if(cartaDescarte.color().equalsIgnoreCase(cartaTirar.color())){
-            return decision = true;
+            decision = true;
         }
         return decision;
     }

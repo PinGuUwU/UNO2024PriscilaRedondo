@@ -15,6 +15,7 @@ public class VistaInterfazGrafica {
     JFrame frame;
     private JPanel ventana;
     private JTextArea acaNoHayNadaTextArea;
+    private JButton button1;
 
     public VistaInterfazGrafica(VentanaListener listener, String idJugador){
         this.listener = listener;

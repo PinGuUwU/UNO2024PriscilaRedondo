@@ -272,6 +272,7 @@ public class Ranking {
                     datos[3] = String.valueOf(j.partidasPerdidas());
                     //Guardo la info modificada en el mismo formato que está en el txt
                     lineaActual = String.join(",",datos);
+                    jugadorEncontrado = true;
                 }
                 lineas.add(lineaActual);
                 lineaActual = lector.readLine();

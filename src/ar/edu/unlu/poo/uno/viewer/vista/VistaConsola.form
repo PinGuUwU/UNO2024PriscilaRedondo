@@ -34,11 +34,9 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="17278" class="javax.swing.JTextArea" binding="consola">
+          <component id="d93e6" class="javax.swing.JTextArea" binding="consola">
             <constraints/>
-            <properties>
-              <editable value="false"/>
-            </properties>
+            <properties/>
           </component>
         </children>
       </scrollpane>

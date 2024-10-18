@@ -37,9 +37,9 @@ public interface IPartida {
     /*
         Mas que nada comprueba el valor de turno y lo actualiza
          */
-    int siguienteTurno(int turnoActual);
+    int siguienteTurno(int turnoActual) throws RemoteException;
 
-    void finalizarPartida(Jugador ganador);
+    void finalizarPartida(Jugador ganador) throws RemoteException;
 
     boolean actualizarCartaDescarte() throws RemoteException;
     boolean actualizarCartasVista() throws RemoteException;

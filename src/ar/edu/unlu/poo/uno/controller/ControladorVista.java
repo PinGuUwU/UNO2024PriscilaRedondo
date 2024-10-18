@@ -23,7 +23,7 @@ public class ControladorVista implements IControladorRemoto {
     public boolean opcion(String op, String jugador) throws RemoteException {
         return iPartida.tirarCarta(jugador, op);
     }
-    public void pedirElColor(){
+    public void pedirElColor() throws RemoteException {
         consola.pedirCambioColor();
     }
     public void iniciar() throws RemoteException {
@@ -68,17 +68,17 @@ public class ControladorVista implements IControladorRemoto {
         int esp = Integer.parseInt(valor);
         String t = "";
         switch(esp){
-            case 11: t = color + " (+2) ";
+            case 11: t = "Color: " + color + " | Efecto: +2";
                 break;
-            case 12: t = color + " (cambio de sentido) ";
+            case 12: t= "Color: " + color + " | Efecto: Cambio de sentido";
                 break;
-            case 13: t = color + " (bloqueo) ";
+            case 13: t = "Color: " + color + " | Efecto: Bloqueo";
                 break;
-            case 14: t = "+4 (cambio de color)";
+            case 14: t = "Color: " + color + " | Efecto: +4 y cambio de color";
                 break;
-            case 15: t = "cambio de color";
+            case 15: t = "Color: " + color + " | Efecto: Cambio de color";
                 break;
-            default: t = null;
+            default: t = "Color: " + color + " | Valor: " + valor;
                 break;
         }
         return t;
@@ -100,8 +100,12 @@ public class ControladorVista implements IControladorRemoto {
                 case CARTA_DESCARTE -> actualizarDescarte(iPartida.getDescarte());
                 case PEDIR_COLOR -> pedirElColor();
                 case MOSTRAR_MANO -> actualizarCartasJugador();
+                case NUEVA_PARTIDA -> jugadorNoListo();
             }
         }
+    }
+    public void jugadorNoListo(){
+        consola.marcarNoListo();
     }
     public void actualizarCartasJugador() throws RemoteException {
         ArrayList<String> colores = iPartida.getColores();

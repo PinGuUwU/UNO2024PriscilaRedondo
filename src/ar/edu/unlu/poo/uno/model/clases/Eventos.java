@@ -8,8 +8,8 @@ public enum Eventos {
 
      */
     CARTA_DESCARTE,
-    NUEVO_TURNO,
     INICIAR_PARTIDA,
     MOSTRAR_MANO,
-    PEDIR_COLOR
+    PEDIR_COLOR,
+    NUEVA_PARTIDA
 }

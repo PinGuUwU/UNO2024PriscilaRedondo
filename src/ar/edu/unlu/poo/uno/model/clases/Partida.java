@@ -142,17 +142,15 @@ public class Partida extends ObservableRemoto implements IPartida {
     public boolean tirarCarta(String id, String posCarta) throws RemoteException {//Quizá debería devolver la carta para luego mostrarla?
         int pos = Integer.parseInt(posCarta);
         pos--;//Porque las opciones empiezan en 1, mientras que la mano empieza en 0
+
         Jugador j = buscarJugador(id);
         Carta carta = j.mostrarCarta(pos);
+
         Condicion condiciones = new Condicion();
+
         boolean seTiro = false;
-        if(condiciones.sePuedeTirar(mazoDeDescarte.ultimaCarta(), carta)){
-            j.tirarCarta(pos);
-            mazoDeDescarte.agregar(carta);
-            seTiro = true;
-        }
         boolean color = false;
-        if(seTiro) {
+        if(condiciones.sePuedeTirar(mazoDeDescarte.ultimaCarta(), carta)) {
             switch (esEspecial(carta)) {
                 //case COMUN -> No hago nada especial si es comun;
                 case BLOQUEO:
@@ -160,10 +158,10 @@ public class Partida extends ObservableRemoto implements IPartida {
                     turno = siguienteTurno(turno);
                     break;
                 case MAS_DOS:
-                    this.levantarDosCartas(siguienteTurno(turno));
+                    this.levantarDosCartas();
                     break;
                 case MAS_CUATRO:
-                    this.levantarCuatroCartas(siguienteTurno(turno));
+                    this.levantarCuatroCartas();
                     pedirColorJugador();
                     color = true;
                     break;
@@ -175,17 +173,24 @@ public class Partida extends ObservableRemoto implements IPartida {
                     color = true;
                     break;
             }
+            seTiro = true;
+            j.tirarCarta(pos);
         }
+        boolean finalizo = false;
         if(j.cantCartasMano() == 0){
             finalizarPartida(j);
-        } else if(!color){
+            finalizo = true;
+        }
+        if(!color && seTiro && !finalizo){
             //Si no hay que pedir color al jugador del turno acutal
             //Entonces sigo al siguiente turno
             //Si no espero hasta que me de el color
+            mazoDeDescarte.agregar(carta);
+            seTiro = true;
             siguienteTurno(turno);
             actualizarCartaDescarte();
             actualizarCartasVista();
-        }
+        }//Si debe elegir color entonces el color de la carta y el descarte se actualizan en otro metodo
         return seTiro;
     }
     @Override
@@ -197,7 +202,6 @@ public class Partida extends ObservableRemoto implements IPartida {
         Carta carta = new Carta(color);
         mazoDeDescarte.agregar(carta);
         Jugador j = buscarJugador(idj);
-        j.tirarCartaCambioColor();
         actualizarCartaDescarte();
         actualizarCartasVista();
         siguienteTurno(turno);
@@ -226,30 +230,31 @@ public class Partida extends ObservableRemoto implements IPartida {
     Mas que nada comprueba el valor de turno y lo actualiza
      */
     @Override
-    public int siguienteTurno(int turnoActual){
+    public int siguienteTurno(int turnoActual) throws RemoteException {
         //Turno del 1-4
         //Debo corroborar que todos tengan cartas
         for(Jugador j : jugadores){
             if(j.cantCartasMano() == 0){
                 finalizarPartida(j);
+                break;
             }
         }
         if(sentido){
-            if(turnoActual== jugadores.size()){
+            if(turnoActual== (jugadores.size()-1)){
                 return 0;
             } else {
                 return turnoActual++;
             }
         } else { //if(!sentido)
             if(turnoActual == 0){
-                return jugadores.size();
+                return (jugadores.size()-1);
             } else {
                 return turnoActual--;
             }
         }
     }
     @Override
-    public void finalizarPartida(Jugador ganador){
+    public void finalizarPartida(Jugador ganador) throws RemoteException {
         Ranking ranking = new Ranking();
         for(Jugador j : jugadores){
             if(j == ganador){
@@ -260,7 +265,9 @@ public class Partida extends ObservableRemoto implements IPartida {
                 ranking.actualizarJugador(j);
             }
         }
-
+        actualizarJugadoresNoListos();
+        jugadoresListos=0;
+        turno=-1;
     }
 
 
@@ -300,7 +307,9 @@ public class Partida extends ObservableRemoto implements IPartida {
     }
     @Override
     public boolean esTurno(String id){
-        if( (jugadores.get(turno)).jugadorID().equals(id)){
+        if(jugadoresListos==0){
+            return false;
+        } else if((jugadores.get(turno)).jugadorID().equals(id)){
             //Si el jugador por el cual consulto, es el mismo que el de la posicion
             //Del turno, entonces es su turno (Para saber si puede ingresar opcion de carta o no)
             return true;
@@ -319,27 +328,34 @@ public class Partida extends ObservableRemoto implements IPartida {
             default: return TipoCarta.COMUN;
         }
     }
-    public void levantarCuatroCartas(int pos){
-        Jugador j = jugadores.get(pos);
-        Carta carta;
+    public void levantarCuatroCartas() throws RemoteException {
         //Roba 4 cartas
         for(int i=0; i<4; i++){
-            carta = mazoDeRobo.robar();
-            j.levantarCarta(carta);
+            levantarCartaEspecial();
         }
     }
-    public void levantarDosCartas(int pos){
-        Jugador j = jugadores.get(pos);
-        Carta carta;
-        //Roba 2 cartas
+    public void levantarDosCartas() throws RemoteException {
         for(int i=0; i<2; i++){
-            carta = mazoDeRobo.robar();
-            j.levantarCarta(carta);
+            levantarCartaEspecial();
         }
+    }
+    public void levantarCartaEspecial() throws RemoteException {
+        if(mazoDeRobo.sinCartas()){
+            mazoDeRobo.mezclar();
+        }
+        int sigTurno = siguienteTurno(turno);
+        Jugador j = jugadores.get(sigTurno);
+        j.levantarCarta(mazoDeRobo.robar());
     }
     public void levantarCarta() throws RemoteException {
+        if(mazoDeRobo.sinCartas()){
+            mazoDeRobo.mezclar();
+        }
         Jugador j = jugadores.get(turno);
         j.levantarCarta(mazoDeRobo.robar());
         actualizarCartasVista();
+    }
+    public void actualizarJugadoresNoListos() throws RemoteException {
+        this.notificarObservadores(Eventos.NUEVA_PARTIDA);
     }
 }
