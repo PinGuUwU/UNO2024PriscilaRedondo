@@ -15,7 +15,7 @@ import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 public class VistaRanking {
     VentanaListener listener;
     JFrame frame;
-    private ControladorRanking controlador;
+    private final ControladorRanking controlador;
     private JPanel ventana;
     private JTextArea textArea1;
     private JPanel cantPartidas;
@@ -60,9 +60,9 @@ public class VistaRanking {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
 
-                int opcion = (int) comboBox1.getSelectedIndex();
-                switch(opcion){
-                    case 0:
+                int opcion = comboBox1.getSelectedIndex();
+                switch (opcion) {
+                    case 0 -> {
                         //muestro top ganadores
                         //jugadoresNombres.add() asi voy agregando los username
                         controlador.top5Ganadores();
@@ -70,13 +70,13 @@ public class VistaRanking {
                         //En ese metodo, ranking llama a VistaRanking
                         // vista.actualizarRanking
                         System.out.println("(actualizaRanking ganadores)");
-                        break;
-                    case 1:
+                    }
+                    case 1 -> {
                         //muestr top perdedores
                         //jugadoresCantidad.add() asi voy agregando la cantidad de partidas ganadas/perdidas
                         controlador.top5Perdedores();
                         System.out.println("(actualizaRanking perdedores");
-                        break;
+                    }
                 }
                 cantPartidas.revalidate();
             }

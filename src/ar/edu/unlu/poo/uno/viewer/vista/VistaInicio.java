@@ -48,8 +48,12 @@ public class VistaInicio implements IVista, VentanaListener {
         frame.setVisible(true);
     }
     public void abrirEleccion(){
-        controlador.agregarJugador(idJugador);
-        VistaEleccion eleccion = new VistaEleccion(idJugador, VistaInicio.this);
+        if(!controlador.agregarJugador(idJugador)){
+            ingreseSuNombreDeTextArea.setText("No puede entrar a la partida, ya tiene 4 jugadores.");
+        } else {
+            controlador.agregarJugador(idJugador);
+            VistaEleccion eleccion = new VistaEleccion(idJugador, VistaInicio.this);
+        }
     }
     public void setControladorVista(ControladorVista controlador){
         this.controlador = controlador;

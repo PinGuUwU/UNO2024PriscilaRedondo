@@ -182,8 +182,12 @@ public class Ranking {
         } catch(IOException e){
             e.printStackTrace();
         }
-        String[] datos = lineaEncontrada.split(",");
-        return datos[0];
+        if(lineaEncontrada == null){
+            return null;
+        } else {
+            String[] datos = lineaEncontrada.split(",");
+            return datos[0];
+        }
     }
     public String[] buscarDatosJugadorID(String id){
         File file = new File(nombreArchivo);
@@ -203,26 +207,6 @@ public class Ranking {
             e.printStackTrace();
         }
         return lineaEncontrada.split(",");
-    }
-    public String[] buscarDatosJugadorName(String username){
-        File file = new File(nombreArchivo);
-        String lineaEncontrada = null;
-        try(RandomAccessFile archivo = new RandomAccessFile(file.getPath(), "r")){
-            String lineaActual = archivo.readLine();
-            String[] partes;
-            while(lineaActual != null){
-                partes = lineaActual.split(",");
-                if(partes[1].equalsIgnoreCase(username)){
-                    lineaEncontrada = lineaActual;
-                    break;
-                }
-                lineaActual = archivo.readLine();
-            }
-        } catch(IOException e){
-            e.printStackTrace();
-        }
-        String[] datos = lineaEncontrada.split(",");
-        return datos;
     }
     public void actualizarNombreJugador(String idJ, String nuevoNombre){
         ArrayList<String> lineas = new ArrayList<>();

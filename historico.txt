@@ -4,3 +4,5 @@
 4,Pingu,7,0
 5,asd,0,0
 6,prueba1!,0,0
+7,Jugador2,0,0
+8,p,0,0

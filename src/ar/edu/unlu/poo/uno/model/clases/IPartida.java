@@ -32,7 +32,7 @@ public interface IPartida {
     void elegirColor(String color, String idj) throws RemoteException;
     void agregarObserver(ControladorVista controlador) throws RemoteException;
 
-    void agregarJugador(String id);
+    boolean agregarJugador(String id);
 
     /*
         Mas que nada comprueba el valor de turno y lo actualiza
@@ -51,4 +51,5 @@ public interface IPartida {
     ArrayList<String> getValores();
     ArrayList<Boolean> getValidas();
     void actualizarInicioPartida() throws RemoteException;
+    int cantJugadores();
 }

@@ -4,8 +4,6 @@ import ar.edu.unlu.poo.uno.controller.ControladorVista;
 import ar.edu.unlu.poo.uno.listener.VentanaListener;
 
 import javax.swing.*;
-import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,9 +15,10 @@ import java.util.ArrayList;
 import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 
 public class VistaConsola implements VentanaListener, IVista{
+    private final boolean puedeJugar;
     private boolean listo = false;
     private boolean pidiendoColor = false;
-    private String idJugador;
+    private final String idJugador;
     ControladorVista controlador;
     VentanaListener listener;
     JFrame frame;
@@ -36,11 +35,16 @@ public class VistaConsola implements VentanaListener, IVista{
     public VistaConsola(VentanaListener listener, String idJugador) throws RemoteException {
         controlador = new ControladorVista();
         controlador.conectar(VistaConsola.this);
+        if(!controlador.agregarJugador(idJugador)){//Si no se puede agregar jugador
+            consola.append("        Debe entrar a otra partida, esta ya está llena.\n\n");
+            puedeJugar = false;
+        } else {//Solo doy el aviso, no voy a manejar nada mas
+            puedeJugar = true;
+        }
         this.idJugador = idJugador;
         this.listener = listener;
         consola.setFocusable(false);
         iniciarConsola();
-        controlador.agregarJugador(idJugador);
     }
 
     private void iniciarConsola() {
@@ -128,44 +132,42 @@ public class VistaConsola implements VentanaListener, IVista{
         consola.append("            Para iniciar la partida coloca '/iniciar'\n");
     }
     private void buscarComando(String comando) throws RemoteException {
-        switch(comando.toLowerCase()){
-            case "/iniciar":
-                consola.append("\n");
-                if(!listo){
-                    listo = true;
-                    //Aca debería corroborar que todos los jugadores hayan puesto /iniciar
-                    consola.append("\n      Se te ha agregado a la partida. Espere a que todos los jugadores estén listos\n\n");
-                    controlador.iniciar(); //Se podría usar observer? croe que no
-                    //ac á a su vez tengo que avisarle a las demás consolas que hay x/4 listos
-                } else {
-                    consola.append("Ya se ha confirmado su particitación, espere a los demás jugadores\n\n");
-                }
-                consola.append("\n");
-                break;
-            case "/help":
-                mostrarComandos();
-                break;
-            case "/ultimacarta":
-                mostrarUltimaCarta();
-                break;
-            case "/mostrarmano":
-                mostrarManoJugador();
-                break;
-            default:
-                if(controlador.esNumero(comando) && !pidiendoColor && controlador.esSuTurno(idJugador)){
-                    //Si le toca pero no debe ingresar color
-                    boolean seTiro = controlador.opcion(comando, idJugador);
-                    if(!seTiro) {
-                        consola.append("No se pudo tirar la carta, elija una que sea posible tirar.\n\n");
+        if(!puedeJugar){ //Si no puede jugar no lo dejo ingresar nunca nada, debe si o si cambiar de server/puerto o no sé como funciona RMI con eso
+            consola.append("        Debe entrar a otra partida, esta ya está llena.\n\n");
+        } else {
+            switch (comando.toLowerCase()) {
+                case "/iniciar" -> {
+                    consola.append("\n");
+                    if (!listo) {
+                        listo = true;
+                        //Aca debería corroborar que todos los jugadores hayan puesto /iniciar
+                        consola.append("\n      Se te ha agregado a la partida. Espere a que todos los jugadores estén listos\n\n");
+                        controlador.iniciar(); //Se podría usar observer? croe que no
+                        //ac á a su vez tengo que avisarle a las demás consolas que hay x/4 listos
+                    } else {
+                        consola.append("Ya se ha confirmado su particitación, espere a los demás jugadores\n\n");
                     }
-                } else if(pidiendoColor){ //Si ingreso y le toca ingresar color
-                    isColor(comando);
-                } else {
-                    consola.append("No se reconoce el comando ingresado, ingrese algo válido o revise el /help\n\n");
+                    consola.append("\n");
                 }
-                break;
+                case "/help" -> mostrarComandos();
+                case "/ultimacarta" -> mostrarUltimaCarta();
+                case "/mostrarmano" -> mostrarManoJugador();
+                case "/cantjugadores" -> mostrarCantJugadores();
+                default -> {
+                    if (controlador.esNumero(comando) && !pidiendoColor && controlador.esSuTurno(idJugador)) {
+                        //Si le toca pero no debe ingresar color
+                        boolean seTiro = controlador.opcion(comando, idJugador);
+                        if (!seTiro) {
+                            consola.append("No se pudo tirar la carta, elija una que sea posible tirar.\n\n");
+                        }
+                    } else if (pidiendoColor) { //Si ingreso y le toca ingresar color
+                        isColor(comando);
+                    } else {
+                        consola.append("No se reconoce el comando ingresado, ingrese algo válido o revise el /help\n\n");
+                    }
+                }
+            }
         }
-
     }
 
     @Override
@@ -188,7 +190,7 @@ public class VistaConsola implements VentanaListener, IVista{
         }
     }
     public void mostrarCartasJugador(ArrayList<String> colores, ArrayList<String> valores, ArrayList<Boolean> posibles){
-        String carta = "";
+        String carta;
         consola.append("    Tu mano de cartas es: \n");
         for(int i=0; i<colores.size(); i++){
             carta = "Carta " + (i + 1) + " | " + (controlador.tipo(valores.get(i), colores.get(i)));
@@ -218,15 +220,15 @@ public class VistaConsola implements VentanaListener, IVista{
     }
     public void isColor(String comando) throws RemoteException {
         comando = comando.toLowerCase();
-        switch(comando){
-            case "verde","rojo","amarillo","azul":
+        switch (comando) {
+            case "verde", "rojo", "amarillo", "azul" -> {
                 controlador.cambiarColor(comando, idJugador);
                 pidiendoColor = false;
-                break;
-            default:
+            }
+            default -> {
                 consola.append("\nIngrese un color válido de la lista.\n\n");
                 pedirCambioColor();
-                break;
+            }
         }
     }
 
@@ -236,7 +238,8 @@ public class VistaConsola implements VentanaListener, IVista{
     }
     public void mostrarComandos(){
         consola.append("            Lista de comandos:\n1-'/ultimaCarta' -- para mostrar la ultima carta descartada.\n");
-        consola.append("2-'/mostrarMano' -- para mostrar tu mano de cartas.\n\n");
+        consola.append("2-'/mostrarMano' -- para mostrar tu mano de cartas.\n");
+        consola.append("3-'/cantJugadores' -- para mostrar la cantidad de jugadores que hay en la partida actual.\n\n");
     }
     public void mostrarUltimaCarta() throws RemoteException {
         if(!controlador.mostrarCartaDescarte()){
@@ -253,6 +256,10 @@ public class VistaConsola implements VentanaListener, IVista{
     public void marcarNoListo(){
         listo = false;
         bienvenida();
+    }
+    public void mostrarCantJugadores(){
+        int cant = controlador.cantJugadoresConectados();
+        consola.append("        La cantidad de jugadores conectados a esta partida son: " + cant + ".\n\n");
     }
 
 }

@@ -7,7 +7,6 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class Partida extends ObservableRemoto implements IPartida {
-    private static Partida partida;
     private int jugadoresListos = 0;
     private ArrayList<Jugador> jugadores = new ArrayList<>();
     private boolean sentido = true;//true = incrementa turno. false = decrementa turno;
@@ -73,15 +72,10 @@ public class Partida extends ObservableRemoto implements IPartida {
         actualizarCartasVista();
         /*
         Si tiene cartas para tirar, puede tirar,
-        si no esta obligado a levantar del mazo de robo hasta que quiera o pueda tirar
+        si no estará obligado a levantar del mazo de robo hasta que quiera o pueda tirar
          */
         this.turno = siguienteTurno(this.turno);
     }
-    /*
-    En este metodo compruebo si se puede tirar o no con Condicion
-    y luego tira la carta que el jugador decida
-    y luego la agrega al mazo de descarte
-     */
     @Override
     public ArrayList<String> getColores(){
         //Este método devuelve el arraylist de colores de su mano
@@ -186,7 +180,6 @@ public class Partida extends ObservableRemoto implements IPartida {
             //Entonces sigo al siguiente turno
             //Si no espero hasta que me de el color
             mazoDeDescarte.agregar(carta);
-            seTiro = true;
             siguienteTurno(turno);
             actualizarCartaDescarte();
             actualizarCartasVista();
@@ -201,30 +194,26 @@ public class Partida extends ObservableRemoto implements IPartida {
     public void elegirColor(String color, String idj) throws RemoteException {
         Carta carta = new Carta(color);
         mazoDeDescarte.agregar(carta);
-        Jugador j = buscarJugador(idj);
         actualizarCartaDescarte();
         actualizarCartasVista();
         siguienteTurno(turno);
     }
     @Override
-    public void agregarJugador(String id){
-        //Devuelve el id
-        /* Debo ver como manejo con RMI el tema de agregar jugadores
+    public boolean agregarJugador(String id){
         if(jugadores.size() == 4){
-            System.out.println("Ya hay demasiados jugadores, intente entrando en otra partida.");
-            return null;
-        }*/
-        Ranking ranking = new Ranking();
-        String[] datos = ranking.buscarDatosJugadorID(id);
+            return false; //No se puede agregar
+        } else {
+            Ranking ranking = new Ranking();
+            String[] datos = ranking.buscarDatosJugadorID(id);
 
-        Jugador jugador = new Jugador(datos[0], datos[1], datos[2], datos[3]);
+            Jugador jugador = new Jugador(datos[0], datos[1], datos[2], datos[3]);
 
-        jugadores.add(jugador);
-        //reset partida?
-        turno = 0;
-        //Si se suma un jugador se resetea la partida?
-        //Entonces tendría que hacer:
-        //turno=1; y también en el main un "partida = new Partida();"
+            jugadores.add(jugador);
+            //reset partida?
+            turno = 0;
+            //Si se suma un jugador se resetea la partida?
+            return true; //Se puede agregar
+        }
     }
     /*
     Mas que nada comprueba el valor de turno y lo actualiza
@@ -243,13 +232,15 @@ public class Partida extends ObservableRemoto implements IPartida {
             if(turnoActual== (jugadores.size()-1)){
                 return 0;
             } else {
-                return turnoActual++;
+                turnoActual++;
+                return turnoActual;
             }
         } else { //if(!sentido)
             if(turnoActual == 0){
                 return (jugadores.size()-1);
             } else {
-                return turnoActual--;
+                turnoActual--;
+                return turnoActual;
             }
         }
     }
@@ -357,5 +348,9 @@ public class Partida extends ObservableRemoto implements IPartida {
     }
     public void actualizarJugadoresNoListos() throws RemoteException {
         this.notificarObservadores(Eventos.NUEVA_PARTIDA);
+    }
+    @Override
+    public int cantJugadores(){
+        return jugadores.size();
     }
 }
