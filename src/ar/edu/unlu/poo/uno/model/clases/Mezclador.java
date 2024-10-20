@@ -21,10 +21,12 @@ public class Mezclador {
      */
      /*
     Orden de cartas:
+    valor cartas:
     0=1, 1=2, 2=3, 3=4, 4=5, 5=6, 6=7, 7=8, 8=9, 9=10, +2=11, sentido=12, bloqueo=13, +4=14, cambioColor=15;
+
     existencias:
 
-    colores:
+    color cartas:
     "verde", "rojo", "azul", "amarillo"
      */
     public ArrayList<Carta> mezclar(){

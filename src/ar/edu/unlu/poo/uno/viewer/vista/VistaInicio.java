@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class VistaInicio implements IVista, VentanaListener {
+public class VistaInicio implements VentanaListener {
     JFrame frame;
     ControladorVista controlador;
     private JTextArea ingreseSuNombreDeTextArea;
@@ -43,7 +43,6 @@ public class VistaInicio implements IVista, VentanaListener {
             }
         });
     }
-    @Override
     public void iniciar(){
         frame.setVisible(true);
     }

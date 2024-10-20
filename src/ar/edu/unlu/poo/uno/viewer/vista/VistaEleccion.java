@@ -66,7 +66,11 @@ public class VistaEleccion implements VentanaListener{
         pantalla.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                abrirInterfazGrafica();
+                try {
+                    abrirInterfazGrafica();
+                } catch (RemoteException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
     }
@@ -78,7 +82,7 @@ public class VistaEleccion implements VentanaListener{
             iConsola.setInTop();
         }
     }
-    public void abrirInterfazGrafica(){
+    public void abrirInterfazGrafica() throws RemoteException {
         if(iGrafica == null) {
             iGrafica = new VistaInterfazGrafica(VistaEleccion.this, idJugador);
         } else if(!iGrafica.frame.isVisible()){

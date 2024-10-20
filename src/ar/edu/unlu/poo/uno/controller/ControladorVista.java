@@ -1,6 +1,7 @@
 package ar.edu.unlu.poo.uno.controller;
 
 import ar.edu.unlu.poo.uno.model.clases.*;
+import ar.edu.unlu.poo.uno.viewer.vista.IVista;
 import ar.edu.unlu.poo.uno.viewer.vista.VistaConsola;
 import ar.edu.unlu.rmimvc.cliente.IControladorRemoto;
 import ar.edu.unlu.rmimvc.observer.IObservableRemoto;
@@ -12,13 +13,13 @@ public class ControladorVista implements IControladorRemoto {
     //100% terminado
     Ranking ranking = new Ranking();
     IPartida iPartida;
-    VistaConsola consola;
+    IVista vista;
     public ControladorVista() throws RemoteException {
         iPartida = new Partida();
         iPartida.agregarObserver(ControladorVista.this);
     }
-    public void conectar(VistaConsola consola){
-        this.consola = consola;
+    public void conectar(IVista vista){
+        this.vista = vista;
     }
     public boolean mostrarManoJugador() throws RemoteException {
         return iPartida.actualizarCartasVista();
@@ -40,7 +41,7 @@ public class ControladorVista implements IControladorRemoto {
         return ranking.datosJugador(id);
     }
     public void levantarCartaObligatorio(){
-        consola.levantarCarta();
+        vista.levantarCarta();
     }
     public boolean esSuTurno(String idJ){
         return iPartida.esTurno(idJ);
@@ -92,14 +93,14 @@ public class ControladorVista implements IControladorRemoto {
         }
     }
     public void avisarInicio(){
-        consola.avisoInicio();
+        vista.avisoInicio();
     }
     public void actualizarDescarte(){
         String[] datos = iPartida.getDescarte();
-        consola.setDescarte(datos[0], String.valueOf(datos[1]));
+        vista.setDescarte(datos[0], String.valueOf(datos[1]));
     }
     public void pedirElColor() throws RemoteException {
-        consola.pedirCambioColor();
+        vista.pedirCambioColor();
     }
     public void actualizarCartasJugador() throws RemoteException {
         ArrayList<String> colores = iPartida.getColores();
@@ -110,10 +111,10 @@ public class ControladorVista implements IControladorRemoto {
             levantarCartaObligatorio();
             iPartida.levantarCarta();
         } else {
-            consola.mostrarCartasJugador(colores, valores, posibles);
+            vista.mostrarCartasJugador(colores, valores, posibles);
         }
     }
     public void jugadorNoListo(){
-        consola.marcarNoListo();
+        vista.marcarNoListo();
     }
 }
