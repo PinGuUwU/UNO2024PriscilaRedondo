@@ -38,6 +38,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista{
     private JButton descarte;
     private JButton robo;
     private JPanel cambioColor;
+    private JComboBox<String> elegirColor;
     private ArrayList<JButton> botonesLinea1 = new ArrayList<>();
 
     /*
@@ -158,8 +159,63 @@ public class VistaInterfazGrafica implements VentanaListener, IVista{
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                if(boton.getBackground() == Color.green){//Si se puede tirar
+                    try {
+                        controlador.opcion(buscarPosicionBoton(boton), idJugador);
+                        estadoTurno.setText("Esperando turno.");
+                    } catch (RemoteException ex) {
+                        throw new RuntimeException(ex);
+                    }
+
+                }
             }
         });
+    }
+    private String buscarPosicionBoton(JButton b){
+        //Manejo numeros a partir de 1, no de cero
+        String pos = "";
+        ImageIcon icon = (ImageIcon) b.getIcon();
+        String cyvBuscado = icon.getDescription();
+        System.out.println(cyvBuscado);
+        ArrayList<JButton> listaCompleta = new ArrayList<>();
+        listaCompleta.addAll(botonesLinea1);
+        listaCompleta.addAll(botonesLinea2);
+        listaCompleta.addAll(botonesLinea3);
+        boolean encontrado = false;
+        for(int i=0; i<listaCompleta.size(); i++){
+            ImageIcon icon1 = (ImageIcon) listaCompleta.get(i).getIcon();
+            String cyvActual = icon1.getDescription();
+            if(cyvBuscado.equals(cyvActual) && !encontrado){
+                int j = i + 1;
+                pos = String.valueOf(j);
+                quitarBotonCarta(listaCompleta.get(i));
+                encontrado = true;
+            }
+        }
+
+        return pos;
+    }
+    public void quitarBotonCarta(JButton b){
+        boolean l1 = buscarBotonEnPanel(linea1, b);
+        boolean l2 = buscarBotonEnPanel(linea2, b);
+        boolean l3 = buscarBotonEnPanel(linea3, b);
+        if(l1){
+            linea1.remove(b);
+        } else if(l2){
+            linea2.remove(b);
+        } else if(l3){
+            linea3.remove(b);
+        }//Todos son "elseif" porque puede estar en mas de una linea
+        //Y yo quiero que solo se borre UNA carta, no varias
+    }
+    public boolean buscarBotonEnPanel(JPanel panel, JButton b){
+        boolean encontrado = false;
+        for(int i=0; i<panel.getComponentCount(); i++){
+            if(panel.getComponent(i).equals(b)){
+                encontrado = true;
+            }
+        }
+        return encontrado;
     }
     private void agregarCarta(JButton carta){
         boolean lleno1 = botonesLinea1.size()==10;
@@ -167,10 +223,13 @@ public class VistaInterfazGrafica implements VentanaListener, IVista{
         agregarListenerCarta(carta);
         if(lleno2){//Si la linea 1 y 2 están llenas uso la 3
             linea3.add(carta);
+            botonesLinea3.add(carta);
         } else if(lleno1){//Si solo la linea 1 está llena uso la linea 2
             linea2.add(carta);
+            botonesLinea2.add(carta);
         } else {//Si la linea 1 no está llena, la uso
             linea1.add(carta);
+            botonesLinea1.add(carta);
         }
     }
     @Override
@@ -191,18 +250,19 @@ public class VistaInterfazGrafica implements VentanaListener, IVista{
     public void levantarCarta() {
         //Se levanta una carta automaticamente porque el jugador no
         // tiene posibilidades de tirar otra carta
+        estadoTurno.setText("Se levantarán cartas hasta poder tirar una.");
     }
 
     @Override
     public void avisoInicio() {
         //Avisa que todos los jugadores están listos y el juego está por comenzar
-
+        estadoTurno.setText("Iniciando la partida.");
     }
 
     @Override
     public void setDescarte(String color, String valor) {
         //Actualiza la carta de MazoDeDescarte
-        ImageIcon icon = new ImageIcon("src/ar/edu/unlu/poo/uno/data/cartasImages/" + color + "/" + valor + ".png");
+        ImageIcon icon = new ImageIcon("src/ar/edu/unlu/poo/uno/data/cartasImages/" + color + "/" + valor + ".jpg");
         Image imagen = icon.getImage();
         imagen = imagen.getScaledInstance(70, 100, Image.SCALE_SMOOTH);
         icon = new ImageIcon(imagen);
@@ -216,16 +276,44 @@ public class VistaInterfazGrafica implements VentanaListener, IVista{
         //Pide al jugador que elija qué color quiere que sea el siguiente
         //Acá agrego al JPanel "cambioColor" un JComboBox que tenga las 4 opciones de color
         //El jugador elige el que quiere y luego le da click al boton "confirmar"
+        elegirColor.addItem("verde");
+        elegirColor.addItem("amarillo");
+        elegirColor.addItem("rojo");
+        elegirColor.addItem("azul");
+        elegirColor.setVisible(true);
+        cambioColor.add(elegirColor);
+        cambioColor.setVisible(true);
+        elegirColor.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    controlador.cambiarColor((String) elegirColor.getSelectedItem(), idJugador);
+                } catch (RemoteException ex) {
+                    throw new RuntimeException(ex);
+                }
+                elegirColor.setVisible(false);
+            }
+        });
     }
 
     @Override
     public void mostrarCartasJugador(ArrayList<String> colores, ArrayList<String> valores, ArrayList<Boolean> validos) {
         //Acá hago to-do el proceso de Agregar botones y agregarle la correspondiente imagen
+        borrarCartas();
         JButton carta;
         for(int i=0; i<colores.size(); i++){
             carta = deBotonACarta(colores.get(i), valores.get(i), validos.get(i));
             agregarCarta(carta);
         }
+        estadoTurno.setText("Es su turno, elija una carta.");
+    }
+    private void borrarCartas(){
+        botonesLinea1.removeAll(botonesLinea1);
+        botonesLinea2.removeAll(botonesLinea2);
+        botonesLinea3.removeAll(botonesLinea3);
+        linea1.removeAll();
+        linea2.removeAll();
+        linea3.removeAll();
     }
     private JButton deBotonACarta(String color, String valor, Boolean posible){
         //Metodo que le paso los valores de una carta para que cree el boton correspondiente a esa carta
@@ -241,6 +329,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista{
         Image imagen = icon.getImage();
         imagen = imagen.getScaledInstance(70, 100, Image.SCALE_SMOOTH);
         icon = new ImageIcon(imagen);
+        icon.setDescription(color + "," + valor);
         carta.setIcon(icon);
         return carta;
     }

@@ -38,7 +38,7 @@ public class Mezclador {
         for(int j = 0; j<4; j++){
             int contador1=0, contador2=0;
             while(contador1<13){
-                for(int i = 0; i< cantCartas.get(contador2); i++){
+                for(int i = 1; i< cantCartas.get(contador2); i++){
                     carta = new Carta(contador1,colores.get(j));
                     nuevoMazo.add(carta);
                 }
