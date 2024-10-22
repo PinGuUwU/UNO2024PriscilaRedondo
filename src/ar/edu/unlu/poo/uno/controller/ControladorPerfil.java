@@ -1,6 +1,6 @@
 package ar.edu.unlu.poo.uno.controller;
 
-import ar.edu.unlu.poo.uno.model.clases.Ranking;
+import ar.edu.unlu.poo.uno.model.Ranking;
 
 public class ControladorPerfil {
     //100% terminado

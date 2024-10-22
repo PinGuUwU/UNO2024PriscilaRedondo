@@ -1,8 +1,6 @@
 package ar.edu.unlu.poo.uno.servidor;
 
-import ar.edu.unlu.poo.uno.controller.ControladorVista;
-import ar.edu.unlu.poo.uno.model.clases.IPartida;
-import ar.edu.unlu.poo.uno.model.clases.Partida;
+import ar.edu.unlu.poo.uno.model.Partida;
 import ar.edu.unlu.rmimvc.RMIMVCException;
 import ar.edu.unlu.rmimvc.Util;
 import ar.edu.unlu.rmimvc.servidor.Servidor;
@@ -34,10 +32,16 @@ public class AppServidor {
         Servidor servidor = new Servidor(ip, Integer.parseInt(port));
         try {
             servidor.iniciar(modelo);
-        } catch(RemoteException e) {
+            System.out.println("Servidor RMI está en ejecución...");
+
+            // Mantener el servidor en ejecución
+            synchronized (AppServidor.class) {
+                AppServidor.class.wait(); // Espera indefinidamente
+            }
+        } catch(RemoteException | RMIMVCException e) {
             e.printStackTrace();
-        } catch(RMIMVCException e) {
-            e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 }

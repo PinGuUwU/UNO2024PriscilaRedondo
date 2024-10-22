@@ -1,8 +1,10 @@
 package ar.edu.unlu.poo.uno.controller;
 
-import ar.edu.unlu.poo.uno.model.clases.*;
+import ar.edu.unlu.poo.uno.model.Eventos;
+import ar.edu.unlu.poo.uno.model.IPartida;
+import ar.edu.unlu.poo.uno.model.Partida;
+import ar.edu.unlu.poo.uno.model.Ranking;
 import ar.edu.unlu.poo.uno.viewer.vista.IVista;
-import ar.edu.unlu.poo.uno.viewer.vista.VistaConsola;
 import ar.edu.unlu.rmimvc.cliente.IControladorRemoto;
 import ar.edu.unlu.rmimvc.observer.IObservableRemoto;
 
@@ -64,7 +66,7 @@ public class ControladorVista implements IControladorRemoto {
     }
     public String tipo(String valor, String color){
         int esp = Integer.parseInt(valor);
-        String t = switch (esp) {
+        return switch (esp) {
             case 11 -> "Color: " + color + " | Efecto: +2";
             case 12 -> "Color: " + color + " | Efecto: Cambio de sentido";
             case 13 -> "Color: " + color + " | Efecto: Bloqueo";
@@ -72,7 +74,6 @@ public class ControladorVista implements IControladorRemoto {
             case 15 -> "Color: " + color + " | Efecto: Cambio de color";
             default -> "Color: " + color + " | Valor: " + valor;
         };
-        return t;
     }
 
     @Override

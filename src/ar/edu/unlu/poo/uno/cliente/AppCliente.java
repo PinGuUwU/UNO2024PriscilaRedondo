@@ -52,26 +52,10 @@ public class AppCliente {
         ventana.iniciar();
         try{
             c.iniciar(controlador);
-        } catch(RemoteException e){
-            e.printStackTrace();
-        } catch(RMIMVCException e){
+        } catch(RemoteException | RMIMVCException e){
             e.printStackTrace();
         }
-        /*
-        Aca debo hacerlo con mi juego
-        Controlador controlador = new Controlador();
-        IVista vista = new VistaGrafica(controlador);
-        Cliente c = new Cliente(ip, Integer.parseInt(port), ipServidor, Integer.parseInt(portServidor));
-        vista.iniciar();
-        try {
-            c.iniciar(controlador);
-        } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (RMIMVCException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }*/
+
     }
 
 }

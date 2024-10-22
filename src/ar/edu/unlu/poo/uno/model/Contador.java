@@ -1,6 +1,5 @@
-package ar.edu.unlu.poo.uno.model.clases;
+package ar.edu.unlu.poo.uno.model;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;

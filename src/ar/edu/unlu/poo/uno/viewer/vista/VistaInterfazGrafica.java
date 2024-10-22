@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 
-public class VistaInterfazGrafica implements VentanaListener, IVista{
+public class VistaInterfazGrafica implements VentanaListener, IVista {
     private final boolean puedeJugar;
     private boolean listo = false;
     private boolean pidiendoColor = false;
@@ -73,7 +73,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista{
     public void iniciar(){
         frame = new JFrame("UNO");
         frame.setLocation(720, 480);
-        frame.setSize(720, 600);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setLocationRelativeTo(null);
 
         addWindowListener(new WindowAdapter() {
@@ -93,6 +93,8 @@ public class VistaInterfazGrafica implements VentanaListener, IVista{
         //robo.setFocusPainted(false);
         robo.setContentAreaFilled(false);
         robo.setBorder(BorderFactory.createEmptyBorder());
+
+        elegirColor.setEnabled(false);
 
         agregarListeners();
 
@@ -126,7 +128,17 @@ public class VistaInterfazGrafica implements VentanaListener, IVista{
         confirmarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                if(elegirColor.isEnabled()){
+                    String color = (String) elegirColor.getSelectedItem();
+                    try {
+                        controlador.cambiarColor(color, idJugador);
+                    } catch (RemoteException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    elegirColor.removeAllItems();
+                    elegirColor.setEnabled(false);
+                    pidiendoColor = false;
+                }
             }
         });
         perfil.addActionListener(new ActionListener() {
@@ -159,7 +171,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista{
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if(boton.getBackground() == Color.green){//Si se puede tirar
+                if(boton.getBackground() == Color.green && !pidiendoColor){//Si se puede tirar
                     try {
                         controlador.opcion(buscarPosicionBoton(boton), idJugador);
                         estadoTurno.setText("Esperando turno.");
@@ -167,6 +179,8 @@ public class VistaInterfazGrafica implements VentanaListener, IVista{
                         throw new RuntimeException(ex);
                     }
 
+                } else if(pidiendoColor){
+                    estadoTurno.setText("Debe elegir un color y apretar 'confirmar'");
                 }
             }
         });
@@ -280,20 +294,9 @@ public class VistaInterfazGrafica implements VentanaListener, IVista{
         elegirColor.addItem("amarillo");
         elegirColor.addItem("rojo");
         elegirColor.addItem("azul");
-        elegirColor.setVisible(true);
-        cambioColor.add(elegirColor);
-        cambioColor.setVisible(true);
-        elegirColor.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    controlador.cambiarColor((String) elegirColor.getSelectedItem(), idJugador);
-                } catch (RemoteException ex) {
-                    throw new RuntimeException(ex);
-                }
-                elegirColor.setVisible(false);
-            }
-        });
+        elegirColor.setEnabled(true);
+        estadoTurno.setText("Elija un color para \nel cambio de color.");
+        pidiendoColor = true;
     }
 
     @Override

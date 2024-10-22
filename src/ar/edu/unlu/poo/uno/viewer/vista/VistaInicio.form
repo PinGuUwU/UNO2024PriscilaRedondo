@@ -16,6 +16,7 @@
         </constraints>
         <properties>
           <editable value="false"/>
+          <enabled value="true"/>
           <text value="Ingrese su nombre de usuario:"/>
         </properties>
       </component>

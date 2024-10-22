@@ -5,36 +5,35 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fbc73718-ef9d-4267-986d-1866a4d5820a" name="Changes" comment="UNO version 1 12/08/2024 sin mvc, solo las clases y un poquito de testeo">
+      <change afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/amarillo/0.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/azul/0.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/rojo/0.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/verde/0.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/IPartida.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/azul/10.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/azul/10.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/azul/11.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/azul/11.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/azul/12.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/azul/12.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/azul/13.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/azul/13.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/azul/2.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/azul/2.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/azul/3.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/azul/3.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/azul/4.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/azul/4.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/azul/5.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/azul/5.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/azul/6.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/azul/6.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/azul/7.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/azul/7.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/azul/8.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/azul/8.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/azul/9.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/azul/9.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/especial/14.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/especial/14.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/especial/15.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/especial/15.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/rojo/2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/rojo/3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/verde/10.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/verde/10.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/verde/11.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/verde/11.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/verde/12.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/verde/12.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/verde/13.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/verde/13.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/verde/2.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/verde/2.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/verde/3.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/verde/3.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/verde/4.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/verde/4.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/verde/5.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/verde/5.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/verde/6.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/verde/6.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/verde/7.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/verde/7.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/verde/8.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/verde/8.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/verde/9.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/verde/9.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/Mezclador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/Mezclador.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/historico.txt" beforeDir="false" afterPath="$PROJECT_DIR$/historico.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/cliente/AppCliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/cliente/AppCliente.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/controller/ControladorPerfil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/controller/ControladorPerfil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/controller/ControladorRanking.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/controller/ControladorRanking.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/controller/ControladorVista.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/controller/ControladorVista.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/Carta.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/Carta.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/Condicion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/Condicion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/Contador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/Contador.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/Eventos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/Eventos.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/IPartida.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/Jugador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/Jugador.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/Mano.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/Mano.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/MazoDeDescarte.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/MazoDeDescarte.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/MazoDeRobo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/MazoDeRobo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/Mezclador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/Mezclador.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/Partida.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/Partida.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/Ranking.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/Ranking.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/clases/TipoCarta.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/TipoCarta.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/servidor/AppServidor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/servidor/AppServidor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaConsola.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaConsola.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaEleccion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaEleccion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaInicio.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaInicio.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaInicio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaInicio.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaInterfazGrafica.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaInterfazGrafica.form" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaInterfazGrafica.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaInterfazGrafica.java" afterDir="false" />
     </list>
@@ -47,8 +46,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JUnit5 Test Class" />
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -66,28 +65,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Downloaded.Files.Path.Enabled": "false",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "false",
-    "Repository.Attach.Sources": "false",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "UI_DESIGNER_EDITOR_MODE.PaletteManager.SHOW": "true",
-    "UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.SHOW": "true",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "onboarding.tips.debug.path": "C:/Users/Pri/IdeaProjects/UNO2024PriscilaRedondo/src/Main.java",
-    "project.structure.last.edited": "Problems",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "GitLink.ProjectSettings"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;UI_DESIGNER_EDITOR_MODE.PaletteManager.SHOW&quot;: &quot;true&quot;,
+    &quot;UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.SHOW&quot;: &quot;true&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/Pri/IdeaProjects/UNO2024PriscilaRedondo/src/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Problems&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;GitLink.ProjectSettings&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
@@ -221,13 +220,13 @@
           <option name="timeStamp" value="79" />
         </breakpoint>
         <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaInterfazGrafica.java</url>
-          <line>274</line>
-          <properties class="ar.edu.unlu.poo.uno.viewer.vista.VistaInterfazGrafica" method="pedirCambioColor">
+          <url>jar://$PROJECT_DIR$/lib/LibreriaRMIMVC.jar!/ar/edu/unlu/rmimvc/servidor/Servidor.class</url>
+          <line>18</line>
+          <properties class="ar.edu.unlu.rmimvc.servidor.Servidor" method="iniciar">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
-          <option name="timeStamp" value="84" />
+          <option name="timeStamp" value="89" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -242,10 +241,10 @@
     </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/UNO2024PriscilaRedondo$AppServidor.ic" NAME="AppServidor Coverage Results" MODIFIED="1729305423719" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/UNO2024PriscilaRedondo$AppServidor.ic" NAME="AppServidor Coverage Results" MODIFIED="1729636775568" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>ar.edu.unlu.poo.uno.servidor.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/UNO2024PriscilaRedondo$AppCliente.ic" NAME="AppCliente Coverage Results" MODIFIED="1729306358600" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/UNO2024PriscilaRedondo$AppCliente.ic" NAME="AppCliente Coverage Results" MODIFIED="1729636789016" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>ar.edu.unlu.poo.uno.cliente.*</FILTER>
     </SUITE>
   </component>

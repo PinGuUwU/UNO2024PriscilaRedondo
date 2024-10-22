@@ -2,7 +2,7 @@ package ar.edu.unlu.poo.uno.viewer.vista;
 
 import ar.edu.unlu.poo.uno.controller.ControladorVista;
 import ar.edu.unlu.poo.uno.listener.VentanaListener;
-import ar.edu.unlu.poo.uno.model.clases.Ranking;
+import ar.edu.unlu.poo.uno.model.Ranking;
 
 
 import javax.swing.*;
@@ -26,6 +26,7 @@ public class VistaInicio implements VentanaListener {
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         agregarListeners();
+        ingreseSuNombreDeTextArea.setFocusable(false);
 
         frame.add(ventana);
     }

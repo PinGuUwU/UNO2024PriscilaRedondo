@@ -1,6 +1,5 @@
 package ar.edu.unlu.poo.uno.viewer.vista;
 
-import ar.edu.unlu.poo.uno.model.clases.Partida;
 import ar.edu.unlu.poo.uno.listener.VentanaListener;
 
 import javax.swing.*;

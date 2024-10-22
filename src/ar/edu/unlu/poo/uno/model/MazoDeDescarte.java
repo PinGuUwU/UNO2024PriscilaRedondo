@@ -1,4 +1,4 @@
-package ar.edu.unlu.poo.uno.model.clases;
+package ar.edu.unlu.poo.uno.model;
 
 import java.util.ArrayList;
 

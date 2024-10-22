@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 
-public class VistaConsola implements VentanaListener, IVista{
+public class VistaConsola implements VentanaListener, IVista {
     private final boolean puedeJugar;
     private boolean listo = false;
     private boolean pidiendoColor = false;
@@ -33,8 +33,7 @@ public class VistaConsola implements VentanaListener, IVista{
     private JPanel principal;
 
     public VistaConsola(VentanaListener listener, String idJugador) throws RemoteException {
-        controlador = new ControladorVista();
-        controlador.conectar(VistaConsola.this);
+        this.controlador = controlador;
         consola.setFocusable(false);
         this.idJugador = idJugador;
         this.listener = listener;

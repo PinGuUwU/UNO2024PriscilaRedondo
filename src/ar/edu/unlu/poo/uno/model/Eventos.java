@@ -1,4 +1,4 @@
-package ar.edu.unlu.poo.uno.model.clases;
+package ar.edu.unlu.poo.uno.model;
 
 public enum Eventos {
     /*Mostrar cartas en mano del jugador
