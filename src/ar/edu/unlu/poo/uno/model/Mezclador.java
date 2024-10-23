@@ -13,9 +13,6 @@ public class Mezclador {
     public Mezclador(){
         cantCartas.addAll(Arrays.asList(1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2));
     }
-    public ArrayList<Integer> getCantCartas(){
-        return cantCartas;
-    }
     /*
     Esta clase se encarga de retornar un mazoDeRobo de cartas coimpleto y mezclado
      */

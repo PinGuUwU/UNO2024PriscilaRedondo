@@ -8,7 +8,6 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class Partida extends ObservableRemoto implements IPartida {
-    private Partida partida;
     private int jugadoresListos = 0;
     private ArrayList<Jugador> jugadores = new ArrayList<>();
     private boolean sentido = true;//true = incrementa turno. false = decrementa turno;
@@ -113,14 +112,14 @@ public class Partida extends ObservableRemoto implements IPartida {
     }
 
     public TipoCarta esEspecial(Carta carta){
-        switch(carta.valor()){
-            case 11: return TipoCarta.MAS_DOS;
-            case 12: return TipoCarta.CAMBIO_SENTIDO;
-            case 13: return TipoCarta.BLOQUEO;
-            case 14: return TipoCarta.MAS_CUATRO;
-            case 15: return TipoCarta.CAMBIO_COLOR;
-            default: return TipoCarta.COMUN;
-        }
+        return switch (carta.valor()) {
+            case 11 -> TipoCarta.MAS_DOS;
+            case 12 -> TipoCarta.CAMBIO_SENTIDO;
+            case 13 -> TipoCarta.BLOQUEO;
+            case 14 -> TipoCarta.MAS_CUATRO;
+            case 15 -> TipoCarta.CAMBIO_COLOR;
+            default -> TipoCarta.COMUN;
+        };
     }
 
     public void levantarCuatroCartas() throws RemoteException {

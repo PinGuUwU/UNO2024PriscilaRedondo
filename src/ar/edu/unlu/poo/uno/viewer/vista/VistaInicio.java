@@ -58,7 +58,6 @@ public class VistaInicio implements VentanaListener {
     public void setControladorVista(ControladorVista controlador){
         this.controlador = controlador;
     }
-    public String IdJugador(){ return idJugador; }
 
     @Override
     public void onVentanaCerrada(String ventana) {

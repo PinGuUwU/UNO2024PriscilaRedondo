@@ -3,15 +3,13 @@ package ar.edu.unlu.poo.uno.model;
 import java.util.ArrayList;
 
 public class Mano {
-    private ArrayList<Carta> manoActual;
+    private final ArrayList<Carta> manoActual;
     public Mano(){
-        manoActual = new ArrayList<Carta>();
+        manoActual = new ArrayList<>();
     }
-    /*La elimina*/
-    public Carta entregarCarta(int pos){
-        Carta carta = manoActual.get(pos);
+
+    public void entregarCarta(int pos){
         manoActual.remove(pos);
-        return carta;
     }
     public void recibeCarta(Carta carta){
         manoActual.add(carta);

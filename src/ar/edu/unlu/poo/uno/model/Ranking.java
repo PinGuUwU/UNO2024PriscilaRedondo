@@ -22,7 +22,7 @@ public class Ranking {
     si esta creado no lo crea
     */
 
-    public void Ranking(){
+    public Ranking(){
         crearArchivo();//Lo hago para asegurarme que existe, de no existir lo crea
     }
     public void crearArchivo(){
@@ -39,7 +39,6 @@ public class Ranking {
 
     }
 
-    private String getNombreArchivo(){ return this.nombreArchivo; }
     public String agregarJugador(String username){
         //Tuve que usar estructura try catch porque a la hora de usar
         //Los metodos (File) de estos objetos me lo exigían y lo busqué en internet
