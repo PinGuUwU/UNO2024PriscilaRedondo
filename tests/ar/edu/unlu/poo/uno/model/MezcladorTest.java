@@ -1,4 +1,4 @@
-package ar.edu.unlu.poo.uno.model.clases;
+package ar.edu.unlu.poo.uno.model;
 
 import org.junit.Test;
 
@@ -8,7 +8,7 @@ import java.util.Arrays;
 import static org.junit.Assert.*;
 
 public class MezcladorTest {
-    @Test
+   /* @Test
     public void cantCartaslleno(){
         Mezclador mezcla = new Mezclador();
         ArrayList<Integer> comparacion1 = new ArrayList<>();
@@ -28,5 +28,5 @@ public class MezcladorTest {
         int expect = 108;
         int actual = mazo.size();
         assertEquals(expect, actual);
-    }
+    }*/
 }

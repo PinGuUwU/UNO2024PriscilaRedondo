@@ -1,5 +1,6 @@
 package ar.edu.unlu.poo.uno.viewer.vista;
 
+import ar.edu.unlu.poo.uno.controller.ControladorVista;
 import ar.edu.unlu.poo.uno.listener.VentanaListener;
 
 import javax.swing.*;
@@ -7,11 +8,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.Serializable;
 import java.rmi.RemoteException;
 
 import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 
-public class VistaEleccion implements VentanaListener{
+public class VistaEleccion implements VentanaListener, Serializable {
     private String idJugador;
     JFrame frame;
     VistaConsola iConsola;
@@ -20,12 +22,14 @@ public class VistaEleccion implements VentanaListener{
     private JButton consola;
     private JButton pantalla;
     private JPanel ventana;
+    ControladorVista controlador;
 
-    public VistaEleccion(String idJugador, VentanaListener listener){
+    public VistaEleccion(String idJugador, VentanaListener listener, ControladorVista controlador) throws RemoteException {
+        this.controlador = controlador;
         this.idJugador = idJugador;
         frame = new JFrame("UNO");
-        frame.setLocation(720, 480);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocation(720, 480);
         frame.setSize(720, 480);
         frame.setLocationRelativeTo(null);
 
@@ -34,7 +38,11 @@ public class VistaEleccion implements VentanaListener{
             @Override
             public void windowClosing(WindowEvent e) {
                 if(listener != null){
-                    listener.onVentanaCerrada("consola");
+                    try {
+                        listener.onVentanaCerrada("vistaeleccion");
+                    } catch (RemoteException ex) {
+                        throw new RuntimeException(ex);
+                    }
                     frame.setVisible(false);
                 }
             }
@@ -44,6 +52,14 @@ public class VistaEleccion implements VentanaListener{
 
         eligeComoQuieresJugarTextArea.setLineWrap(false);
         eligeComoQuieresJugarTextArea.setFocusable(false);
+
+        iConsola = new VistaConsola(VistaEleccion.this, idJugador, controlador);
+        controlador.conectar(iConsola);
+        iConsola.frame.setVisible(false);
+        iGrafica = new VistaInterfazGrafica(VistaEleccion.this, idJugador, controlador);
+        controlador.conectar(iGrafica);
+        iGrafica.frame.setVisible(false);
+
 
         frame.add(ventana);
 
@@ -74,20 +90,10 @@ public class VistaEleccion implements VentanaListener{
         });
     }
     public void abrirConsola() throws RemoteException {
-        if(iConsola == null){
-            iConsola = new VistaConsola(VistaEleccion.this, idJugador);
-        } else if(!iConsola.frame.isVisible()){
-            iConsola.frame.setVisible(true);
-            iConsola.setInTop();
-        }
+        iConsola.frame.setVisible(true);
     }
     public void abrirInterfazGrafica() throws RemoteException {
-        if(iGrafica == null) {
-            iGrafica = new VistaInterfazGrafica(VistaEleccion.this, idJugador);
-        } else if(!iGrafica.frame.isVisible()){
-            iGrafica.frame.setVisible(true);
-            iGrafica.setInTop();
-        }
+        iGrafica.frame.setVisible(true);
     }
 
     @Override

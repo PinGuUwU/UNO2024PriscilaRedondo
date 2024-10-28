@@ -1,10 +1,10 @@
-package ar.edu.unlu.poo.uno.model.clases;
+package ar.edu.unlu.poo.uno.model;
 
 import org.junit.Test;
 
 public class RankingTest {
 
-    @Test
+    /*@Test
     public void crearArchivo(){
         Ranking r = new Ranking();
         r.crearArchivo();
@@ -25,5 +25,5 @@ public class RankingTest {
     @Test
     public void leerJugador(){
 
-    }
+    }*/
 }

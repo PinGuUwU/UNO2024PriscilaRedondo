@@ -1,17 +1,19 @@
 package ar.edu.unlu.poo.uno.model;
 
-import ar.edu.unlu.poo.uno.controller.ControladorVista;
-import ar.edu.unlu.rmimvc.cliente.IControladorRemoto;
+import ar.edu.unlu.poo.uno.model.cartas.Color;
+import ar.edu.unlu.poo.uno.model.cartas.TipoCarta;
+import ar.edu.unlu.rmimvc.observer.IObservableRemoto;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-public interface IPartida {
-    void agregarObserver(ControladorVista c) throws RemoteException;
+public interface IPartida extends IObservableRemoto{
 
     boolean actualizarCartasVista() throws RemoteException;
 
-    int cantJugadores();
+    int cantJugadores() throws RemoteException;
+
+    int buscarNumeroCarta(int pos, String idJ) throws RemoteException;
 
     boolean actualizarCartaDescarte() throws RemoteException;
 
@@ -19,19 +21,26 @@ public interface IPartida {
 
     void agregarJugadorListo() throws RemoteException;
 
-    boolean esTurno(String idJ);
+    Color getColorDescarte() throws RemoteException;
 
-    void elegirColor(String color, String idJ) throws RemoteException;
+    TipoCarta getTipoDescarte() throws RemoteException;
 
-    boolean agregarJugador(String idJ);
+    int getNumeroDescarte() throws RemoteException;
 
-    String[] getDescarte();
+    boolean esTurno(String idJ) throws RemoteException;
 
-    ArrayList<String> getColores();
+    void elegirColor(Color color, String idJ) throws RemoteException;
 
-    ArrayList<String> getValores();
+    void quitarJugador(String idJugador) throws RemoteException;
 
-    ArrayList<Boolean> getValidas();
+    boolean agregarJugador(String idJ) throws RemoteException;
+
+
+    ArrayList<Color> getColores() throws RemoteException;
+
+    ArrayList<TipoCarta> getValores() throws RemoteException;
+
+    ArrayList<Boolean> getValidas() throws RemoteException;
 
     void levantarCarta() throws RemoteException;
 

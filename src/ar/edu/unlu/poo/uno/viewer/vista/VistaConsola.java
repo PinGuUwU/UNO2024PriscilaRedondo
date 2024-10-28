@@ -2,6 +2,8 @@ package ar.edu.unlu.poo.uno.viewer.vista;
 
 import ar.edu.unlu.poo.uno.controller.ControladorVista;
 import ar.edu.unlu.poo.uno.listener.VentanaListener;
+import ar.edu.unlu.poo.uno.model.cartas.Color;
+import ar.edu.unlu.poo.uno.model.cartas.TipoCarta;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,12 +11,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 
-public class VistaConsola implements VentanaListener, IVista {
+public class VistaConsola implements VentanaListener, IVista, Serializable {
     private final boolean puedeJugar;
     private boolean listo = false;
     private boolean pidiendoColor = false;
@@ -32,7 +35,7 @@ public class VistaConsola implements VentanaListener, IVista {
     private JButton ranking;
     private JPanel principal;
 
-    public VistaConsola(VentanaListener listener, String idJugador) throws RemoteException {
+    public VistaConsola(VentanaListener listener, String idJugador,ControladorVista controlador) throws RemoteException {
         this.controlador = controlador;
         consola.setFocusable(false);
         this.idJugador = idJugador;
@@ -56,7 +59,11 @@ public class VistaConsola implements VentanaListener, IVista {
             @Override
             public void windowClosing(WindowEvent e) {
                 if(listener != null){
-                    listener.onVentanaCerrada("consola");
+                    try {
+                        listener.onVentanaCerrada("consola");
+                    } catch (RemoteException ex) {
+                        throw new RuntimeException(ex);
+                    }
                     frame.setVisible(false);
                 }
             }
@@ -66,7 +73,7 @@ public class VistaConsola implements VentanaListener, IVista {
 
         frame.add(principal);
         bienvenida();
-        consola.setForeground(Color.decode("#873600"));
+        consola.setForeground(java.awt.Color.decode("#873600"));
         consola.setFont(new Font("Arial", Font.PLAIN, 19));
 
         frame.setVisible(true);
@@ -110,7 +117,7 @@ public class VistaConsola implements VentanaListener, IVista {
                     iPerfil.frame.setVisible(true);
                     iPerfil.setInTop();
                 }
-                iPerfil.actualizarPerfil(controlador.datosJugadorID(idJugador));
+                iPerfil.actualizarPerfil(idJugador);
             }
         });
         ranking.addActionListener(new ActionListener() {
@@ -138,7 +145,7 @@ public class VistaConsola implements VentanaListener, IVista {
                 case "/iniciar" -> {
                     consola.append("\n");
                     if (!listo) {
-                        listo = true;
+                        marcarListo();
                         //Aca debería corroborar que todos los jugadores hayan puesto /iniciar
                         consola.append("\n      Se te ha agregado a la partida. Espere a que todos los jugadores estén listos\n\n");
                         controlador.iniciar();
@@ -177,21 +184,23 @@ public class VistaConsola implements VentanaListener, IVista {
             iRanking = null;
         }
     }
+
     @Override
-    public void setInTop(){
-        frame.setAlwaysOnTop(true);
+    public void marcarListo() {
+        listo = true;
     }
+
     @Override
-    public void setDescarte(String color, String valor){
+    public void setDescarte(Color color, TipoCarta valor){
         String esp = controlador.tipo(valor, color);
         if(esp != null){
             consola.append("            Ultima carta tirada: " + esp + "\n");
         } else {
-            consola.append("            Ultima carta tirada: " + color + " " + valor + "\n");
+            consola.append("            Ultima carta tirada: " + color.toString() + " " + valor.toString() + "\n");
         }
     }
     @Override
-    public void mostrarCartasJugador(ArrayList<String> colores, ArrayList<String> valores, ArrayList<Boolean> posibles){
+    public void mostrarCartasJugador(ArrayList<Color> colores, ArrayList<TipoCarta> valores, ArrayList<Boolean> posibles){
         String carta;
         consola.append("    Tu mano de cartas es: \n");
         for(int i=0; i<colores.size(); i++){
@@ -215,6 +224,7 @@ public class VistaConsola implements VentanaListener, IVista {
     }
     @Override
     public void avisoInicio(){
+        marcarListo();
         consola.append("\nTodos los jugadores están listos, la partida está por comenzar.\n\n\n");
     }
     @Override
@@ -222,10 +232,10 @@ public class VistaConsola implements VentanaListener, IVista {
         consola.append("\nLas cartas que tiene no puede tirarlas, automaticamente levantará una del mazo de descarte hasta que alguna\nsea válida para tirar.\n");
     }
     private void isColor(String comando) throws RemoteException {
-        comando = comando.toLowerCase();
-        switch (comando) {
-            case "verde", "rojo", "amarillo", "azul" -> {
-                controlador.cambiarColor(comando, idJugador);
+        Color color = controlador.deStringAColorCarta(comando.toLowerCase());
+        switch (color) {
+            case VERDE, ROJO, AMARILLO, AZUL -> {
+                controlador.cambiarColor(color, idJugador);
                 pidiendoColor = false;
             }
             default -> {
@@ -234,6 +244,7 @@ public class VistaConsola implements VentanaListener, IVista {
             }
         }
     }
+
 
     private void mostrarComandos(){
         consola.append("            Lista de comandos:\n1-'/ultimaCarta' -- para mostrar la ultima carta descartada.\n");
@@ -257,7 +268,7 @@ public class VistaConsola implements VentanaListener, IVista {
         listo = false;
         bienvenida();
     }
-    private void mostrarCantJugadores(){
+    private void mostrarCantJugadores() throws RemoteException{
         int cant = controlador.cantJugadoresConectados();
         consola.append("        La cantidad de jugadores conectados a esta partida son: " + cant + ".\n\n");
     }

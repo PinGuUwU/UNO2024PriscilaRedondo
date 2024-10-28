@@ -7,11 +7,11 @@ import ar.edu.unlu.rmimvc.Util;
 import ar.edu.unlu.rmimvc.cliente.Cliente;
 
 import javax.swing.*;
+import java.io.*;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class AppCliente {
-
     public static void main(String[] args) throws RemoteException {
         ArrayList<String> ips = Util.getIpDisponibles();
         String ip = (String) JOptionPane.showInputDialog(
@@ -47,15 +47,14 @@ public class AppCliente {
                 8888
         );
         ControladorVista controlador = new ControladorVista();
-        VistaInicio ventana = new VistaInicio(controlador);
         Cliente c = new Cliente(ip, Integer.parseInt(port), ipServidor, Integer.parseInt(portServidor));
-        ventana.iniciar();
         try{
             c.iniciar(controlador);
         } catch(RemoteException | RMIMVCException e){
             e.printStackTrace();
         }
-
+        VistaInicio ventana = new VistaInicio(controlador);
+        ventana.iniciar();
     }
 
 }

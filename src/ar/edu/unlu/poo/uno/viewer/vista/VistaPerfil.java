@@ -8,10 +8,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.Serializable;
+import java.rmi.RemoteException;
 
 import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 
-public class VistaPerfil{
+public class VistaPerfil implements Serializable {
     private String idJugador;
     VentanaListener listener;
     ControladorPerfil controlador;
@@ -41,7 +43,11 @@ public class VistaPerfil{
             @Override
             public void windowClosing(WindowEvent e) {
                 if(listener != null){
-                    listener.onVentanaCerrada("perfil");
+                    try {
+                        listener.onVentanaCerrada("perfil");
+                    } catch (RemoteException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
             }
         });
@@ -81,8 +87,8 @@ public class VistaPerfil{
         frame.setAlwaysOnTop(true);
     }
 
-    public void actualizarPerfil(String perfil){
-        String[] separado = perfil.split(",");
+    public void actualizarPerfil(String idJugador){
+        String[] separado = controlador.datosJugadorID(idJugador);;
         actualizarNombre(separado[1]);
         actualizarPartidasGanados(separado[2]);
         actualizarPartidasPerdidos(separado[3]);

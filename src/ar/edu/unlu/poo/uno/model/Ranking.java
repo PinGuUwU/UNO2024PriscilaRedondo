@@ -4,7 +4,7 @@ package ar.edu.unlu.poo.uno.model;
 import java.io.*;
 import java.util.*;
 
-public class Ranking {
+public class Ranking implements Serializable{
     private String nombreArchivo = "historico.txt";
     //Se llama ranking pero en realidad es el historico
 

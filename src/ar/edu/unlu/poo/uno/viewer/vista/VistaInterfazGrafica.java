@@ -3,6 +3,8 @@ package ar.edu.unlu.poo.uno.viewer.vista;
 
 import ar.edu.unlu.poo.uno.controller.ControladorVista;
 import ar.edu.unlu.poo.uno.listener.VentanaListener;
+import ar.edu.unlu.poo.uno.model.cartas.Color;
+import ar.edu.unlu.poo.uno.model.cartas.TipoCarta;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,12 +12,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 
-public class VistaInterfazGrafica implements VentanaListener, IVista {
+public class VistaInterfazGrafica implements VentanaListener, IVista, Serializable {
     private final boolean puedeJugar;
     private boolean listo = false;
     private boolean pidiendoColor = false;
@@ -55,9 +58,9 @@ public class VistaInterfazGrafica implements VentanaListener, IVista {
 
      */
 
-    public VistaInterfazGrafica(VentanaListener listener, String idJugador) throws RemoteException {
-        controlador = new ControladorVista();
-        controlador.conectar(VistaInterfazGrafica.this);
+    public VistaInterfazGrafica(VentanaListener listener, String idJugador, ControladorVista controlador) throws RemoteException {
+        this.controlador = controlador;
+        this.controlador.conectar(VistaInterfazGrafica.this);
         estadoTurno.setFocusable(false);
         this.listener = listener;
         this.idJugador = idJugador;
@@ -73,6 +76,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista {
     public void iniciar(){
         frame = new JFrame("UNO");
         frame.setLocation(720, 480);
+        frame.setSize(720, 480);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setLocationRelativeTo(null);
 
@@ -80,7 +84,11 @@ public class VistaInterfazGrafica implements VentanaListener, IVista {
             @Override
             public void windowClosing(WindowEvent e) {
                 if(listener != null){
-                    listener.onVentanaCerrada("consola");
+                    try {
+                        listener.onVentanaCerrada("consola");
+                    } catch (RemoteException ex) {
+                        throw new RuntimeException(ex);
+                    }
                     frame.setVisible(false);
                 }
             }
@@ -114,6 +122,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista {
                 listo = true;
                 try {
                     controlador.iniciar();
+                    marcarListo();
                 } catch (RemoteException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -130,8 +139,10 @@ public class VistaInterfazGrafica implements VentanaListener, IVista {
             public void actionPerformed(ActionEvent e) {
                 if(elegirColor.isEnabled()){
                     String color = (String) elegirColor.getSelectedItem();
+                    assert color != null;
+                    Color colorCarta = controlador.deStringAColorCarta(color);
                     try {
-                        controlador.cambiarColor(color, idJugador);
+                        controlador.cambiarColor(colorCarta, idJugador);
                     } catch (RemoteException ex) {
                         throw new RuntimeException(ex);
                     }
@@ -150,7 +161,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista {
                     iPerfil.frame.setVisible(true);
                     iPerfil.setInTop();
                 }
-                iPerfil.actualizarPerfil(controlador.datosJugadorID(idJugador));
+                iPerfil.actualizarPerfil(idJugador);
             }
         });
         ranking.addActionListener(new ActionListener() {
@@ -171,7 +182,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if(boton.getBackground() == Color.green && !pidiendoColor){//Si se puede tirar
+                if(boton.getBackground() == java.awt.Color.green && !pidiendoColor){//Si se puede tirar
                     try {
                         controlador.opcion(buscarPosicionBoton(boton), idJugador);
                         estadoTurno.setText("Esperando turno.");
@@ -246,10 +257,6 @@ public class VistaInterfazGrafica implements VentanaListener, IVista {
             botonesLinea1.add(carta);
         }
     }
-    @Override
-    public void setInTop(){
-        frame.setAlwaysOnTop(true);
-    }
 
     @Override
     public void onVentanaCerrada(String ventana) {
@@ -271,18 +278,25 @@ public class VistaInterfazGrafica implements VentanaListener, IVista {
     public void avisoInicio() {
         //Avisa que todos los jugadores están listos y el juego está por comenzar
         estadoTurno.setText("Iniciando la partida.");
+        marcarListo();
     }
 
     @Override
-    public void setDescarte(String color, String valor) {
+    public void setDescarte(Color color, TipoCarta valor) throws RemoteException {
         //Actualiza la carta de MazoDeDescarte
-        ImageIcon icon = new ImageIcon("src/ar/edu/unlu/poo/uno/data/cartasImages/" + color + "/" + valor + ".jpg");
-        Image imagen = icon.getImage();
-        imagen = imagen.getScaledInstance(70, 100, Image.SCALE_SMOOTH);
-        icon = new ImageIcon(imagen);
-        descarte.setIcon(icon);
-        descarte.setContentAreaFilled(false);
-        descarte.setBorder(BorderFactory.createEmptyBorder());
+        ImageIcon icon;
+        if(valor == TipoCarta.COMUN){
+            int v = controlador.obtenerNumeroDescarte();
+            icon = new ImageIcon("src/ar/edu/unlu/poo/uno/data/cartasImages/" + color.toString() + "/" + v + ".jpg");
+        } else {
+            icon = new ImageIcon("src/ar/edu/unlu/poo/uno/data/cartasImages/" + color.toString() + "/" + valor.toString() + ".jpg");
+        }
+            Image imagen = icon.getImage();
+            imagen = imagen.getScaledInstance(70, 100, Image.SCALE_SMOOTH);
+            icon = new ImageIcon(imagen);
+            descarte.setIcon(icon);
+            descarte.setContentAreaFilled(false);
+            descarte.setBorder(BorderFactory.createEmptyBorder());
     }
 
     @Override
@@ -300,12 +314,17 @@ public class VistaInterfazGrafica implements VentanaListener, IVista {
     }
 
     @Override
-    public void mostrarCartasJugador(ArrayList<String> colores, ArrayList<String> valores, ArrayList<Boolean> validos) {
+    public void mostrarCartasJugador(ArrayList<Color> colores, ArrayList<TipoCarta> valores, ArrayList<Boolean> validos) throws RemoteException {
         //Acá hago to-do el proceso de Agregar botones y agregarle la correspondiente imagen
         borrarCartas();
         JButton carta;
         for(int i=0; i<colores.size(); i++){
-            carta = deBotonACarta(colores.get(i), valores.get(i), validos.get(i));
+            if(valores.get(i) == TipoCarta.COMUN){
+                int v = controlador.obtenerNumero(i, idJugador);
+                carta = deBotonACarta(colores.get(i).toString(), String.valueOf(v), validos.get(i));
+            } else {
+                carta = deBotonACarta(colores.get(i).toString(), valores.get(i).toString(), validos.get(i));
+            }
             agregarCarta(carta);
         }
         estadoTurno.setText("Es su turno, elija una carta.");
@@ -322,10 +341,10 @@ public class VistaInterfazGrafica implements VentanaListener, IVista {
         //Metodo que le paso los valores de una carta para que cree el boton correspondiente a esa carta
         JButton carta = new JButton();
         if(posible){
-            carta.setBackground(Color.green);
+            carta.setBackground(java.awt.Color.green);
             carta.setToolTipText("SÍ se puede tirar.");
         } else {
-            carta.setBackground(Color.red);
+            carta.setBackground(java.awt.Color.red);
             carta.setToolTipText("NO se puede tirar.");
         }
         ImageIcon icon = new ImageIcon("src/ar/edu/unlu/poo/uno/data/cartasImages/" + color + "/" + valor + ".jpg");
@@ -341,5 +360,9 @@ public class VistaInterfazGrafica implements VentanaListener, IVista {
     public void marcarNoListo() {
         listo = false;
         bienvenida();
+    }
+    @Override
+    public void marcarListo(){
+        listo = true;
     }
 }

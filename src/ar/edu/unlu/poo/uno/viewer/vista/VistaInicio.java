@@ -8,9 +8,16 @@ import ar.edu.unlu.poo.uno.model.Ranking;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.Serializable;
+import java.rmi.RemoteException;
 
-public class VistaInicio implements VentanaListener {
+import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
+
+public class VistaInicio implements VentanaListener, Serializable {
     JFrame frame;
+    VistaEleccion vistaEleccion;
     ControladorVista controlador;
     private JTextArea ingreseSuNombreDeTextArea;
     private JTextField usuario;
@@ -18,7 +25,7 @@ public class VistaInicio implements VentanaListener {
     private JPanel ventana;
     String idJugador;
 
-    public VistaInicio(ControladorVista controlador){
+    public VistaInicio(ControladorVista controlador) throws RemoteException {
         setControladorVista(controlador);
         frame = new JFrame("UNO");
         frame.setLocation(720, 480);
@@ -39,20 +46,24 @@ public class VistaInicio implements VentanaListener {
                 if( idJugador == null){
                     idJugador = ranking.agregarJugador(usuario.getText());
                 }
-                abrirEleccion();
-                frame.setVisible(false);
+                try {
+                    abrirEleccion();
+                } catch (RemoteException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
     }
     public void iniciar(){
         frame.setVisible(true);
     }
-    public void abrirEleccion(){
+    public void abrirEleccion() throws RemoteException {
         if(!controlador.agregarJugador(idJugador)){
             ingreseSuNombreDeTextArea.setText("No puede entrar a la partida, ya tiene 4 jugadores.");
         } else {
+            frame.setVisible(false);
             controlador.agregarJugador(idJugador);
-            VistaEleccion eleccion = new VistaEleccion(idJugador, VistaInicio.this);
+            vistaEleccion = new VistaEleccion(idJugador, VistaInicio.this, controlador);
         }
     }
     public void setControladorVista(ControladorVista controlador){
@@ -60,7 +71,12 @@ public class VistaInicio implements VentanaListener {
     }
 
     @Override
-    public void onVentanaCerrada(String ventana) {
-
+    public void onVentanaCerrada(String ventana) throws RemoteException {
+        if(ventana.equalsIgnoreCase("vistaeleccion")) {
+            vistaEleccion = null;
+            if(idJugador!=null){
+                controlador.desconectarJugador(idJugador);
+            }
+        }
     }
 }

@@ -1,6 +1,17 @@
 package ar.edu.unlu.poo.uno.model;
 
-public class Condicion {
+import ar.edu.unlu.poo.uno.model.cartas.Carta;
+import ar.edu.unlu.poo.uno.model.cartas.CartaNumerica;
+import ar.edu.unlu.poo.uno.model.cartas.Color;
+import ar.edu.unlu.poo.uno.model.cartas.TipoCarta;
+
+import java.io.IOException;
+import java.io.Serializable;
+
+import static ar.edu.unlu.poo.uno.model.cartas.TipoCarta.CAMBIO_COLOR;
+import static ar.edu.unlu.poo.uno.model.cartas.TipoCarta.MAS_CUATRO;
+
+public class Condicion implements Serializable {
     /*
     Principalmente esta clase se utilizaría para comprobar si las cartas cumplen con los requisitos
     Para poder ser tiradas al mazo de descarte
@@ -15,16 +26,27 @@ public class Condicion {
      */
     public boolean sePuedeTirar(Carta cartaDescarte, Carta cartaTirar){//Se asume que ambos tienen valores, son notnull
         boolean decision = false;
-        switch (cartaTirar.valor()){ //Compruebo primero los especiales
-            //Podria comprobarlo por el color, pero mas facil por su valor
-            case 14, 15: decision = true; //+4 y cambio color
-                break;
-        }
-        //Luego por valor y luego por color
-        if(cartaDescarte.valor() == cartaTirar.valor()){
+
+        if(cartaTirar.color().equals(Color.ESPECIAL)){
+            //Si es especial
             decision = true;
-        } else if(cartaDescarte.color().equalsIgnoreCase(cartaTirar.color())){
+        } else if(cartaDescarte.color().equals(cartaTirar.color())){
+            //Si son del mismo color
             decision = true;
+        } else if(cartaDescarte.valor() == cartaTirar.valor()){//Si son el mismo TipoCarta
+            if(cartaDescarte.valor() == TipoCarta.COMUN){//Si son el mismo numero
+                try{
+                    CartaNumerica c1 = (CartaNumerica) cartaTirar;
+                    CartaNumerica c2 = (CartaNumerica) cartaDescarte;
+                    if(c1.getValor() == c2.getValor()){
+                        decision = true;
+                    }
+                }catch (ClassCastException e){
+                    e.printStackTrace();
+                }
+            } else {
+                decision = true;
+            }
         }
         return decision;
     }

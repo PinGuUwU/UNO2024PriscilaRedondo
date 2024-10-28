@@ -4,10 +4,11 @@ import ar.edu.unlu.poo.uno.model.Jugador;
 import ar.edu.unlu.poo.uno.model.Ranking;
 import ar.edu.unlu.poo.uno.viewer.vista.VistaRanking;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ControladorRanking {
+public class ControladorRanking implements Serializable {
     //100% terminado
     Ranking ranking;
     VistaRanking vista;

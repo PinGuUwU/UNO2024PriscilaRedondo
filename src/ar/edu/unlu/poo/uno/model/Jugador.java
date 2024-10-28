@@ -1,5 +1,7 @@
 package ar.edu.unlu.poo.uno.model;
 
+import ar.edu.unlu.poo.uno.model.cartas.Carta;
+
 import java.io.Serializable;
 
 public class Jugador implements Serializable {
