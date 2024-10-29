@@ -42,6 +42,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
     private JButton robo;
     private JPanel cambioColor;
     private JComboBox<String> elegirColor;
+    private JButton listoParaJugar;
     private ArrayList<JButton> botonesLinea1 = new ArrayList<>();
 
     /*
@@ -60,7 +61,6 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
 
     public VistaInterfazGrafica(VentanaListener listener, String idJugador, ControladorVista controlador) throws RemoteException {
         this.controlador = controlador;
-        this.controlador.conectar(VistaInterfazGrafica.this);
         estadoTurno.setFocusable(false);
         this.listener = listener;
         this.idJugador = idJugador;
@@ -112,14 +112,10 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
         frame.setVisible(true);
     }
     private void bienvenida(){
-        JButton listoParaJugar= new JButton();
         listoParaJugar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                linea1.remove(listoParaJugar);
-                linea1.repaint();
-                linea1.revalidate();
-                listo = true;
+                comenzar();
                 try {
                     controlador.iniciar();
                     marcarListo();
@@ -132,6 +128,12 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
         listoParaJugar.setText("COMENZAR");
         linea1.add(listoParaJugar);
         estadoTurno.setText("Bienvenido, dale click en comenzar");
+    }
+    public void comenzar(){
+        linea1.remove(listoParaJugar);
+        linea1.repaint();
+        linea1.revalidate();
+        listo = true;
     }
     private void agregarListeners(){
         confirmarButton.addActionListener(new ActionListener() {
@@ -279,6 +281,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
         //Avisa que todos los jugadores están listos y el juego está por comenzar
         estadoTurno.setText("Iniciando la partida.");
         marcarListo();
+        comenzar();
     }
 
     @Override

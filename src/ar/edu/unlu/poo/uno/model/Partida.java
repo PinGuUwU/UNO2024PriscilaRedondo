@@ -1,6 +1,7 @@
 package ar.edu.unlu.poo.uno.model;
 
 import ar.edu.unlu.poo.uno.model.cartas.*;
+import ar.edu.unlu.rmimvc.observer.IObservadorRemoto;
 import ar.edu.unlu.rmimvc.observer.ObservableRemoto;
 
 import java.io.Serializable;
