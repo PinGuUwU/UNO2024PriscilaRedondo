@@ -77,7 +77,6 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
         frame = new JFrame("UNO");
         frame.setLocation(720, 480);
         frame.setSize(720, 480);
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setLocationRelativeTo(null);
 
         addWindowListener(new WindowAdapter() {

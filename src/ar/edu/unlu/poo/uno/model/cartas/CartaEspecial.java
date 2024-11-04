@@ -14,7 +14,10 @@ public class CartaEspecial extends Carta{
     public boolean jugar(Partida partida) throws RemoteException {
         switch(super.valor()){
             case CAMBIO_COLOR -> partida.pedirColorJugador();
-            case MAS_CUATRO -> partida.levantarCuatroCartas();
+            case MAS_CUATRO -> {
+                partida.levantarCuatroCartas();
+                partida.pedirColorJugador();
+            }
         }
         //Siempre retorna true porque en ambos casos de cambia de color
         return true;

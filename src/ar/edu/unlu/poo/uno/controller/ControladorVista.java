@@ -17,9 +17,11 @@ import java.util.ArrayList;
 public class ControladorVista implements IControladorRemoto, Serializable {
     Ranking ranking;
     IPartida iPartida;
-    IVista vista;
+    //IVista vista;
+    ArrayList<IVista> vistas = new ArrayList<>();
     public void conectar(IVista vista){
-        this.vista = vista;
+        vistas.add(vista);
+        //this.vista = vista;
     }
     public boolean mostrarManoJugador() throws RemoteException {
         return iPartida.actualizarCartasVista();
@@ -41,7 +43,10 @@ public class ControladorVista implements IControladorRemoto, Serializable {
         return ranking.datosJugador(id);
     }
     public void levantarCartaObligatorio(){
-        vista.levantarCarta();
+
+        for(IVista vista: vistas){
+            vista.levantarCarta();
+        }
     }
     public boolean esSuTurno(String idJ) throws RemoteException{
         return iPartida.esTurno(idJ);
@@ -62,17 +67,21 @@ public class ControladorVista implements IControladorRemoto, Serializable {
         }
         return resultado;
     }
-    public String tipo(TipoCarta valor, Color c){
+    public String tipo(TipoCarta valor, Color c, int pos, String idJ) throws RemoteException {
         String color = c.toString();
-        return switch (valor) {
-            case MAS_DOS -> "Color: " + color + " | Efecto: +2";
-            case CAMBIO_SENTIDO -> "Color: " + color + " | Efecto: Cambio de sentido";
-            case BLOQUEO -> "Color: " + color + " | Efecto: Bloqueo";
-            case MAS_CUATRO -> "Color: " + color + " | Efecto: +4 y cambio de color";
-            case CAMBIO_COLOR -> "Color: " + color + " | Efecto: Cambio de color";
-            case COMUN -> "Color: " + color + " | Valor: " + valor;
-            case VACIA -> "Color: " + color;
+        String t = "";
+        switch (valor) {
+            case MAS_DOS -> t ="Color: " + color + " | Efecto: +2";
+            case CAMBIO_SENTIDO -> t ="Color: " + color + " | Efecto: Cambio de sentido";
+            case BLOQUEO -> t ="Color: " + color + " | Efecto: Bloqueo";
+            case MAS_CUATRO -> t ="Color: " + color + " | Efecto: +4 y cambio de color";
+            case CAMBIO_COLOR -> t ="Color: " + color + " | Efecto: Cambio de color";
+            case COMUN -> {
+                t ="Color: " + color + " | Valor: " + obtenerNumero(pos, idJ);;
+            }
+            case VACIA -> t ="Color: " + color;
         };
+        return t;
     }
 
     @Override
@@ -95,13 +104,22 @@ public class ControladorVista implements IControladorRemoto, Serializable {
         }
     }
     public void avisarInicio(){
-        vista.avisoInicio();
+        for(IVista vista: vistas){
+            vista.avisoInicio();
+        }
     }
+
     public void actualizarDescarte() throws RemoteException{
-        vista.setDescarte(iPartida.getColorDescarte(), iPartida.getTipoDescarte());
+        for(IVista vista: vistas){
+            vista.setDescarte(iPartida.getColorDescarte(), iPartida.getTipoDescarte());
+        }
     }
+
+
     public void pedirElColor() throws RemoteException {
-        vista.pedirCambioColor();
+        for(IVista vista: vistas){
+            vista.pedirCambioColor();
+        }
     }
     public void actualizarCartasJugador() throws RemoteException {
         ArrayList<Color> colores = iPartida.getColores();
@@ -112,7 +130,9 @@ public class ControladorVista implements IControladorRemoto, Serializable {
             levantarCartaObligatorio();
             iPartida.levantarCarta();
         } else {
-            vista.mostrarCartasJugador(colores, valores, posibles);
+            for(IVista vista: vistas){
+                vista.mostrarCartasJugador(colores, valores, posibles);
+            }
         }
     }
     public int obtenerNumero(int pos, String idJ) throws RemoteException {
@@ -128,16 +148,17 @@ public class ControladorVista implements IControladorRemoto, Serializable {
         }
     }
     public void jugadorNoListo(){
-        vista.marcarNoListo();
+        for(IVista vista: vistas){
+            vista.marcarNoListo();
+        }
     }
     public Color deStringAColorCarta(String color){
-        Color nuevoColor = null;
-        switch(color.toLowerCase()){
-            case "verde": nuevoColor = Color.VERDE;
-            case "rojo": nuevoColor = Color.ROJO;
-            case "amarillo": nuevoColor = Color.AMARILLO;
-            case "azul": nuevoColor = Color.AZUL;
-        }
-        return nuevoColor;
+        return switch (color.toLowerCase()) {
+            case "verde" -> Color.VERDE;
+            case "rojo" -> Color.ROJO;
+            case "amarillo" -> Color.AMARILLO;
+            case "azul" -> Color.AZUL;
+            default -> null;
+        };
     }
 }
