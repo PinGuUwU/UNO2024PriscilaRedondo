@@ -21,7 +21,6 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
     private final boolean puedeJugar;
     private boolean listo = false;
     private boolean pidiendoColor = false;
-    private final String idJugador;
     ControladorVista controlador;
     VentanaListener listener;
     JFrame frame;
@@ -35,12 +34,11 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
     private JButton ranking;
     private JPanel principal;
 
-    public VistaConsola(VentanaListener listener, String idJugador,ControladorVista controlador) throws RemoteException {
+    public VistaConsola(VentanaListener listener, ControladorVista controlador) throws RemoteException {
         this.controlador = controlador;
         consola.setFocusable(false);
-        this.idJugador = idJugador;
         this.listener = listener;
-        if(!controlador.agregarJugador(idJugador)){//Si no se puede agregar jugador
+        if(!controlador.agregarJugador()){//Si no se puede agregar jugador
             consola.append("        Debe entrar a otra partida, esta ya está llena.\n\n");
             puedeJugar = false;
         } else {//Solo doy el aviso, no voy a manejar nada mas
@@ -112,12 +110,12 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(iPerfil == null){
-                    iPerfil = new VistaPerfil(VistaConsola.this, idJugador);
+                    iPerfil = new VistaPerfil(VistaConsola.this, controlador.getID());
                 } else if(!iPerfil.frame.isVisible()){
                     iPerfil.frame.setVisible(true);
                     iPerfil.setInTop();
                 }
-                iPerfil.actualizarPerfil(idJugador);
+                iPerfil.actualizarPerfil(controlador.getID());
             }
         });
         ranking.addActionListener(new ActionListener() {
@@ -160,9 +158,9 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
                 case "/mostrarmano" -> mostrarManoJugador();
                 case "/cantjugadores" -> mostrarCantJugadores();
                 default -> {
-                    if (controlador.esNumero(comando) && !pidiendoColor && controlador.esSuTurno(idJugador)) {
+                    if (controlador.esNumero(comando) && !pidiendoColor ) {//&& controlador.esSuTurno(idJ))
                         //Si le toca pero no debe ingresar color
-                        boolean seTiro = controlador.opcion(comando, idJugador);
+                        boolean seTiro = controlador.opcion(comando);
                         if (!seTiro) {
                             consola.append("No se pudo tirar la carta, elija una que sea posible tirar.\n\n");
                         }
@@ -192,7 +190,7 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
 
     @Override
     public void setDescarte(Color color, TipoCarta valor) throws RemoteException {
-        String esp = controlador.tipo(valor, color, -1, idJugador);
+        String esp = controlador.tipo(valor, color, -1);
         if(esp != null){
             consola.append("            Ultima carta tirada: " + esp + "\n");
         } else {
@@ -205,7 +203,7 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
         String carta;
         consola.append("    Tu mano de cartas es: \n");
         for(int i=0; i<colores.size(); i++){
-            carta = "Carta " + i + " | " + (controlador.tipo(valores.get(i), colores.get(i), i, idJugador));
+            carta = "Carta " + i + " | " + (controlador.tipo(valores.get(i), colores.get(i), i));
             if(posibles.get(i)){
                 carta += " | ('SI' se puede tirar)";
             } else {
@@ -236,7 +234,7 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
         Color color = controlador.deStringAColorCarta(comando.toLowerCase());
         switch (color) {
             case VERDE, ROJO, AMARILLO, AZUL -> {
-                controlador.cambiarColor(color, idJugador);
+                controlador.cambiarColor(color);
                 pidiendoColor = false;
             }
             default -> {
@@ -253,13 +251,13 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
         consola.append("3-'/cantJugadores' -- para mostrar la cantidad de jugadores que hay en la partida actual.\n\n");
     }
     private void mostrarUltimaCarta() throws RemoteException {
-        if(!controlador.mostrarCartaDescarte()){
+        if(!controlador.partidaYaInicio()){
             consola.append("        Debes esperar que inicie la partida.\n\n");
             consola.append("            Para iniciar la partida coloca '/iniciar'\n");
         }
     }
     private void mostrarManoJugador() throws RemoteException {
-        if(!controlador.mostrarManoJugador()){
+        if(!controlador.partidaYaInicio()){
             consola.append("        Debes esperar que inicie la partida.\n\n");
             consola.append("            Para iniciar la partida coloca '/iniciar'\n");
         }

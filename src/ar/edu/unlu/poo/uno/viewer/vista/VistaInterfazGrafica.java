@@ -19,10 +19,9 @@ import java.util.ArrayList;
 import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 
 public class VistaInterfazGrafica implements VentanaListener, IVista, Serializable {
-    private final boolean puedeJugar;
-    private boolean listo = false;
     private boolean pidiendoColor = false;
-    private final String idJugador;
+    private boolean puedeJugar = false;
+    private boolean listo = false;
     ControladorVista controlador;
     VentanaListener listener;
     VistaPerfil iPerfil;
@@ -59,12 +58,11 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
 
      */
 
-    public VistaInterfazGrafica(VentanaListener listener, String idJugador, ControladorVista controlador) throws RemoteException {
+    public VistaInterfazGrafica(VentanaListener listener, ControladorVista controlador) throws RemoteException {
         this.controlador = controlador;
         estadoTurno.setFocusable(false);
         this.listener = listener;
-        this.idJugador = idJugador;
-        if(!controlador.agregarJugador(idJugador)){//Si no se puede agregar jugador
+        if(!controlador.agregarJugador()){//Si no se puede agregar jugador
             estadoTurno.setText("Partida llena.");
             puedeJugar = false;
         } else {//Solo doy el aviso, no voy a manejar nada mas
@@ -144,7 +142,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
                     assert color != null;
                     Color colorCarta = controlador.deStringAColorCarta(color);
                     try {
-                        controlador.cambiarColor(colorCarta, idJugador);
+                        controlador.cambiarColor(colorCarta);
                     } catch (RemoteException ex) {
                         throw new RuntimeException(ex);
                     }
@@ -158,12 +156,12 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(iPerfil == null){
-                    iPerfil = new VistaPerfil(VistaInterfazGrafica.this, idJugador);
+                    iPerfil = new VistaPerfil(VistaInterfazGrafica.this, controlador.getID());
                 } else if(!iPerfil.frame.isVisible()){
                     iPerfil.frame.setVisible(true);
                     iPerfil.setInTop();
                 }
-                iPerfil.actualizarPerfil(idJugador);
+                iPerfil.actualizarPerfil(controlador.getID());
             }
         });
         ranking.addActionListener(new ActionListener() {
@@ -186,7 +184,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
 
                 if(boton.getBackground() == java.awt.Color.green && !pidiendoColor){//Si se puede tirar
                     try {
-                        controlador.opcion(buscarPosicionBoton(boton), idJugador);
+                        controlador.opcion(buscarPosicionBoton(boton));
                         estadoTurno.setText("Esperando turno.");
                     } catch (RemoteException ex) {
                         throw new RuntimeException(ex);
@@ -323,7 +321,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
         JButton carta;
         for(int i=0; i<colores.size(); i++){
             if(valores.get(i) == TipoCarta.COMUN){
-                int v = controlador.obtenerNumero(i, idJugador);
+                int v = controlador.obtenerNumero(i);
                 carta = deBotonACarta(colores.get(i).toString(), String.valueOf(v), validos.get(i));
             } else {
                 carta = deBotonACarta(colores.get(i).toString(), valores.get(i).toString(), validos.get(i));
