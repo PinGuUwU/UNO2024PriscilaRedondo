@@ -53,6 +53,16 @@ public class ControladorVista implements IControladorRemoto, Serializable {
     }
     public void cambiarColor(Color color, String idj) throws RemoteException {
         iPartida.elegirColor(color, idj);
+        for(IVista v: vistas){
+            /*
+            Esto sirve para que una vista grafica le pueda informar a la otra que cambio el color
+            Mas que nada porque Interfaz grafica hace algo especifico cuando ya se cambio el color
+             */
+            v.seCambioElColor();
+        }
+    }
+    public boolean empezoLaPartida() throws RemoteException{
+        return iPartida.estadoPartida();
     }
     public boolean agregarJugador(String id) throws RemoteException{
          return iPartida.agregarJugador(id);
@@ -76,9 +86,7 @@ public class ControladorVista implements IControladorRemoto, Serializable {
             case BLOQUEO -> t ="Color: " + color + " | Efecto: Bloqueo";
             case MAS_CUATRO -> t ="Color: " + color + " | Efecto: +4 y cambio de color";
             case CAMBIO_COLOR -> t ="Color: " + color + " | Efecto: Cambio de color";
-            case COMUN -> {
-                t ="Color: " + color + " | Valor: " + obtenerNumero(pos, idJ);;
-            }
+            case COMUN -> t ="Color: " + color + " | Valor: " + obtenerNumero(pos, idJ);
             case VACIA -> t ="Color: " + color;
         };
         return t;
@@ -139,7 +147,12 @@ public class ControladorVista implements IControladorRemoto, Serializable {
         return iPartida.buscarNumeroCarta(pos, idJ);
     }
     public int obtenerNumeroDescarte() throws RemoteException {
-        return iPartida.getNumeroDescarte();
+        try{
+            return iPartida.getNumeroDescarte();
+        } catch(NullPointerException e){
+            e.printStackTrace();
+            return 0;
+        }
     }
     public void desconectarJugador(String idJ) throws RemoteException {
         if(iPartida!=null){
@@ -158,7 +171,7 @@ public class ControladorVista implements IControladorRemoto, Serializable {
             case "rojo" -> Color.ROJO;
             case "amarillo" -> Color.AMARILLO;
             case "azul" -> Color.AZUL;
-            default -> null;
+            default -> Color.INVALIDO;
         };
     }
 }

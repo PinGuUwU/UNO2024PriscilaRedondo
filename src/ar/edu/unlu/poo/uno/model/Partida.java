@@ -103,6 +103,9 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         turno=-1;
     }
 
+    public boolean estadoPartida() throws RemoteException{
+        return jugadores.size() == cantJugadoresListos();
+    }
     private Jugador buscarJugador(String idJugador){
        Jugador j = null;
         for(int i=0; i<jugadores.size(); i++){
@@ -115,22 +118,23 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
 
     public void levantarCuatroCartas() throws RemoteException {
         //Roba 4 cartas
+        int sigTurno = siguienteTurno();
         for(int i=0; i<4; i++){
-            levantarCartaEspecial();
+            levantarCartaEspecial(sigTurno);
         }
     }
 
     public void levantarDosCartas() throws RemoteException {
+        int sigTurno = siguienteTurno();
         for(int i=0; i<2; i++){
-            levantarCartaEspecial();
+            levantarCartaEspecial(sigTurno);
         }
     }
 
-    public void levantarCartaEspecial() throws RemoteException {
+    public void levantarCartaEspecial(int sigTurno) throws RemoteException {
         if(mazoDeRobo.sinCartas()){
             mazoDeRobo.inicializarMazo();
-        }
-        int sigTurno = siguienteTurno();
+        } //Busco al siguiente jugador en la ronda para que robe las cartas que le corresponde
         Jugador j = jugadores.get(sigTurno);
         j.levantarCarta(mazoDeRobo.robar());
     }
@@ -153,7 +157,7 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         jugadoresListos+=1;
         actualizarJugadoresVista();
         actualizarInicioPartida();
-        if(jugadores.size() == cantJugadoresListos()){
+        if(estadoPartida()){
             iniciarPartida();
         }
     }
@@ -176,8 +180,13 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
     @Override
     public int getNumeroDescarte() throws RemoteException{
         Carta carta = mazoDeDescarte.ultimaCarta();
-        CartaNumerica cAux = (CartaNumerica) carta;
-        return cAux.getValor();
+        try{
+            CartaNumerica cAux = (CartaNumerica) carta;
+            return cAux.getValor();
+        } catch (NullPointerException e){
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     @Override
@@ -266,6 +275,10 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
             seTiro = true;
             j.tirarCarta(pos);
             color = carta.jugar(this);
+            /**
+           MIRAR POR QUÈ CUANDO PIDE COLOR TAMBIEN LEVANTA CARTAS HASTA PODER TIRAR UNA
+             SE SUPONE QUE ESPERE A PEDIR COLOR Y FIN
+             **/
         }
         boolean finalizo = false;
         if(j.cantCartasMano() == 0){

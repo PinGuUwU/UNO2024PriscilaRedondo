@@ -25,5 +25,11 @@ public enum Color {
             return "verde";
         }
     },
-    ESPECIAL
+    ESPECIAL{
+        @Override
+        public String toString() {
+            return "especial";
+        }
+    },
+    INVALIDO
 }

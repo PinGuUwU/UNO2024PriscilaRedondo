@@ -16,7 +16,7 @@
         </constraints>
         <properties>
           <editable value="false"/>
-          <text value="Aca no hay nada todavía"/>
+          <text value=""/>
         </properties>
       </component>
       <grid id="657" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">

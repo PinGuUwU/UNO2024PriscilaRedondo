@@ -60,12 +60,11 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
 
     public VistaInterfazGrafica(VentanaListener listener, String idJugador, ControladorVista controlador) throws RemoteException {
         this.controlador = controlador;
-        this.controlador.conectar(VistaInterfazGrafica.this);
         estadoTurno.setFocusable(false);
         this.listener = listener;
         this.idJugador = idJugador;
         if(!controlador.agregarJugador(idJugador)){//Si no se puede agregar jugador
-            estadoTurno.setText("Partida llena.");
+            estadoTurno.append("Partida llena.");
             puedeJugar = false;
         } else {//Solo doy el aviso, no voy a manejar nada mas
             puedeJugar = true;
@@ -125,12 +124,18 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
                 } catch (RemoteException ex) {
                     throw new RuntimeException(ex);
                 }
-                estadoTurno.setText("Esperando a los demás jugadores.");
+                try {
+                    if (!controlador.empezoLaPartida()){
+                        estadoTurno.append("Esperando a los demás jugadores.");
+                    }
+                } catch (RemoteException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
         listoParaJugar.setText("COMENZAR");
         linea1.add(listoParaJugar);
-        estadoTurno.setText("Bienvenido, dale click en comenzar");
+        estadoTurno.append("Bienvenido, dale click en comenzar");
     }
     private void agregarListeners(){
         confirmarButton.addActionListener(new ActionListener() {
@@ -184,13 +189,15 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
                 if(boton.getBackground() == java.awt.Color.green && !pidiendoColor){//Si se puede tirar
                     try {
                         controlador.opcion(buscarPosicionBoton(boton), idJugador);
-                        estadoTurno.setText("Esperando turno.");
+                        if(!controlador.esSuTurno(idJugador)){
+                            estadoTurno.append("Esperando turno.");
+                        }
                     } catch (RemoteException ex) {
                         throw new RuntimeException(ex);
                     }
 
                 } else if(pidiendoColor){
-                    estadoTurno.setText("Debe elegir un color y apretar 'confirmar'");
+                    estadoTurno.append("Debe elegir un color y apretar 'confirmar'");
                 }
             }
         });
@@ -270,13 +277,13 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
     public void levantarCarta() {
         //Se levanta una carta automaticamente porque el jugador no
         // tiene posibilidades de tirar otra carta
-        estadoTurno.setText("Se levantarán cartas hasta poder tirar una.");
+        estadoTurno.append("Se levantarán cartas hasta poder tirar una.");
     }
 
     @Override
     public void avisoInicio() {
         //Avisa que todos los jugadores están listos y el juego está por comenzar
-        estadoTurno.setText("Iniciando la partida.");
+        estadoTurno.append("Iniciando la partida.");
         marcarListo();
     }
 
@@ -308,7 +315,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
         elegirColor.addItem("rojo");
         elegirColor.addItem("azul");
         elegirColor.setEnabled(true);
-        estadoTurno.setText("Elija un color para \nel cambio de color.");
+        estadoTurno.append("Elija un color para \nel cambio de color.");
         pidiendoColor = true;
     }
 
@@ -353,6 +360,13 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
         icon.setDescription(color + "," + valor);
         carta.setIcon(icon);
         return carta;
+    }
+    public void seCambioElColor(){
+        if(pidiendoColor){
+            elegirColor.removeAllItems();
+            elegirColor.setEnabled(false);
+            pidiendoColor = false;
+        }
     }
 
     @Override

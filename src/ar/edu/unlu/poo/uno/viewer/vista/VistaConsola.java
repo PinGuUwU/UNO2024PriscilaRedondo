@@ -134,6 +134,8 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
         });
     }
     private void bienvenida(){
+        consola.selectAll();
+        consola.replaceSelection("");
         consola.append("            Bienvenido al juego del UNO \nSi quieres saber los comandos ingresa '/help'\n");
         consola.append("            Para iniciar la partida coloca '/iniciar'\n");
     }
@@ -192,8 +194,12 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
 
     @Override
     public void setDescarte(Color color, TipoCarta valor) throws RemoteException {
-        int v = controlador.obtenerNumeroDescarte();
-        consola.append("            Ultima carta tirada: " + color.toString() + " " + v + "\n");
+        if(valor == TipoCarta.COMUN){
+            int v = controlador.obtenerNumeroDescarte();
+            consola.append("            Ultima carta tirada: " + color.toString() + " " + v + "\n");
+        } else {
+            consola.append("            Ultima carta tirada: " + color.toString() + " " + valor.toString() + "\n");
+        }
     }
     @Override
     public void mostrarCartasJugador(ArrayList<Color> colores, ArrayList<TipoCarta> valores, ArrayList<Boolean> posibles) throws RemoteException {
@@ -234,11 +240,16 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
                 controlador.cambiarColor(color, idJugador);
                 pidiendoColor = false;
             }
-            default -> {
+            case INVALIDO -> {
                 consola.append("\nIngrese un color válido de la lista.\n\n");
                 pedirCambioColor();
             }
         }
+    }
+
+    public void seCambioElColor(){
+        consola.append("\nSe cambio el color exitosamente.\n");
+        pidiendoColor=false;
     }
 
 

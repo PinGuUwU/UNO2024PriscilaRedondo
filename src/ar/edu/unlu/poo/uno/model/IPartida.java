@@ -44,4 +44,5 @@ public interface IPartida extends IObservableRemoto{
 
     void levantarCarta() throws RemoteException;
 
+    boolean estadoPartida() throws RemoteException;
 }

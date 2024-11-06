@@ -5,13 +5,46 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fbc73718-ef9d-4267-986d-1866a4d5820a" name="Changes" comment="UNO version 1 12/08/2024 sin mvc, solo las clases y un poquito de testeo">
+      <change beforePath="$PROJECT_DIR$/.idea/GitLink.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/GitLink.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/ObservableRemoto.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/ObservableRemoto.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UNO2024PriscilaRedondo.iml" beforeDir="false" afterPath="$PROJECT_DIR$/UNO2024PriscilaRedondo.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/historico.txt" beforeDir="false" afterPath="$PROJECT_DIR$/historico.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/cliente/AppCliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/cliente/AppCliente.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/controller/ControladorPerfil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/controller/ControladorPerfil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/controller/ControladorVista.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/controller/ControladorVista.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/rojo/10.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/data/cartasImages/rojo/9.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/listener/VentanaListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/listener/VentanaListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/Contador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/Contador.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/Eventos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/Eventos.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/IPartida.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/IPartida.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/Partida.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/Partida.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/cartas/CartaAccion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/cartas/CartaAccion.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/cartas/CartaEspecial.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/cartas/CartaEspecial.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/cartas/CartaNumerica.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/cartas/CartaNumerica.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/cartas/CartaVacia.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/cartas/CartaVacia.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/cartas/Color.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/cartas/Color.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/cartas/TipoCarta.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/cartas/TipoCarta.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/servidor/AppServidor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/servidor/AppServidor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/IVista.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/IVista.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaConsola.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaConsola.form" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaConsola.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaConsola.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaEleccion.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaEleccion.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaEleccion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaEleccion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaInicio.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaInicio.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaInicio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaInicio.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaInterfazGrafica.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaInterfazGrafica.form" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaInterfazGrafica.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaInterfazGrafica.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaPerfil.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaPerfil.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaPerfil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaPerfil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaRanking.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaRanking.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/ar/edu/unlu/poo/uno/model/CondicionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ar/edu/unlu/poo/uno/model/CondicionTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/ar/edu/unlu/poo/uno/model/MezcladorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ar/edu/unlu/poo/uno/model/MezcladorTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/ar/edu/unlu/poo/uno/model/PartidaTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ar/edu/unlu/poo/uno/model/PartidaTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/ar/edu/unlu/poo/uno/model/RankingTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ar/edu/unlu/poo/uno/model/RankingTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,29 +74,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Downloaded.Files.Path.Enabled": "false",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "false",
-    "Repository.Attach.Sources": "false",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "UI_DESIGNER_EDITOR_MODE.PaletteManager.SHOW": "true",
-    "UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.SHOW": "true",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "create.test.in.the.same.root": "true",
-    "git-widget-placeholder": "testeando-cartas",
-    "ignore.virus.scanning.warn.message": "true",
-    "onboarding.tips.debug.path": "C:/Users/Pri/IdeaProjects/UNO2024PriscilaRedondo/src/Main.java",
-    "project.structure.last.edited": "Problems",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "GitLink.ProjectSettings"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;UI_DESIGNER_EDITOR_MODE.PaletteManager.SHOW&quot;: &quot;true&quot;,
+    &quot;UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.SHOW&quot;: &quot;true&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;create.test.in.the.same.root&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;testeando-cartas&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/alumno/Redondo-Priscila/UNO2024PriscilaRedondo-testeando-cartas&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/Pri/IdeaProjects/UNO2024PriscilaRedondo/src/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;GitLink.ProjectSettings&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
@@ -209,113 +243,31 @@
           <option name="timeStamp" value="89" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/controller/ControladorPerfil.java</url>
-          <line>9</line>
-          <properties class="ar.edu.unlu.poo.uno.controller.ControladorPerfil" method="actualizarNombreJugador">
+          <url>file://$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaConsola.java</url>
+          <line>235</line>
+          <properties class="ar.edu.unlu.poo.uno.viewer.vista.VistaConsola">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
-          <option name="timeStamp" value="96" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaPerfil.java</url>
-          <line>89</line>
-          <properties class="ar.edu.unlu.poo.uno.viewer.vista.VistaPerfil" method="actualizarPerfil">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="97" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/IPartida.java</url>
-          <line>21</line>
-          <properties class="ar.edu.unlu.poo.uno.model.IPartida" method="agregarJugadorListo">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="105" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaInicio.java</url>
-          <line>73</line>
-          <properties class="ar.edu.unlu.poo.uno.viewer.vista.VistaInicio" method="onVentanaCerrada">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="111" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/Partida.java</url>
-          <line>22</line>
-          <properties class="ar.edu.unlu.poo.uno.model.Partida" method="iniciarPartida">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="112" />
+          <option name="timeStamp" value="138" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaConsola.java</url>
-          <line>198</line>
-          <properties class="ar.edu.unlu.poo.uno.viewer.vista.VistaConsola" method="mostrarCartasJugador">
+          <line>249</line>
+          <properties class="ar.edu.unlu.poo.uno.viewer.vista.VistaConsola">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
-          <option name="timeStamp" value="113" />
+          <option name="timeStamp" value="139" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaConsola.java</url>
-          <line>193</line>
-          <properties class="ar.edu.unlu.poo.uno.viewer.vista.VistaConsola" method="setDescarte">
+          <url>file://$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/controller/ControladorVista.java</url>
+          <line>53</line>
+          <properties class="ar.edu.unlu.poo.uno.controller.ControladorVista" method="cambiarColor">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
-          <option name="timeStamp" value="122" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/Partida.java</url>
-          <line>196</line>
-          <properties class="ar.edu.unlu.poo.uno.model.Partida" method="getColores">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="125" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/Partida.java</url>
-          <line>211</line>
-          <properties class="ar.edu.unlu.poo.uno.model.Partida" method="getValores">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="129" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/Partida.java</url>
-          <line>226</line>
-          <properties class="ar.edu.unlu.poo.uno.model.Partida" method="getValidas">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="131" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/Condicion.java</url>
-          <line>26</line>
-          <properties class="ar.edu.unlu.poo.uno.model.Condicion" method="sePuedeTirar">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="135" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/Partida.java</url>
-          <line>227</line>
-          <option name="timeStamp" value="134" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaInterfazGrafica.java</url>
-          <line>139</line>
-          <option name="timeStamp" value="137" />
+          <option name="timeStamp" value="140" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
