@@ -19,8 +19,10 @@ public class ControladorVista implements IControladorRemoto, Serializable {
     IPartida iPartida;
     //IVista vista;
     ArrayList<IVista> vistas = new ArrayList<>();
-    public void conectar(IVista vista){
+    String id;
+    public void conectar(IVista vista, String id){
         vistas.add(vista);
+        this.id = id;
         //this.vista = vista;
     }
     public boolean mostrarManoJugador() throws RemoteException {
@@ -32,16 +34,19 @@ public class ControladorVista implements IControladorRemoto, Serializable {
     public int cantJugadoresConectados() throws RemoteException{
         return iPartida.cantJugadores();
     }
+    public int cantJugadoresListos() throws RemoteException {
+        return iPartida.cantJugadoresListos();
+    }
     public boolean opcion(String op, String jugador) throws RemoteException {
         return iPartida.tirarCarta(jugador, op);
     }
     public void iniciar() throws RemoteException {
         iPartida.agregarJugadorListo();
+        for(IVista v: vistas){
+            v.esperandoInicio();
+        }
     }
     //Aca se hace la ejecución de "comandos"/"Acciones" en el juego
-    public String datosJugadorID(String id){
-        return ranking.datosJugador(id);
-    }
     public void levantarCarta() throws RemoteException {
         iPartida.levantarCarta();
     }
@@ -88,6 +93,11 @@ public class ControladorVista implements IControladorRemoto, Serializable {
         };
         return t;
     }
+    public void otroJugadorEstaListo() throws RemoteException {
+        for(IVista v: vistas){
+            v.otroJugadorListo();
+        }
+    }
 
     @Override
     public <T extends IObservableRemoto> void setModeloRemoto(T modeloRemoto) throws RemoteException {
@@ -105,6 +115,7 @@ public class ControladorVista implements IControladorRemoto, Serializable {
                 case PEDIR_COLOR -> pedirElColor();
                 case MOSTRAR_MANO -> actualizarCartasJugador();
                 case NUEVA_PARTIDA -> jugadorNoListo();
+                case CAMBIO_JUGADORES -> otroJugadorEstaListo();
             }
         }
     }
@@ -127,9 +138,9 @@ public class ControladorVista implements IControladorRemoto, Serializable {
         }
     }
     public void actualizarCartasJugador() throws RemoteException {
-        ArrayList<Color> colores = iPartida.getColores();
-        ArrayList<TipoCarta> valores = iPartida.getValores();
-        ArrayList<Boolean> posibles = iPartida.getValidas();
+        ArrayList<Color> colores = iPartida.getColores(id);
+        ArrayList<TipoCarta> valores = iPartida.getValores(id);
+        ArrayList<Boolean> posibles = iPartida.getValidas(id);
         for(IVista vista: vistas) {
             vista.mostrarCartasJugador(colores, valores, posibles);
         }

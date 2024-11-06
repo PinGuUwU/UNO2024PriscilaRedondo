@@ -79,6 +79,15 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
         frame.setVisible(true);
     }
 
+    @Override
+    public void otroJugadorListo() throws RemoteException {
+        consola.append("Uno de los jugadores ya está listo.("+cantJugadoresListos()+"/"+cantJugadoresTotal()+")");
+    }
+    @Override
+    public void esperandoInicio(){
+        consola.append("\n      Se te ha agregado a la partida. Espere a que todos los jugadores estén listos\n\n");
+    }
+
     private void agregarListeners(){
         enter.addActionListener(new ActionListener() {
             @Override
@@ -149,7 +158,7 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
                     if (!listo) {
                         marcarListo();
                         //Aca debería corroborar que todos los jugadores hayan puesto /iniciar
-                        consola.append("\n      Se te ha agregado a la partida. Espere a que todos los jugadores estén listos\n\n");
+                        esperandoInicio();
                         controlador.iniciar();
                         //ac á a su vez tengo que avisarle a las demás consolas que hay x/4 listos
                     } else {
@@ -286,8 +295,16 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
         bienvenida();
     }
     private void mostrarCantJugadores() throws RemoteException{
-        int cant = controlador.cantJugadoresConectados();
-        consola.append("        La cantidad de jugadores conectados a esta partida son: " + cant + ".\n\n");
+        consola.append("        La cantidad de jugadores conectados a esta partida son: " + cantJugadoresTotal() + ".\n\n");
     }
+    @Override
+    public int cantJugadoresListos() throws RemoteException {
+        return controlador.cantJugadoresListos();
+    }
+    @Override
+    public int cantJugadoresTotal() throws RemoteException {
+        return controlador.cantJugadoresConectados();
+    }
+
 
 }

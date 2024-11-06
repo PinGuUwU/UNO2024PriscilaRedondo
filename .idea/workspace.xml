@@ -6,11 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="fbc73718-ef9d-4267-986d-1866a4d5820a" name="Changes" comment="UNO version 1 12/08/2024 sin mvc, solo las clases y un poquito de testeo">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/historico.txt" beforeDir="false" afterPath="$PROJECT_DIR$/historico.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/controller/ControladorVista.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/controller/ControladorVista.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/IPartida.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/IPartida.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/Partida.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/Partida.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/IVista.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/IVista.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaConsola.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaConsola.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaEleccion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaEleccion.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaInterfazGrafica.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaInterfazGrafica.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -215,7 +216,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaConsola.java</url>
-          <line>244</line>
+          <line>253</line>
           <properties class="ar.edu.unlu.poo.uno.viewer.vista.VistaConsola" method="isColor">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
@@ -224,7 +225,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaConsola.java</url>
-          <line>258</line>
+          <line>267</line>
           <properties class="ar.edu.unlu.poo.uno.viewer.vista.VistaConsola" method="seCambioElColor">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />

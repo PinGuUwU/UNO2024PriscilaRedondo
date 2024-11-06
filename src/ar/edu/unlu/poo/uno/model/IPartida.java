@@ -17,6 +17,14 @@ public interface IPartida extends IObservableRemoto{
 
     boolean actualizarCartaDescarte() throws RemoteException;
 
+    int cantJugadoresListos() throws RemoteException;
+
+    ArrayList<Color> getColores(String id) throws RemoteException;
+
+    ArrayList<TipoCarta> getValores(String id) throws RemoteException;
+
+    ArrayList<Boolean> getValidas(String id) throws RemoteException;
+
     boolean tirarCarta(String op, String j) throws RemoteException;
 
     void agregarJugadorListo() throws RemoteException;
@@ -34,13 +42,6 @@ public interface IPartida extends IObservableRemoto{
     void quitarJugador(String idJugador) throws RemoteException;
 
     boolean agregarJugador(String idJ) throws RemoteException;
-
-
-    ArrayList<Color> getColores() throws RemoteException;
-
-    ArrayList<TipoCarta> getValores() throws RemoteException;
-
-    ArrayList<Boolean> getValidas() throws RemoteException;
 
     void levantarCarta() throws RemoteException;
 

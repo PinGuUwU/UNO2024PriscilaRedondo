@@ -54,10 +54,10 @@ public class VistaEleccion implements VentanaListener, Serializable {
         eligeComoQuieresJugarTextArea.setFocusable(false);
 
         iConsola = new VistaConsola(VistaEleccion.this, idJugador, controlador);
-        controlador.conectar(iConsola);
+        controlador.conectar(iConsola,idJugador);
         iConsola.frame.setVisible(false);
         iGrafica = new VistaInterfazGrafica(VistaEleccion.this, idJugador, controlador);
-        controlador.conectar(iGrafica);
+        controlador.conectar(iGrafica,idJugador);
         iGrafica.frame.setVisible(false);
 
 

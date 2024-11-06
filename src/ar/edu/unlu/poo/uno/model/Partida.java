@@ -37,7 +37,7 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         mazoDeDescarte.agregar(carta);//Pongo la carta inicial en el mazo de descarte
         iniciarTurno();
     }
-
+    @Override
     public int cantJugadoresListos(){
         System.out.println("cant jugadores: "+jugadores.size()+"cant jugadores listos:"+jugadoresListos);
         return jugadoresListos;
@@ -192,15 +192,16 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
     public boolean esTurno(String id){
         //Si el jugador por el cual consulto, es el mismo que el de la posicion
         //Del turno, entonces es su turno (Para saber si puede ingresar opcion de carta o no)
+        Jugador j = jugadores.get(turno);
         if(jugadoresListos==0){
             return false;
-        } else return (jugadores.get(turno)).jugadorID().equals(id);
+        } else return j.jugadorID().equalsIgnoreCase(id);
     }
 
     @Override
-    public ArrayList<Color> getColores(){
+    public ArrayList<Color> getColores(String id){
         //Este método devuelve el arraylist de colores de su mano
-        Jugador j = jugadores.get(turno);
+        Jugador j = buscarJugador(id);
         Mano mano = j.mostrarCartas();
 
         ArrayList<Color> colores = new ArrayList<>();
@@ -213,9 +214,9 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
     }
 
     @Override
-    public ArrayList<TipoCarta> getValores(){
+    public ArrayList<TipoCarta> getValores(String id){
         //Este método devuelve el arraylist de colores de su mano
-        Jugador j = jugadores.get(turno);
+        Jugador j = buscarJugador(id);
         Mano mano = j.mostrarCartas();
 
         ArrayList<TipoCarta> valores = new ArrayList<>();
@@ -228,10 +229,10 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
     }
 
     @Override
-    public ArrayList<Boolean> getValidas() {
+    public ArrayList<Boolean> getValidas(String id) {
         Condicion condiciones = new Condicion();
 
-        Jugador j = jugadores.get(turno);
+        Jugador j = buscarJugador(id);
         Mano mano = j.mostrarCartas();
 
         ArrayList<Boolean> posibles = new ArrayList<>();
@@ -373,9 +374,4 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
     public void actualizarJugadoresVista() throws RemoteException {
         this.notificarObservadores(Eventos.CAMBIO_JUGADORES);
     }
-
-    public void actualizarTurnoJugador() throws RemoteException {
-        this.notificarObservadores(Eventos.SIGUIENTE_TURNO);
-    }
-
 }

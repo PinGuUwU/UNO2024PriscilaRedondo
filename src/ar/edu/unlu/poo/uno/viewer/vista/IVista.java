@@ -9,6 +9,10 @@ import java.util.ArrayList;
 
 public interface IVista {
     void iniciar();
+
+    void esperandoInicio() throws RemoteException;
+
+    void otroJugadorListo() throws RemoteException;
     void avisoInicio();
     void setDescarte(Color color, TipoCarta valor) throws RemoteException;
 
@@ -18,4 +22,8 @@ public interface IVista {
     void marcarListo();
 
     void seCambioElColor();
+
+    int cantJugadoresListos() throws RemoteException;
+
+    int cantJugadoresTotal() throws RemoteException;
 }
