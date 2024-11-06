@@ -42,11 +42,8 @@ public class ControladorVista implements IControladorRemoto, Serializable {
     public String datosJugadorID(String id){
         return ranking.datosJugador(id);
     }
-    public void levantarCartaObligatorio(){
-
-        for(IVista vista: vistas){
-            vista.levantarCarta();
-        }
+    public void levantarCarta() throws RemoteException {
+        iPartida.levantarCarta();
     }
     public boolean esSuTurno(String idJ) throws RemoteException{
         return iPartida.esTurno(idJ);
@@ -133,14 +130,8 @@ public class ControladorVista implements IControladorRemoto, Serializable {
         ArrayList<Color> colores = iPartida.getColores();
         ArrayList<TipoCarta> valores = iPartida.getValores();
         ArrayList<Boolean> posibles = iPartida.getValidas();
-        if(posibles == null){
-            //Esto significa que no hay cartas validas para tirar
-            levantarCartaObligatorio();
-            iPartida.levantarCarta();
-        } else {
-            for(IVista vista: vistas){
-                vista.mostrarCartasJugador(colores, valores, posibles);
-            }
+        for(IVista vista: vistas) {
+            vista.mostrarCartasJugador(colores, valores, posibles);
         }
     }
     public int obtenerNumero(int pos, String idJ) throws RemoteException {

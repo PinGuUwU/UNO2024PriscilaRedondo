@@ -157,6 +157,13 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
                     }
                     consola.append("\n");
                 }
+                case "/robar" -> {
+                    if(controlador.esSuTurno(idJugador)){
+                        controlador.levantarCarta();
+                    } else {
+                        consola.append("\nDebe esperar a que sea su turno para levantar una carta.\n");
+                    }
+                }
                 case "/help" -> mostrarComandos();
                 case "/ultimacarta" -> mostrarUltimaCarta();
                 case "/mostrarmano" -> mostrarManoJugador();
@@ -205,17 +212,23 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
     public void mostrarCartasJugador(ArrayList<Color> colores, ArrayList<TipoCarta> valores, ArrayList<Boolean> posibles) throws RemoteException {
         String carta;
         consola.append("    Tu mano de cartas es: \n");
+        boolean cartasValidas = false;
         for(int i=0; i<colores.size(); i++){
             carta = "Carta " + (i+1) + " | " + (controlador.tipo(valores.get(i), colores.get(i), i, idJugador));
             if(posibles.get(i)){
+                cartasValidas = true;
                 carta += " | ('SI' se puede tirar)";
             } else {
                 carta += " | ('NO' se puede tirar)";
             }
             consola.append(carta + "\n");
         }
-        consola.append("\n\n");
-        consola.append("    Ingrese el nro de la carta que desee tirar:\n");
+        if(cartasValidas){
+            consola.append("\n\n");
+            consola.append("    Ingrese el nro de la carta que desee tirar:\n");
+        } else {
+            consola.append("\nNo tiene cartas que pueda tirar, robe una con '/robar'.\n");
+        }
 
     }
     @Override
@@ -228,10 +241,6 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
     public void avisoInicio(){
         marcarListo();
         consola.append("\nTodos los jugadores están listos, la partida está por comenzar.\n\n\n");
-    }
-    @Override
-    public void levantarCarta(){
-        consola.append("\nLas cartas que tiene no puede tirarlas, automaticamente levantará una del mazo de descarte hasta que alguna\nsea válida para tirar.\n");
     }
     private void isColor(String comando) throws RemoteException {
         Color color = controlador.deStringAColorCarta(comando.toLowerCase());
@@ -256,7 +265,8 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
     private void mostrarComandos(){
         consola.append("            Lista de comandos:\n1-'/ultimaCarta' -- para mostrar la ultima carta descartada.\n");
         consola.append("2-'/mostrarMano' -- para mostrar tu mano de cartas.\n");
-        consola.append("3-'/cantJugadores' -- para mostrar la cantidad de jugadores que hay en la partida actual.\n\n");
+        consola.append("3-'/robar' -- para levantar una carta.\n");
+        consola.append("4-'/cantJugadores' -- para mostrar la cantidad de jugadores que hay en la partida actual.\n\n");
     }
     private void mostrarUltimaCarta() throws RemoteException {
         if(!controlador.mostrarCartaDescarte()){

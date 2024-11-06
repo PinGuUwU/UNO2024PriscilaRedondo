@@ -97,7 +97,6 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
         icon = new ImageIcon(imagen);
         robo.setIcon(icon);
         //robo.setFocusPainted(false);
-        robo.setContentAreaFilled(false);
         robo.setBorder(BorderFactory.createEmptyBorder());
 
         elegirColor.setEnabled(false);
@@ -153,6 +152,16 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
                     elegirColor.removeAllItems();
                     elegirColor.setEnabled(false);
                     pidiendoColor = false;
+                }
+            }
+        });
+        robo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    controlador.levantarCarta();
+                } catch (RemoteException ex) {
+                    throw new RuntimeException(ex);
                 }
             }
         });
@@ -219,7 +228,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
             if(cyvBuscado.equals(cyvActual) && !encontrado){
                 int j = i + 1;
                 pos = String.valueOf(j);
-                quitarBotonCarta(listaCompleta.get(i));
+                quitarBotonCarta(b);
                 encontrado = true;
             }
         }
@@ -274,13 +283,6 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
     }
 
     @Override
-    public void levantarCarta() {
-        //Se levanta una carta automaticamente porque el jugador no
-        // tiene posibilidades de tirar otra carta
-        estadoTurno.append("Se levantarán cartas hasta poder tirar una.");
-    }
-
-    @Override
     public void avisoInicio() {
         //Avisa que todos los jugadores están listos y el juego está por comenzar
         estadoTurno.append("Iniciando la partida.");
@@ -306,7 +308,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
     }
 
     @Override
-    public void pedirCambioColor() throws RemoteException {
+    public void pedirCambioColor() {
         //Pide al jugador que elija qué color quiere que sea el siguiente
         //Acá agrego al JPanel "cambioColor" un JComboBox que tenga las 4 opciones de color
         //El jugador elige el que quiere y luego le da click al boton "confirmar"
@@ -324,7 +326,11 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
         //Acá hago to-do el proceso de Agregar botones y agregarle la correspondiente imagen
         borrarCartas();
         JButton carta;
+        boolean cartasValidas = false;
         for(int i=0; i<colores.size(); i++){
+            if(validos.get(i)){
+                cartasValidas = true;
+            }
             if(valores.get(i) == TipoCarta.COMUN){
                 int v = controlador.obtenerNumero(i, idJugador);
                 carta = deBotonACarta(colores.get(i).toString(), String.valueOf(v), validos.get(i));
@@ -333,7 +339,11 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
             }
             agregarCarta(carta);
         }
-        estadoTurno.setText("Es su turno, elija una carta.");
+        if(cartasValidas){
+            estadoTurno.setText("Es su turno, elija una carta.");
+        } else {
+            estadoTurno.setText("No tiene cartas para tirar, levante una del mazo de robo.");
+        }
     }
     private void borrarCartas(){
         botonesLinea1.removeAll(botonesLinea1);

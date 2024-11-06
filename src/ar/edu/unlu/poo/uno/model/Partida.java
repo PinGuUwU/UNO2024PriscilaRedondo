@@ -156,7 +156,6 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
     public void agregarJugadorListo() throws RemoteException {
         jugadoresListos+=1;
         actualizarJugadoresVista();
-        actualizarInicioPartida();
         if(estadoPartida()){
             iniciarPartida();
         }
@@ -191,15 +190,11 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
 
     @Override
     public boolean esTurno(String id){
+        //Si el jugador por el cual consulto, es el mismo que el de la posicion
+        //Del turno, entonces es su turno (Para saber si puede ingresar opcion de carta o no)
         if(jugadoresListos==0){
             return false;
-        } else if((jugadores.get(turno)).jugadorID().equals(id)){
-            //Si el jugador por el cual consulto, es el mismo que el de la posicion
-            //Del turno, entonces es su turno (Para saber si puede ingresar opcion de carta o no)
-            return true;
-        } else {
-            return false;
-        }
+        } else return (jugadores.get(turno)).jugadorID().equals(id);
     }
 
     @Override
@@ -236,7 +231,6 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
     public ArrayList<Boolean> getValidas() {
         Condicion condiciones = new Condicion();
 
-        boolean cartasValidas = false;
         Jugador j = jugadores.get(turno);
         Mano mano = j.mostrarCartas();
 
@@ -246,17 +240,12 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
             Carta carta = mano.leerCartaMano(i);
             Carta descarte = mazoDeDescarte.ultimaCarta();
             if(condiciones.sePuedeTirar(descarte, carta)){
-                cartasValidas = true;
                 posibles.add(true);
             } else {
                 posibles.add(false);
             }
         }
-        if(!cartasValidas){
-            return null;
-        } else {
-            return posibles;
-        }
+        return posibles;
     }
 
     @Override
@@ -292,8 +281,8 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
             mazoDeDescarte.agregar(carta);
             siguienteTurno();
             actualizarCartaDescarte();
-            actualizarCartasVista();
         }//Si debe elegir color entonces el color de la carta y el descarte se actualizan en otro metodo
+        actualizarCartasVista();
         return seTiro;
     }
     public void cambioDeSentido(){

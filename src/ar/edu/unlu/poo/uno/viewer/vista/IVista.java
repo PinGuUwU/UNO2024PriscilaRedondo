@@ -9,7 +9,6 @@ import java.util.ArrayList;
 
 public interface IVista {
     void iniciar();
-    void levantarCarta();
     void avisoInicio();
     void setDescarte(Color color, TipoCarta valor) throws RemoteException;
 
