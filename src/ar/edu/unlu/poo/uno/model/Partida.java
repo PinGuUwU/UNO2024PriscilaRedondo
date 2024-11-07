@@ -106,6 +106,7 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
     public boolean estadoPartida() throws RemoteException{
         return jugadores.size() == cantJugadoresListos();
     }
+
     private Jugador buscarJugador(String idJugador){
        Jugador j = null;
         for(int i=0; i<jugadores.size(); i++){
@@ -361,6 +362,7 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         }
     }
 
+
     @Override
     public boolean actualizarCartasVista() throws RemoteException {
         if(jugadoresListos == jugadores.size()){
@@ -370,8 +372,26 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
             return false;
         }
     }
-
+    @Override
     public void actualizarJugadoresVista() throws RemoteException {
         this.notificarObservadores(Eventos.CAMBIO_JUGADORES);
+    }
+    @Override
+    public void actualizarDesafio() throws RemoteException {
+        this.notificarObservadores(Eventos.DESAFIO);
+    }
+
+    @Override
+    public void noDijoUNO() throws RemoteException {
+        /*
+        Chequeo si no dijo uno?
+        debo hacer un metodo que avise cuándo el jugador ya tiro, eso haría que ya no pueda "avisar"
+        Es un evento nuevo
+         */
+    }
+
+    @Override
+    public void desafio() throws RemoteException {
+
     }
 }

@@ -13,4 +13,5 @@ public enum Eventos {
     PEDIR_COLOR,
     NUEVA_PARTIDA,
     CAMBIO_JUGADORES,
+    DESAFIO
 }

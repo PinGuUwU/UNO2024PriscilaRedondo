@@ -22,6 +22,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
     private final boolean puedeJugar;
     private boolean listo = false;
     private boolean pidiendoColor = false;
+    private boolean levanto = false;
     private final String idJugador;
     ControladorVista controlador;
     VentanaListener listener;
@@ -42,6 +43,8 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
     private JButton robo;
     private JPanel cambioColor;
     private JComboBox<String> elegirColor;
+    private JPanel panelBajo;
+    private JButton pasarTurno;
     private ArrayList<JButton> botonesLinea1 = new ArrayList<>();
 
     /*
@@ -164,6 +167,9 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
             public void actionPerformed(ActionEvent e) {
                 try {
                     controlador.levantarCarta();
+                    levanto = true;
+                    controlador.preguntarSiPasaTurno(); //Muestro en ambas vistas si el jugador quiere pasar o tirar una carta
+                    //En cada turno solo puede levantar una carta
                 } catch (RemoteException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -203,6 +209,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
                     if(boton.getBackground() == java.awt.Color.green && !pidiendoColor && controlador.esSuTurno(idJugador)){//Si se puede tirar
                         try {
                             controlador.opcion(buscarPosicionBoton(boton), idJugador);
+                            finalizoTurno();
                             if(!controlador.esSuTurno(idJugador)){
                                 estadoTurno.append("Esperando turno.");
                             }
@@ -255,6 +262,31 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
     public int cantJugadoresTotal() throws RemoteException {
         return controlador.cantJugadoresConectados();
     }
+
+    @Override
+    public void decirUNO() {
+
+    }
+
+    @Override
+    public void desafiarJugadorAnterior() {
+        controlador.desafiarJugador();
+    }
+
+    @Override
+    public void avisarQueNoDijoUNO() {
+        controlador.avisarNoDijoUNO();
+    }
+    @Override
+    public void mostrarOpcionPasarTurno(){
+        pasarTurno.setEnabled(true);
+    }
+
+    private void finalizoTurno(){
+        levanto = false;
+        pasarTurno.setEnabled(false);
+    }
+
     public void quitarBotonCarta(JButton b){
         boolean l1 = buscarBotonEnPanel(linea1, b);
         boolean l2 = buscarBotonEnPanel(linea2, b);
@@ -408,4 +440,5 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
     public void marcarListo(){
         listo = true;
     }
+
 }

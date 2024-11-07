@@ -46,6 +46,17 @@ public class ControladorVista implements IControladorRemoto, Serializable {
             v.esperandoInicio();
         }
     }
+    public void preguntarSiPasaTurno(){
+        for(IVista v: vistas){
+            v.mostrarOpcionPasarTurno();
+        }
+    }
+    public void desafiarJugador(){
+        iPartida.desafio();
+    }
+    public void avisarNoDijoUNO(){
+        iPartida.noDijoUNO();
+    }
     //Aca se hace la ejecución de "comandos"/"Acciones" en el juego
     public void levantarCarta() throws RemoteException {
         iPartida.levantarCarta();
