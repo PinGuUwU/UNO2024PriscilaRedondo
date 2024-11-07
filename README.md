@@ -16,6 +16,7 @@
       - Guardarse la carta (decir paso) y finalizar su turno.
     - Levanta una carta que no puede tirar y finaliza su turno.
   - Si un jugador tira su penúltima carta, debe decir “UNO”. Si se olvida de decir uno y otro jugador lo nota, antes de que el siguiente jugador tire o levante una carta, puede dar aviso de esto, dándole una penalización de dos cartas al jugador olvidadizo.
+  - Un jugador solo puede levantar UNA carta por turno, sin importar si puede o no tirar cartas de su mano.
   - La carta “+4” sólo se puede tirar cuando el jugador no puede utilizar el color actual, con excepción de otras cartas de acción. Si el jugador siguiente a quien la tiró cree que la han jugado mal, puede desafiarlo.
     - En caso de desafío: El jugador que tiró el +4 deberá mostrar su mano: 
       - Si jugó el +4 de formal legal, el jugador que desafió toma 6 cartas en vez de 4
