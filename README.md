@@ -39,3 +39,17 @@
     - Ésta carta hace que el siguiente jugador levante 4 cartas, además, el jugador que la tire podrá cambiar el color.
     - Esta carta solo se puede poner si el jugador no tiene ninguna carta en la mano que pueda tirar. (Leer reglamento para los detalles)
 
+# FORMA DE EJECUCIÓN:
+  -Primero: se debe ejecutar una intancia de AppServidor, que se encuentra en al carpeta "servidor"
+    - Valores que deben ingresarse:
+      - IP del Servidor: 127.0.0.1
+      - Puerto del Servidor: 8888
+  -Segundo: se debe ejecutar una instancia de AppCliente por cada jugador que se desee unir, este se encuentra en la carpeta "cliente"
+    - Valores que deben ingresarse:
+    - IP del Cliente: 127.0.0.1
+    - Puerto del Cliente: un número del 1111 al 9999
+      -Cada jugador debe elegir un número de Puerto de Cliente distinto
+    - IP del Servidor: 127.0.0.1
+    - Puerto del Servido: 8888
+  -Tercero: Una vez ingresados todos los datos anteriores, se le pedirá su usuario. Deberá ingresar su nombre de usuario, si ya existe cargará sus datos, sino lo creará sin consultar.
+  -Cuarto: Se le abrirá una ventana con las opcines "CONSOLA" y "PANTALLA" puede elegir la que quiera para comenzar a jugar.
