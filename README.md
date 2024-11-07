@@ -26,16 +26,16 @@
 
 
 
-# CARTAS DE ACCIÓN:
-# CARTA MAS DOS:
-  - Cuando se tira esta carta, el siguiente jugador debe tomar dos cartas y no puede tirar ninguna carta en esa ronda.
-# CARTA CAMBIO DE SENTIDO
-  - Se cambia el sentido de la ronda, si iba en sentido horario, irá en sentido anti-horario. 
-# CARTA BLOQUEO
-  - El siguiente jugador será salteado.
-# CARTA CAMBIO DE COLOR
-El jugador que la tira elegirá de qué color se tirará la siguiente carta.
-# CARTA MAS CUATRO
-  - Ésta carta hace que el siguiente jugador levante 4 cartas, además, el jugador que la tire podrá cambiar el color.
-  - Esta carta solo se puede poner si el jugador no tiene ninguna carta en la mano que pueda tirar. (Leer reglamento para los detalles)
+  - CARTAS DE ACCIÓN:
+    - CARTA MAS DOS:
+      - Cuando se tira esta carta, el siguiente jugador debe tomar dos cartas y no puede tirar ninguna carta en esa ronda.
+    - CARTA CAMBIO DE SENTIDO
+      - Se cambia el sentido de la ronda, si iba en sentido horario, irá en sentido anti-horario. 
+  - CARTA BLOQUEO
+    - El siguiente jugador será salteado.
+  - CARTA CAMBIO DE COLOR
+    - El jugador que la tira elegirá de qué color se tirará la siguiente carta.
+  - CARTA MAS CUATRO
+    - Ésta carta hace que el siguiente jugador levante 4 cartas, además, el jugador que la tire podrá cambiar el color.
+    - Esta carta solo se puede poner si el jugador no tiene ninguna carta en la mano que pueda tirar. (Leer reglamento para los detalles)
 
