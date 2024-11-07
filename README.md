@@ -48,7 +48,7 @@
     - Valores que deben ingresarse:
       - IP del Cliente: 127.0.0.1
       - Puerto del Cliente: un número del 1111 al 9999
-        -Cada jugador debe elegir un número de Puerto de Cliente distinto
+        - Cada jugador debe elegir un número de Puerto de Cliente distinto
       - IP del Servidor: 127.0.0.1
       - Puerto del Servido: 8888
   - Tercero: Una vez ingresados todos los datos anteriores, se le pedirá su usuario. Deberá ingresar su nombre de usuario, si ya existe cargará sus datos, sino lo creará sin consultar.
