@@ -27,7 +27,7 @@
 
 
   # CARTAS DE ACCIÓN:
-    - CARTA MAS DOS:
+  - CARTA MAS DOS:
       - Cuando se tira esta carta, el siguiente jugador debe tomar dos cartas y no puede tirar ninguna carta en esa ronda.
     - CARTA CAMBIO DE SENTIDO
       - Se cambia el sentido de la ronda, si iba en sentido horario, irá en sentido anti-horario. 
