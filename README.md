@@ -26,7 +26,7 @@
 
 
 
-  - CARTAS DE ACCIÓN:
+  # CARTAS DE ACCIÓN:
     - CARTA MAS DOS:
       - Cuando se tira esta carta, el siguiente jugador debe tomar dos cartas y no puede tirar ninguna carta en esa ronda.
     - CARTA CAMBIO DE SENTIDO
