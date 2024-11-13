@@ -9,6 +9,8 @@ import java.util.ArrayList;
 
 public interface IPartida extends IObservableRemoto{
 
+    void actualizarYaNoHayDesafio() throws RemoteException;
+
     boolean actualizarCartasVista() throws RemoteException;
 
     int cantJugadores() throws RemoteException;
@@ -51,9 +53,14 @@ public interface IPartida extends IObservableRemoto{
 
     void jugadorPaso() throws RemoteException;
 
-    void actualizarDesafio() throws RemoteException;
 
     void noDijoUNO() throws RemoteException;
 
     void desafio() throws RemoteException;
+
+    void desafiadoLevantaCuatroCartas() throws RemoteException;
+
+    void levantarSeisCartas() throws RemoteException;
+
+    Mano manoJugadorAnterior() throws RemoteException;
 }

@@ -27,6 +27,7 @@ public class VistaEleccion implements VentanaListener, Serializable {
     public VistaEleccion(String idJugador, VentanaListener listener, ControladorVista controlador) throws RemoteException {
         this.controlador = controlador;
         this.idJugador = idJugador;
+        controlador.conectarID(idJugador);
         frame = new JFrame("UNO");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocation(720, 480);
@@ -53,11 +54,11 @@ public class VistaEleccion implements VentanaListener, Serializable {
         eligeComoQuieresJugarTextArea.setLineWrap(false);
         eligeComoQuieresJugarTextArea.setFocusable(false);
 
-        iConsola = new VistaConsola(VistaEleccion.this, idJugador, controlador);
-        controlador.conectar(iConsola,idJugador);
+        iConsola = new VistaConsola(VistaEleccion.this,controlador);
+        controlador.conectar(iConsola);
         iConsola.frame.setVisible(false);
-        iGrafica = new VistaInterfazGrafica(VistaEleccion.this, idJugador, controlador);
-        controlador.conectar(iGrafica,idJugador);
+        iGrafica = new VistaInterfazGrafica(VistaEleccion.this,controlador);
+        controlador.conectar(iGrafica);
         iGrafica.frame.setVisible(false);
 
 

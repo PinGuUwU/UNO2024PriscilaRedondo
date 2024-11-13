@@ -17,4 +17,7 @@ public class MazoDeDescarte implements Serializable {
     public Carta ultimaCarta(){
         return mazoActual.get(mazoActual.size()-1);
     }
+    public Carta anteultimaCarta(){
+        return mazoActual.get(mazoActual.size()-2);
+    }
 }

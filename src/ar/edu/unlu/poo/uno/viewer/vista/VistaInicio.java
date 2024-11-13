@@ -75,7 +75,7 @@ public class VistaInicio implements VentanaListener, Serializable {
         if(ventana.equalsIgnoreCase("vistaeleccion")) {
             vistaEleccion = null;
             if(idJugador!=null){
-                controlador.desconectarJugador(idJugador);
+                controlador.desconectarJugador();
             }
         }
     }

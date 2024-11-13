@@ -15,15 +15,17 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class ControladorVista implements IControladorRemoto, Serializable {
-    Ranking ranking;
     IPartida iPartida;
-    //IVista vista;
     ArrayList<IVista> vistas = new ArrayList<>();
     String id;
-    public void conectar(IVista vista, String id){
+    public void conectar(IVista vista){
         vistas.add(vista);
+    }
+    public void conectarID(String id){
         this.id = id;
-        //this.vista = vista;
+    }
+    public String idJugador(){
+        return this.id;
     }
     public boolean mostrarManoJugador() throws RemoteException {
         return iPartida.actualizarCartasVista();
@@ -31,14 +33,15 @@ public class ControladorVista implements IControladorRemoto, Serializable {
     public boolean mostrarCartaDescarte() throws RemoteException {
         return iPartida.actualizarCartaDescarte();
     }
+
     public int cantJugadoresConectados() throws RemoteException{
         return iPartida.cantJugadores();
     }
     public int cantJugadoresListos() throws RemoteException {
         return iPartida.cantJugadoresListos();
     }
-    public boolean opcion(String op, String jugador) throws RemoteException {
-        return iPartida.tirarCarta(jugador, op);
+    public boolean opcion(String op) throws RemoteException {
+        return iPartida.tirarCarta(id, op);
     }
     public void iniciar() throws RemoteException {
         iPartida.agregarJugadorListo();
@@ -51,10 +54,20 @@ public class ControladorVista implements IControladorRemoto, Serializable {
             v.mostrarOpcionPasarTurno();
         }
     }
+    public void avisarQuePuedeDesafiar() throws RemoteException {
+        //Solo debe avisar a quien tiene el turno actual
+        for(IVista v: vistas){
+            v.puedeDesafiar();
+        }
+    }
+    public void desafiarJugador() throws RemoteException {
+        //Aviso a la partida que el jugador del turno actual quiere desafiar al jugador anterior (que tiro el +4)
+        iPartida.desafio();
+    }
     public void pasarTurno() throws RemoteException {
         iPartida.jugadorPaso();
     }
-    public void desafiarJugador() throws RemoteException {
+    public void jugadorDesafiado() throws RemoteException {
         iPartida.desafio();
     }
     public void noPuedeLevantar(){
@@ -67,11 +80,11 @@ public class ControladorVista implements IControladorRemoto, Serializable {
     public void levantarCarta() throws RemoteException {
         iPartida.levantarCarta();
     }
-    public boolean esSuTurno(String idJ) throws RemoteException{
-        return iPartida.esTurno(idJ);
+    public boolean esSuTurno() throws RemoteException{
+        return iPartida.esTurno(id);
     }
-    public void cambiarColor(Color color, String idj) throws RemoteException {
-        iPartida.elegirColor(color, idj);
+    public void cambiarColor(Color color) throws RemoteException {
+        iPartida.elegirColor(color, id);
         for(IVista v: vistas){
             /*
             Esto sirve para que una vista grafica le pueda informar a la otra que cambio el color
@@ -86,6 +99,9 @@ public class ControladorVista implements IControladorRemoto, Serializable {
     public boolean agregarJugador(String id) throws RemoteException{
          return iPartida.agregarJugador(id);
     }
+    public boolean puedoAgregarJugador() throws RemoteException{
+        return iPartida.agregarJugador(id);
+    }
     public boolean esNumero(String valor){
         boolean resultado;
         try{
@@ -96,7 +112,7 @@ public class ControladorVista implements IControladorRemoto, Serializable {
         }
         return resultado;
     }
-    public String tipo(TipoCarta valor, Color c, int pos, String idJ) throws RemoteException {
+    public String tipo(TipoCarta valor, Color c, int pos) throws RemoteException {
         String color = c.toString();
         String t = "";
         switch (valor) {
@@ -105,7 +121,7 @@ public class ControladorVista implements IControladorRemoto, Serializable {
             case BLOQUEO -> t ="Color: " + color + " | Efecto: Bloqueo";
             case MAS_CUATRO -> t ="Color: " + color + " | Efecto: +4 y cambio de color";
             case CAMBIO_COLOR -> t ="Color: " + color + " | Efecto: Cambio de color";
-            case COMUN -> t ="Color: " + color + " | Valor: " + obtenerNumero(pos, idJ);
+            case COMUN -> t ="Color: " + color + " | Valor: " + obtenerNumero(pos);
             case VACIA -> t ="Color: " + color;
         };
         return t;
@@ -130,9 +146,16 @@ public class ControladorVista implements IControladorRemoto, Serializable {
                 case INICIAR_PARTIDA -> avisarInicio();
                 case CARTA_DESCARTE -> actualizarDescarte();
                 case PEDIR_COLOR -> pedirElColor();
-                case MOSTRAR_MANO -> actualizarCartasJugador();
+                case MOSTRAR_MANO ->{if(esSuTurno()){
+                    actualizarCartasJugador();
+                }}
                 case NUEVA_PARTIDA -> jugadorNoListo();
                 case CAMBIO_JUGADORES -> otroJugadorEstaListo();
+                case DESAFIO -> jugadorDesafiado();
+                case PUEDE_DESAFIAR -> avisarQuePuedeDesafiar();
+                //case YA_NO_SE_PUEDE_DESAFIAR -> avisarQueYaNoPuedeDesafiar();
+                case NO_DIJO_UNO -> avisarNoDijoUNO();
+                //case YA_PASO_UNO -> avisarPasoUNO();
             }
         }
     }
@@ -162,8 +185,8 @@ public class ControladorVista implements IControladorRemoto, Serializable {
             vista.mostrarCartasJugador(colores, valores, posibles);
         }
     }
-    public int obtenerNumero(int pos, String idJ) throws RemoteException {
-        return iPartida.buscarNumeroCarta(pos, idJ);
+    public int obtenerNumero(int pos) throws RemoteException {
+        return iPartida.buscarNumeroCarta(pos, id);
     }
     public int obtenerNumeroDescarte() throws RemoteException {
         try{
@@ -173,10 +196,10 @@ public class ControladorVista implements IControladorRemoto, Serializable {
             return 0;
         }
     }
-    public void desconectarJugador(String idJ) throws RemoteException {
+    public void desconectarJugador() throws RemoteException {
         if(iPartida!=null){
             //Si la partida ya se "creo" entonces elimino al jugador de ella
-            iPartida.quitarJugador(idJ);
+            iPartida.quitarJugador(id);
         }
     }
     public void jugadorNoListo(){

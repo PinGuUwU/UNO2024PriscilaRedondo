@@ -5,14 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fbc73718-ef9d-4267-986d-1866a4d5820a" name="Changes" comment="UNO version 1 12/08/2024 sin mvc, solo las clases y un poquito de testeo">
-      <change afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/TurnoPartida.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/controller/ControladorVista.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/controller/ControladorVista.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/Condicion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/Condicion.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/Eventos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/Eventos.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/IPartida.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/IPartida.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/MazoDeDescarte.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/MazoDeDescarte.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/Partida.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/Partida.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/IVista.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/IVista.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaConsola.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaConsola.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaEleccion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaEleccion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaInicio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaInicio.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaInterfazGrafica.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaInterfazGrafica.form" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaInterfazGrafica.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaInterfazGrafica.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -202,36 +206,20 @@
           <properties class="java.lang.ClassCastException" package="java.lang" />
           <option name="timeStamp" value="79" />
         </breakpoint>
-        <breakpoint enabled="true" type="java-exception">
-          <properties class="java.lang.NullPointerException" package="java.lang" />
-          <option name="timeStamp" value="148" />
-        </breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>jar://$PROJECT_DIR$/lib/LibreriaRMIMVC.jar!/ar/edu/unlu/rmimvc/servidor/Servidor.class</url>
-          <line>18</line>
-          <properties class="ar.edu.unlu.rmimvc.servidor.Servidor" method="iniciar">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="89" />
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaEleccion.java</url>
+          <line>70</line>
+          <option name="timeStamp" value="149" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaConsola.java</url>
-          <line>253</line>
-          <properties class="ar.edu.unlu.poo.uno.viewer.vista.VistaConsola" method="isColor">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="138" />
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/model/Partida.java</url>
+          <line>305</line>
+          <option name="timeStamp" value="155" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaConsola.java</url>
-          <line>267</line>
-          <properties class="ar.edu.unlu.poo.uno.viewer.vista.VistaConsola" method="seCambioElColor">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="139" />
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/viewer/vista/VistaEleccion.java</url>
+          <line>56</line>
+          <option name="timeStamp" value="157" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -24,7 +24,7 @@ public class Condicion implements Serializable {
     Orden de cartas:
     0=1, 1=2, 2=3, 3=4, 4=5, 5=6, 6=7, 7=8, 8=9, 9=10, +2=11, sentido=12, bloqueo=13, +4=14, cambioColor=15;
      */
-    public boolean sePuedeTirar(Carta cartaDescarte, Carta cartaTirar){//Se asume que ambos tienen valores, son notnull
+    public static boolean sePuedeTirar(Carta cartaDescarte, Carta cartaTirar){//Se asume que ambos tienen valores, son notnull
         boolean decision = false;
 
         if(cartaTirar.color().equals(Color.ESPECIAL)){
@@ -49,5 +49,15 @@ public class Condicion implements Serializable {
             }
         }
         return decision;
+    }
+    public static boolean tieneParaTirar(Mano mano, Carta descarte){
+        //Retorna verdadero si tiene al menos 1 carta para tirar
+        //Para el descarte se le debe pasar la anterior al +4 que tiro
+        for(int i=0; i<mano.cantCartas();i++){
+            if(sePuedeTirar(descarte, mano.leerCartaMano(i))){
+                return true;
+            }
+        }
+        return false;
     }
 }

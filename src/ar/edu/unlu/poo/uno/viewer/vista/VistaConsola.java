@@ -19,9 +19,9 @@ import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 
 public class VistaConsola implements VentanaListener, IVista, Serializable {
     private final boolean puedeJugar;
+    private boolean levanto = false;
     private boolean listo = false;
     private boolean pidiendoColor = false;
-    private final String idJugador;
     ControladorVista controlador;
     VentanaListener listener;
     JFrame frame;
@@ -35,12 +35,10 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
     private JButton ranking;
     private JPanel principal;
 
-    public VistaConsola(VentanaListener listener, String idJugador,ControladorVista controlador) throws RemoteException {
+    public VistaConsola(VentanaListener listener,ControladorVista controlador) throws RemoteException {
         this.controlador = controlador;
-        consola.setFocusable(false);
-        this.idJugador = idJugador;
         this.listener = listener;
-        if(!controlador.agregarJugador(idJugador)){//Si no se puede agregar jugador
+        if(!controlador.puedoAgregarJugador()){//Si no se puede agregar jugador
             consola.append("        Debe entrar a otra partida, esta ya está llena.\n\n");
             puedeJugar = false;
         } else {//Solo doy el aviso, no voy a manejar nada mas
@@ -54,7 +52,7 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
         frame.setLocation(720, 480);
         frame.setSize(720, 480);
         frame.setLocationRelativeTo(null);
-
+        consola.setFocusable(false);
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -121,12 +119,12 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(iPerfil == null){
-                    iPerfil = new VistaPerfil(VistaConsola.this, idJugador);
+                    iPerfil = new VistaPerfil(VistaConsola.this, controlador.idJugador());
                 } else if(!iPerfil.frame.isVisible()){
                     iPerfil.frame.setVisible(true);
                     iPerfil.setInTop();
                 }
-                iPerfil.actualizarPerfil(idJugador);
+                iPerfil.actualizarPerfil(controlador.idJugador());
             }
         });
         ranking.addActionListener(new ActionListener() {
@@ -167,20 +165,25 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
                     consola.append("\n");
                 }
                 case "/robar" -> {
-                    if(controlador.esSuTurno(idJugador)){
+                    if(controlador.esSuTurno() && !levanto){
+                        levanto = true;
                         controlador.levantarCarta();
+                    } else if(levanto){
+                        consola.append("\nSolo puede levantar una carta por turno, si quiere puede pasar con '/pasar'.\n");
                     } else {
                         consola.append("\nDebe esperar a que sea su turno para levantar una carta.\n");
                     }
                 }
                 case "/help" -> mostrarComandos();
+                case "/pasar" -> pasarTurno();
                 case "/ultimacarta" -> mostrarUltimaCarta();
                 case "/mostrarmano" -> mostrarManoJugador();
                 case "/cantjugadores" -> mostrarCantJugadores();
+                case "/desafiar" -> desafiarJugadorAnterior();
                 default -> {
-                    if (controlador.esNumero(comando) && !pidiendoColor && controlador.esSuTurno(idJugador)) {
+                    if (controlador.esNumero(comando) && !pidiendoColor && controlador.esSuTurno()) {
                         //Si le toca pero no debe ingresar color
-                        boolean seTiro = controlador.opcion(comando, idJugador);
+                        boolean seTiro = controlador.opcion(comando);
                         if (!seTiro) {
                             consola.append("No se pudo tirar la carta, elija una que sea posible tirar.\n\n");
                         }
@@ -223,7 +226,7 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
         consola.append("    Tu mano de cartas es: \n");
         boolean cartasValidas = false;
         for(int i=0; i<colores.size(); i++){
-            carta = "Carta " + (i+1) + " | " + (controlador.tipo(valores.get(i), colores.get(i), i, idJugador));
+            carta = "Carta " + (i+1) + " | " + (controlador.tipo(valores.get(i), colores.get(i), i));
             if(posibles.get(i)){
                 cartasValidas = true;
                 carta += " | ('SI' se puede tirar)";
@@ -232,11 +235,14 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
             }
             consola.append(carta + "\n");
         }
-        if(cartasValidas){
+        if(cartasValidas && controlador.esSuTurno()){
             consola.append("\n\n");
+            consola.append("        Si quiere puede pasar su turno con '/pasar' o robar con '/robar'.\n");
             consola.append("    Ingrese el nro de la carta que desee tirar:\n");
-        } else {
+        } else if(!cartasValidas){
             consola.append("\nNo tiene cartas que pueda tirar, robe una con '/robar'.\n");
+        } else if(!controlador.esSuTurno()){
+            consola.append("\nEs el turno de otro jugador. Esperando turno.\n");
         }
 
     }
@@ -255,7 +261,7 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
         Color color = controlador.deStringAColorCarta(comando.toLowerCase());
         switch (color) {
             case VERDE, ROJO, AMARILLO, AZUL -> {
-                controlador.cambiarColor(color, idJugador);
+                controlador.cambiarColor(color);
                 pidiendoColor = false;
             }
             case INVALIDO -> {
@@ -312,23 +318,23 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
     }
 
     @Override
-    public void desafiarJugador() {
-
-    }
-
-    @Override
     public void desafiarJugadorAnterior() throws RemoteException {
-
+        controlador.desafiarJugador();
     }
 
     @Override
     public void avisarQueNoDijoUNO() throws RemoteException {
-
+        controlador.avisarNoDijoUNO();
+    }
+    @Override
+    public void puedeDesafiar(){
+        consola.append("\n  El jugador anterior tiro un +4, si quiere desafiarlo ingrese /desafiar (Leer reglamento de desafio).\n");
     }
 
     @Override
-    public void pasarTurno() {
-
+    public void pasarTurno() throws RemoteException {
+        levanto = false;
+        controlador.pasarTurno();
     }
 
     @Override
