@@ -49,6 +49,8 @@ public interface IPartida extends IObservableRemoto{
 
     void actualizarJugadoresVista() throws RemoteException;
 
+    void jugadorPaso() throws RemoteException;
+
     void actualizarDesafio() throws RemoteException;
 
     void noDijoUNO() throws RemoteException;

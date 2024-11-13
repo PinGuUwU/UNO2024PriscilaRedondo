@@ -11,7 +11,7 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
     private int jugadoresListos = 0;
     private ArrayList<Jugador> jugadores = new ArrayList<>();
     private boolean sentido = true;//true = incrementa turno. false = decrementa turno;
-    private int turno; //Quizá podría servir hacer una clase que lleve esto
+    private TurnoPartida turno; //Quizá podría servir hacer una clase que lleve esto
     private MazoDeRobo mazoDeRobo;
     public MazoDeDescarte mazoDeDescarte;
 
@@ -28,7 +28,7 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
                 j.levantarCarta(carta);
             }
         }
-        turno = 0;
+        turno = new TurnoPartida(jugadores.size());
         actualizarInicioPartida();
         Carta carta = mazoDeRobo.robar();
         while(carta.valor() != TipoCarta.COMUN){//Fuerzo a que sea una carta comun
@@ -37,6 +37,10 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         mazoDeDescarte.agregar(carta);//Pongo la carta inicial en el mazo de descarte
         iniciarTurno();
     }
+    public void bloquear(){
+        turno.seguirTurno();
+        turno.seguirTurno();
+    }
     @Override
     public int cantJugadoresListos(){
         System.out.println("cant jugadores: "+jugadores.size()+"cant jugadores listos:"+jugadoresListos);
@@ -44,7 +48,7 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
     }
 
     public void iniciarTurno() throws RemoteException {
-        Jugador jugadorActual = jugadores.get(turno);
+        Jugador jugadorActual = jugadores.get(turno.turnoActual());
         if(mazoDeRobo.sinCartas()){
             mazoDeRobo.inicializarMazo();
         }
@@ -57,34 +61,7 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         Si tiene cartas para tirar, puede tirar,
         si no estará obligado a levantar del mazo de robo hasta que quiera o pueda tirar
          */
-        this.turno = siguienteTurno();
-    }
-
-    public int siguienteTurno() throws RemoteException {
-        int turnoActual = this.turno;
-        //Turno del 1-4
-        //Debo corroborar que todos tengan cartas
-        for(Jugador j : jugadores){
-            if(j.cantCartasMano() == 0){
-                finalizarPartida(j);
-                break;
-            }
-        }
-        if(sentido){
-            if(turnoActual== (jugadores.size()-1)){
-                return 0;
-            } else {
-                turnoActual++;
-                return turnoActual;
-            }
-        } else { //if(!sentido)
-            if(turnoActual == 0){
-                return (jugadores.size()-1);
-            } else {
-                turnoActual--;
-                return turnoActual;
-            }
-        }
+        turno.siguienteTurno();
     }
 
     public void finalizarPartida(Jugador ganador) throws RemoteException {
@@ -100,7 +77,6 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         }
         actualizarJugadoresNoListos();
         jugadoresListos=0;
-        turno=-1;
     }
 
     public boolean estadoPartida() throws RemoteException{
@@ -119,14 +95,14 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
 
     public void levantarCuatroCartas() throws RemoteException {
         //Roba 4 cartas
-        int sigTurno = siguienteTurno();
+        int sigTurno = turno.siguienteTurno();
         for(int i=0; i<4; i++){
             levantarCartaEspecial(sigTurno);
         }
     }
 
     public void levantarDosCartas() throws RemoteException {
-        int sigTurno = siguienteTurno();
+        int sigTurno = turno.siguienteTurno();
         for(int i=0; i<2; i++){
             levantarCartaEspecial(sigTurno);
         }
@@ -144,7 +120,7 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         if(mazoDeRobo.sinCartas()){
             mazoDeRobo.inicializarMazo();
         }
-        Jugador j = jugadores.get(turno);
+        Jugador j = jugadores.get(turno.turnoActual());
         j.levantarCarta(mazoDeRobo.robar());
         actualizarCartasVista();
     }
@@ -193,7 +169,7 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
     public boolean esTurno(String id){
         //Si el jugador por el cual consulto, es el mismo que el de la posicion
         //Del turno, entonces es su turno (Para saber si puede ingresar opcion de carta o no)
-        Jugador j = jugadores.get(turno);
+        Jugador j = jugadores.get(turno.turnoActual());
         if(jugadoresListos==0){
             return false;
         } else return j.jugadorID().equalsIgnoreCase(id);
@@ -281,7 +257,7 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
             //Entonces sigo al siguiente turno
             //Si no espero hasta que me de el color
             mazoDeDescarte.agregar(carta);
-            siguienteTurno();
+            turno.seguirTurno();
             actualizarCartaDescarte();
         }//Si debe elegir color entonces el color de la carta y el descarte se actualizan en otro metodo
         actualizarCartasVista();
@@ -297,7 +273,7 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         mazoDeDescarte.agregar(carta);
         actualizarCartaDescarte();
         actualizarCartasVista();
-        siguienteTurno();
+        turno.seguirTurno();
     }
     @Override
     public void quitarJugador(String idJugador) throws RemoteException {
@@ -319,7 +295,7 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
             if(buscarJugador(id) == null){
                 jugadores.add(jugador);
                 //reset partida?
-                turno = 0;
+                turno = new TurnoPartida(jugadores.size());
                 //Si se suma un jugador se resetea la partida?
             }
             return true; //Se puede agregar
@@ -328,7 +304,6 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
     @Override
     public int buscarNumeroCarta(int pos, String idJ){
         Jugador j = buscarJugador(idJ);
-        Carta carta = j.mostrarCarta(pos);
         int valor = -1;
         try{
             CartaNumerica cAux = (CartaNumerica) j.mostrarCarta(pos);
@@ -375,6 +350,11 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
     @Override
     public void actualizarJugadoresVista() throws RemoteException {
         this.notificarObservadores(Eventos.CAMBIO_JUGADORES);
+    }
+    @Override
+    public void jugadorPaso() throws RemoteException {
+        turno.seguirTurno();
+        iniciarTurno();
     }
     @Override
     public void actualizarDesafio() throws RemoteException {

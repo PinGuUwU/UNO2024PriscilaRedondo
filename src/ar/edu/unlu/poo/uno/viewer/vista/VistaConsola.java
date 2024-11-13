@@ -306,5 +306,35 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
         return controlador.cantJugadoresConectados();
     }
 
+    @Override
+    public void decirUNO() {
+
+    }
+
+    @Override
+    public void desafiarJugador() {
+
+    }
+
+    @Override
+    public void desafiarJugadorAnterior() throws RemoteException {
+
+    }
+
+    @Override
+    public void avisarQueNoDijoUNO() throws RemoteException {
+
+    }
+
+    @Override
+    public void pasarTurno() {
+
+    }
+
+    @Override
+    public void mostrarOpcionPasarTurno() {
+
+    }
+
 
 }

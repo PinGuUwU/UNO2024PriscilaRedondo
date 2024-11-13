@@ -144,6 +144,16 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
         }
     }
     private void agregarListeners(){
+        pasarTurno.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    pasarTurno();
+                } catch (RemoteException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
         confirmarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -165,14 +175,20 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
         robo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    controlador.levantarCarta();
-                    levanto = true;
-                    controlador.preguntarSiPasaTurno(); //Muestro en ambas vistas si el jugador quiere pasar o tirar una carta
-                    //En cada turno solo puede levantar una carta
-                } catch (RemoteException ex) {
-                    throw new RuntimeException(ex);
+                if(!levanto){
+                    try {
+                        controlador.levantarCarta();
+                        levanto = true;
+                        controlador.preguntarSiPasaTurno(); //Muestro en ambas vistas si el jugador quiere pasar o tirar una carta
+                        //En cada turno solo puede levantar una carta
+                    } catch (RemoteException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                } else {
+                    controlador.noPuedeLevantar();
+                    estadoTurno.setText("Ya levantó una carta, debe tirar o pasar el turno.");
                 }
+
             }
         });
         perfil.addActionListener(new ActionListener() {
@@ -269,14 +285,26 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
     }
 
     @Override
-    public void desafiarJugadorAnterior() {
+    public void desafiarJugador() {
+
+    }
+
+    @Override
+    public void desafiarJugadorAnterior() throws RemoteException {
         controlador.desafiarJugador();
     }
 
     @Override
-    public void avisarQueNoDijoUNO() {
+    public void avisarQueNoDijoUNO() throws RemoteException {
         controlador.avisarNoDijoUNO();
     }
+
+    @Override
+    public void pasarTurno() throws RemoteException {
+        controlador.pasarTurno();
+        pasarTurno.setEnabled(false);
+    }
+
     @Override
     public void mostrarOpcionPasarTurno(){
         pasarTurno.setEnabled(true);

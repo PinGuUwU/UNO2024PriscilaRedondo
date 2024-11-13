@@ -29,8 +29,11 @@ public interface IVista {
 
     void decirUNO();
     void desafiarJugador();
-    void avisarQueNoDijoUNO();
-    void pasarTurno();
+
+    void desafiarJugadorAnterior() throws RemoteException;
+
+    void avisarQueNoDijoUNO() throws RemoteException;
+    void pasarTurno() throws RemoteException;
 
     void mostrarOpcionPasarTurno();
 }
