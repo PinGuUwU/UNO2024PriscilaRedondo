@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class AppCliente {
     public static void main(String[] args) throws RemoteException {
         ArrayList<String> ips = Util.getIpDisponibles();
+        /*
         String ip = (String) JOptionPane.showInputDialog(
                 null,
                 "Seleccione la IP en la que escuchará peticiones el cliente", "IP del cliente",
@@ -21,7 +22,7 @@ public class AppCliente {
                 null,
                 ips.toArray(),
                 null
-        );
+        );*/
         String port = (String) JOptionPane.showInputDialog(
                 null,
                 "Seleccione el puerto en el que escuchará peticiones el cliente", "Puerto del cliente",
@@ -30,6 +31,7 @@ public class AppCliente {
                 null,
                 9999
         );
+        /*
         String ipServidor = (String) JOptionPane.showInputDialog(
                 null,
                 "Seleccione la IP en la corre el servidor", "IP del servidor",
@@ -45,9 +47,9 @@ public class AppCliente {
                 null,
                 null,
                 8888
-        );
+        );*/
         ControladorVista controlador = new ControladorVista();
-        Cliente c = new Cliente(ip, Integer.parseInt(port), ipServidor, Integer.parseInt(portServidor));
+        Cliente c = new Cliente("127.0.0.1", Integer.parseInt(port), "127.0.0.1", 8888);
         try{
             c.iniciar(controlador);
         } catch(RemoteException | RMIMVCException e){

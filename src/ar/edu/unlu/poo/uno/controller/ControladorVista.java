@@ -44,10 +44,10 @@ public class ControladorVista implements IControladorRemoto, Serializable {
         return iPartida.tirarCarta(id, op);
     }
     public void iniciar() throws RemoteException {
-        iPartida.agregarJugadorListo();
         for(IVista v: vistas){
             v.esperandoInicio();
         }
+        iPartida.agregarJugadorListo();
     }
     public void preguntarSiPasaTurno(){
         for(IVista v: vistas){
@@ -145,14 +145,12 @@ public class ControladorVista implements IControladorRemoto, Serializable {
             switch((Eventos) cambio){
                 case INICIAR_PARTIDA -> avisarInicio();
                 case CARTA_DESCARTE -> actualizarDescarte();
-                case PEDIR_COLOR -> pedirElColor();
-                case MOSTRAR_MANO ->{if(esSuTurno()){
-                    actualizarCartasJugador();
-                }}
+                case PEDIR_COLOR -> {if(esSuTurno()) pedirElColor();}
+                case MOSTRAR_MANO -> {if(esSuTurno()) actualizarCartasJugador();}
                 case NUEVA_PARTIDA -> jugadorNoListo();
                 case CAMBIO_JUGADORES -> otroJugadorEstaListo();
                 case DESAFIO -> jugadorDesafiado();
-                case PUEDE_DESAFIAR -> avisarQuePuedeDesafiar();
+                case PUEDE_DESAFIAR -> {if(esSuTurno())avisarQuePuedeDesafiar();}
                 //case YA_NO_SE_PUEDE_DESAFIAR -> avisarQueYaNoPuedeDesafiar();
                 case NO_DIJO_UNO -> avisarNoDijoUNO();
                 //case YA_PASO_UNO -> avisarPasoUNO();

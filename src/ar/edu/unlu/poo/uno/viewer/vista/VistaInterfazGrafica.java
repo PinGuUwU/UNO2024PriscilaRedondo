@@ -45,6 +45,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
     private JPanel panelBajo;
     private JButton pasarTurno;
     private JButton desafio;
+    private JButton uno;
     private ArrayList<JButton> botonesLinea1 = new ArrayList<>();
 
     /*
@@ -174,6 +175,9 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
         robo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(desafio.isEnabled()){ //Si podía desafiar y levantó una carta, entonces ya no puede desafiar
+                    desafio.setEnabled(false);
+                }
                 try {
                     if(!controlador.empezoLaPartida()){
                         estadoTurno.setText("Aún no empezó la partida.");
@@ -188,14 +192,22 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
                         } catch (RemoteException ex) {
                             throw new RuntimeException(ex);
                         }
-                    } else {
+                    } else if(controlador.esSuTurno()){
                         controlador.noPuedeLevantar();
                         estadoTurno.setText("Ya levantó una carta, debe tirar o pasar el turno.");
+                    } else {
+                        estadoTurno.setText("Debe esperar a que sea su turno para levantar una carta.");
                     }
                 } catch (RemoteException ex) {
                     throw new RuntimeException(ex);
                 }
 
+            }
+        });
+        desafio.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Debería poder presionarse SOLO si hay posibilidad de desafiar
             }
         });
         perfil.addActionListener(new ActionListener() {
@@ -227,7 +239,10 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
         boton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                if(desafio.isEnabled()){
+                    //Si podía desafiar al jugador anterior y tiró una carta, entonce ya no puede desafiarlo, siguiente turno
+                    desafio.setEnabled(false);
+                }
                 try {
                     if(boton.getBackground() == java.awt.Color.green && !pidiendoColor && controlador.esSuTurno()){//Si se puede tirar
                         try {
@@ -293,6 +308,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
 
     @Override
     public void desafiarJugadorAnterior() throws RemoteException {
+        desafio.setEnabled(false);
         controlador.desafiarJugador();
     }
 
@@ -303,7 +319,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
     @Override
     public void puedeDesafiar(){
         //Muestro el boton de desafio
-
+        desafio.setEnabled(true);
     }
 
     @Override
@@ -426,13 +442,14 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
             }
             agregarCarta(carta);
         }
-        if(cartasValidas && controlador.esSuTurno()){
+        if(cartasValidas){
             estadoTurno.setText("Es su turno, elija una carta.");
-        } else if(!cartasValidas){
+        } else{
+            estadoTurno.setText("Es su turno, elija una carta.");
             estadoTurno.setText("No tiene cartas para tirar, levante una del mazo de robo.");
-        } else if(!controlador.esSuTurno()){
+        } /*else if(!controlador.esSuTurno()){
             estadoTurno.setText("Es el turno de otro jugador.\nEsperando turno");
-        }
+        }*/
     }
     private void borrarCartas(){
         botonesLinea1.removeAll(botonesLinea1);

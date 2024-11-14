@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class AppServidor {
     public static void main(String[] args) throws RemoteException {
         ArrayList<String> ips = Util.getIpDisponibles();
+        /*
         String ip = (String) JOptionPane.showInputDialog(
                 null,
                 "Seleccione la IP en la que escuchará peticiones el servidor", "IP del servidor",
@@ -27,9 +28,9 @@ public class AppServidor {
                 null,
                 null,
                 8888
-        );
+        );*/
         Partida modelo = new Partida();
-        Servidor servidor = new Servidor(ip, Integer.parseInt(port));
+        Servidor servidor = new Servidor("127.0.0.1", 8888);
         try {
             servidor.iniciar(modelo);
             System.out.println("Servidor RMI está en ejecución...");

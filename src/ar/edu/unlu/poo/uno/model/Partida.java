@@ -240,6 +240,9 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         Carta carta = j.mostrarCarta(pos);
         if(carta.valor() == TipoCarta.MAS_CUATRO){//Puede desafiar
             avisarJugadorPuedeDesafiar();
+            //No se debe jugar la carta
+            turno.seguirTurno();
+            return true;
         }
         Condicion condiciones = new Condicion();
 

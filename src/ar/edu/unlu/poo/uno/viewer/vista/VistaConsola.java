@@ -20,6 +20,7 @@ import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 public class VistaConsola implements VentanaListener, IVista, Serializable {
     private final boolean puedeJugar;
     private boolean levanto = false;
+    private boolean desafiar = false;
     private boolean listo = false;
     private boolean pidiendoColor = false;
     ControladorVista controlador;
@@ -151,20 +152,21 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
             consola.append("        Debe entrar a otra partida, esta ya está llena.\n\n");
         } else {
             switch (comando.toLowerCase()) {
+                //case "/uno" -> controlador.decirUNO();
                 case "/iniciar" -> {
                     consola.append("\n");
                     if (!listo) {
                         marcarListo();
-                        //Aca debería corroborar que todos los jugadores hayan puesto /iniciar
-                        esperandoInicio();
                         controlador.iniciar();
-                        //ac á a su vez tengo que avisarle a las demás consolas que hay x/4 listos
                     } else {
                         consola.append("Ya se ha confirmado su particitación, espere a los demás jugadores\n\n");
                     }
                     consola.append("\n");
                 }
                 case "/robar" -> {
+                    if(desafiar){
+                        desafiar = false;
+                    }
                     if(controlador.esSuTurno() && !levanto){
                         levanto = true;
                         controlador.levantarCarta();
@@ -175,7 +177,13 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
                     }
                 }
                 case "/help" -> mostrarComandos();
-                case "/pasar" -> pasarTurno();
+                case "/pasar" -> {
+                    if(controlador.esSuTurno()){
+                        pasarTurno();
+                    } else {
+                        consola.append("Es el turno de otro jugador.");
+                    }
+                }
                 case "/ultimacarta" -> mostrarUltimaCarta();
                 case "/mostrarmano" -> mostrarManoJugador();
                 case "/cantjugadores" -> mostrarCantJugadores();
@@ -187,6 +195,7 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
                         if (!seTiro) {
                             consola.append("No se pudo tirar la carta, elija una que sea posible tirar.\n\n");
                         }
+                        desafiar = false;
                     } else if (pidiendoColor) { //Si ingreso y le toca ingresar color
                         isColor(comando);
                     } else {
@@ -319,6 +328,7 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
 
     @Override
     public void desafiarJugadorAnterior() throws RemoteException {
+        desafiar = false;
         controlador.desafiarJugador();
     }
 
@@ -328,6 +338,7 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
     }
     @Override
     public void puedeDesafiar(){
+        desafiar = true;
         consola.append("\n  El jugador anterior tiro un +4, si quiere desafiarlo ingrese /desafiar (Leer reglamento de desafio).\n");
     }
 
