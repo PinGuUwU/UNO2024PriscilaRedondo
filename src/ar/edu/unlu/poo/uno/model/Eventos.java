@@ -12,6 +12,4 @@ public enum Eventos {
     MOSTRAR_MANO,
     PEDIR_COLOR,
     NUEVA_PARTIDA,
-    CAMBIO_JUGADORES,
-    SIGUIENTE_TURNO
 }
