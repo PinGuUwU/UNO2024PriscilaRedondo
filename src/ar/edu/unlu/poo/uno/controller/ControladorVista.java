@@ -17,9 +17,13 @@ import java.util.ArrayList;
 public class ControladorVista implements IControladorRemoto, Serializable {
     Ranking ranking;
     IPartida iPartida;
-    IVista vista;
-    public void conectar(IVista vista){
-        this.vista = vista;
+    IVista consola;
+    IVista grafica;
+    public void conectarConsola(IVista consola){
+        this.consola = consola;
+    }
+    public void conectarGrafica(IVista grafica){
+        this.grafica = grafica;
     }
     public boolean mostrarManoJugador() throws RemoteException {
         return iPartida.actualizarCartasVista();
@@ -41,7 +45,8 @@ public class ControladorVista implements IControladorRemoto, Serializable {
         return ranking.datosJugador(id);
     }
     public void levantarCartaObligatorio(){
-        vista.levantarCarta();
+        grafica.levantarCarta();
+        consola.levantarCarta();
     }
     public boolean esSuTurno(String idJ) throws RemoteException{
         return iPartida.esTurno(idJ);
@@ -62,17 +67,21 @@ public class ControladorVista implements IControladorRemoto, Serializable {
         }
         return resultado;
     }
-    public String tipo(TipoCarta valor, Color c){
+    public String tipo(TipoCarta valor, Color c, int pos, String idJ) throws RemoteException {
         String color = c.toString();
-        return switch (valor) {
-            case MAS_DOS -> "Color: " + color + " | Efecto: +2";
-            case CAMBIO_SENTIDO -> "Color: " + color + " | Efecto: Cambio de sentido";
-            case BLOQUEO -> "Color: " + color + " | Efecto: Bloqueo";
-            case MAS_CUATRO -> "Color: " + color + " | Efecto: +4 y cambio de color";
-            case CAMBIO_COLOR -> "Color: " + color + " | Efecto: Cambio de color";
-            case COMUN -> "Color: " + color + " | Valor: " + valor;
-            case VACIA -> "Color: " + color;
+        String t = "";
+        switch (valor) {
+            case MAS_DOS -> t ="Color: " + color + " | Efecto: +2";
+            case CAMBIO_SENTIDO -> t ="Color: " + color + " | Efecto: Cambio de sentido";
+            case BLOQUEO -> t ="Color: " + color + " | Efecto: Bloqueo";
+            case MAS_CUATRO -> t ="Color: " + color + " | Efecto: +4 y cambio de color";
+            case CAMBIO_COLOR -> t ="Color: " + color + " | Efecto: Cambio de color";
+            case COMUN -> {
+                t ="Color: " + color + " | Valor: " + obtenerNumero(pos, idJ);;
+            }
+            case VACIA -> t ="Color: " + color;
         };
+        return t;
     }
 
     @Override
@@ -95,13 +104,16 @@ public class ControladorVista implements IControladorRemoto, Serializable {
         }
     }
     public void avisarInicio(){
-        vista.avisoInicio();
+        grafica.avisoInicio();
+        consola.avisoInicio();
     }
     public void actualizarDescarte() throws RemoteException{
-        vista.setDescarte(iPartida.getColorDescarte(), iPartida.getTipoDescarte());
+        grafica.setDescarte(iPartida.getColorDescarte(), iPartida.getTipoDescarte());
+        consola.setDescarte(iPartida.getColorDescarte(), iPartida.getTipoDescarte());
     }
     public void pedirElColor() throws RemoteException {
-        vista.pedirCambioColor();
+        grafica.pedirCambioColor();
+        consola.pedirCambioColor();
     }
     public void actualizarCartasJugador() throws RemoteException {
         ArrayList<Color> colores = iPartida.getColores();
@@ -112,7 +124,8 @@ public class ControladorVista implements IControladorRemoto, Serializable {
             levantarCartaObligatorio();
             iPartida.levantarCarta();
         } else {
-            vista.mostrarCartasJugador(colores, valores, posibles);
+            grafica.mostrarCartasJugador(colores, valores, posibles);
+            consola.mostrarCartasJugador(colores, valores, posibles);
         }
     }
     public int obtenerNumero(int pos, String idJ) throws RemoteException {
@@ -124,11 +137,12 @@ public class ControladorVista implements IControladorRemoto, Serializable {
     public void desconectarJugador(String idJ) throws RemoteException {
         if(iPartida!=null){
             //Si la partida ya se "creo" entonces elimino al jugador de ella
-            iPartida.quitarJugador(idJ);
+            //iPartida.quitarJugador(idJ, this);
         }
     }
     public void jugadorNoListo(){
-        vista.marcarNoListo();
+        grafica.marcarNoListo();
+        consola.marcarNoListo();
     }
     public Color deStringAColorCarta(String color){
         Color nuevoColor = null;
