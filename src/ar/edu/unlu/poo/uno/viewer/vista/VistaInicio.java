@@ -47,7 +47,6 @@ public class VistaInicio implements VentanaListener, Serializable {
                     idJugador = ranking.agregarJugador(usuario.getText());
                 }
                 try {
-                    controlador.conectarJugador(idJugador);
                     abrirEleccion();
                 } catch (RemoteException ex) {
                     throw new RuntimeException(ex);
@@ -59,11 +58,11 @@ public class VistaInicio implements VentanaListener, Serializable {
         frame.setVisible(true);
     }
     public void abrirEleccion() throws RemoteException {
-        if(!controlador.agregarJugador()){
+        if(!controlador.agregarJugador(idJugador)){
             ingreseSuNombreDeTextArea.setText("No puede entrar a la partida, ya tiene 4 jugadores.");
         } else {
             frame.setVisible(false);
-            controlador.agregarJugador();
+            controlador.agregarJugador(idJugador);
             vistaEleccion = new VistaEleccion(idJugador, VistaInicio.this, controlador);
         }
     }
@@ -76,7 +75,7 @@ public class VistaInicio implements VentanaListener, Serializable {
         if(ventana.equalsIgnoreCase("vistaeleccion")) {
             vistaEleccion = null;
             if(idJugador!=null){
-                controlador.desconectarJugador();
+                controlador.desconectarJugador(idJugador);
             }
         }
     }

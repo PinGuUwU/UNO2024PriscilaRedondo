@@ -1,7 +1,7 @@
 1,Jugador_1,0,2
 2,ramon,0,1
 3,Jugador_3,3,0
-4,pingu,8,0
+4,Pingu,8,0
 5,asd,0,0
 6,prueba1!,0,0
 7,Jugador2,0,0

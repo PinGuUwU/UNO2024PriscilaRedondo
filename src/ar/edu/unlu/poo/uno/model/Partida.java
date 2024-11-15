@@ -1,7 +1,7 @@
 package ar.edu.unlu.poo.uno.model;
 
-import ar.edu.unlu.poo.uno.controller.ControladorVista;
 import ar.edu.unlu.poo.uno.model.cartas.*;
+import ar.edu.unlu.rmimvc.observer.IObservadorRemoto;
 import ar.edu.unlu.rmimvc.observer.ObservableRemoto;
 
 import java.io.Serializable;
@@ -106,9 +106,9 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
 
     private Jugador buscarJugador(String idJugador){
        Jugador j = null;
-        for (Jugador jugador : jugadores) {
-            if ((jugador.jugadorID()).equals(idJugador)) {
-                j = jugador;
+        for(int i=0; i<jugadores.size(); i++){
+            if((jugadores.get(i).jugadorID()).equals(idJugador)){
+                j = jugadores.get(i);
             }
         }
         return j;
@@ -152,7 +152,7 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
     @Override
     public void agregarJugadorListo() throws RemoteException {
         jugadoresListos+=1;
-        actualizarCartasVista();
+        actualizarJugadoresVista();
         actualizarInicioPartida();
         if(jugadores.size() == cantJugadoresListos()){
             iniciarPartida();
@@ -195,9 +195,9 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
     }
 
     @Override
-    public ArrayList<Color> getColores(String id){
+    public ArrayList<Color> getColores(){
         //Este método devuelve el arraylist de colores de su mano
-        Jugador j = buscarJugador(id);
+        Jugador j = jugadores.get(turno);
         Mano mano = j.mostrarCartas();
 
         ArrayList<Color> colores = new ArrayList<>();
@@ -210,9 +210,9 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
     }
 
     @Override
-    public ArrayList<TipoCarta> getValores(String id){
+    public ArrayList<TipoCarta> getValores(){
         //Este método devuelve el arraylist de colores de su mano
-        Jugador j = buscarJugador(id);
+        Jugador j = jugadores.get(turno);
         Mano mano = j.mostrarCartas();
 
         ArrayList<TipoCarta> valores = new ArrayList<>();
@@ -225,11 +225,11 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
     }
 
     @Override
-    public ArrayList<Boolean> getValidas(String id) {
+    public ArrayList<Boolean> getValidas() {
         Condicion condiciones = new Condicion();
 
         boolean cartasValidas = false;
-        Jugador j = buscarJugador(id);
+        Jugador j = jugadores.get(turno);
         Mano mano = j.mostrarCartas();
 
         ArrayList<Boolean> posibles = new ArrayList<>();
@@ -297,11 +297,10 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         siguienteTurno();
     }
     @Override
-    public void quitarJugador(String idJugador, ControladorVista cr) throws RemoteException {
+    public void quitarJugador(String idJugador) throws RemoteException {
         Jugador j = buscarJugador(idJugador);
         jugadores.remove(j);
         jugadoresListos=0;
-        removerObservador(cr);
         iniciarPartida();
     }
 
@@ -351,21 +350,31 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
     }
 
     @Override
-    public void actualizarCartaDescarte() throws RemoteException {
-        this.notificarObservadores(Eventos.CARTA_DESCARTE);
+    public boolean actualizarCartaDescarte() throws RemoteException {
+        if(jugadoresListos == jugadores.size()){
+            this.notificarObservadores(Eventos.CARTA_DESCARTE);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
-    public void actualizarCartasVista() throws RemoteException {
-        this.notificarObservadores(Eventos.MOSTRAR_MANO);
+    public boolean actualizarCartasVista() throws RemoteException {
+        if(jugadoresListos == jugadores.size()){
+            this.notificarObservadores(Eventos.MOSTRAR_MANO);
+            return true;
+        } else {
+            return false;
+        }
     }
-    @Override
-    public void agregarObserver(ControladorVista controlador) throws RemoteException {
-        this.agregarObservador(controlador);
+
+    public void actualizarJugadoresVista() throws RemoteException {
+        this.notificarObservadores(Eventos.CAMBIO_JUGADORES);
     }
-    @Override
-    public boolean yaEmpezo(){
-        return jugadoresListos == jugadores.size();
+
+    public void actualizarTurnoJugador() throws RemoteException {
+        this.notificarObservadores(Eventos.SIGUIENTE_TURNO);
     }
 
 }
