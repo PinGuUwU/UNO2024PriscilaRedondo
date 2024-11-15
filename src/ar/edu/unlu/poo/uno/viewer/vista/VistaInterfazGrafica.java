@@ -20,8 +20,9 @@ import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 
 public class VistaInterfazGrafica implements VentanaListener, IVista, Serializable {
     private boolean pidiendoColor = false;
-    private boolean puedeJugar = false;
-    private boolean listo = false;
+
+    private boolean levanto = false;
+
     ControladorVista controlador;
     VentanaListener listener;
     VistaPerfil iPerfil;
@@ -41,7 +42,12 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
     private JButton robo;
     private JPanel cambioColor;
     private JComboBox<String> elegirColor;
-    private JButton listoParaJugar;
+
+    private JPanel panelBajo;
+    private JButton pasarTurno;
+    private JButton desafio;
+    private JButton uno;
+
     private ArrayList<JButton> botonesLinea1 = new ArrayList<>();
 
     /*
@@ -58,12 +64,12 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
 
      */
 
-    public VistaInterfazGrafica(VentanaListener listener, ControladorVista controlador) throws RemoteException {
+    public VistaInterfazGrafica(VentanaListener listener,ControladorVista controlador) throws RemoteException {
         this.controlador = controlador;
-        estadoTurno.setFocusable(false);
         this.listener = listener;
-        if(!controlador.agregarJugador()){//Si no se puede agregar jugador
-            estadoTurno.setText("Partida llena.");
+        if(!controlador.puedoAgregarJugador()){//Si no se puede agregar jugador
+            estadoTurno.append("Partida llena.");
+
             puedeJugar = false;
         } else {//Solo doy el aviso, no voy a manejar nada mas
             puedeJugar = true;
@@ -75,9 +81,8 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
         frame = new JFrame("UNO");
         frame.setLocation(720, 480);
         frame.setSize(720, 480);
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setLocationRelativeTo(null);
-
+        estadoTurno.setFocusable(false);
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -97,7 +102,6 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
         icon = new ImageIcon(imagen);
         robo.setIcon(icon);
         //robo.setFocusPainted(false);
-        robo.setContentAreaFilled(false);
         robo.setBorder(BorderFactory.createEmptyBorder());
 
         elegirColor.setEnabled(false);
@@ -120,12 +124,22 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
                 } catch (RemoteException ex) {
                     throw new RuntimeException(ex);
                 }
-                estadoTurno.setText("Esperando a los demás jugadores.");
+                try {
+                    esperandoInicio();
+                } catch (RemoteException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
         listoParaJugar.setText("COMENZAR");
         linea1.add(listoParaJugar);
-        estadoTurno.setText("Bienvenido, dale click en comenzar");
+        estadoTurno.append("Bienvenido, dale click en comenzar");
+    }
+    @Override
+    public void esperandoInicio() throws RemoteException {
+        if (!controlador.empezoLaPartida()){
+            estadoTurno.setText("Esperando a los demás jugadores.");
+        }
     }
     public void comenzar(){
         linea1.remove(listoParaJugar);
@@ -134,6 +148,17 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
         listo = true;
     }
     private void agregarListeners(){
+        pasarTurno.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    pasarTurno();
+                    levanto = false;
+                } catch (RemoteException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
         confirmarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -152,16 +177,58 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
                 }
             }
         });
+        robo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(desafio.isEnabled()){ //Si podía desafiar y levantó una carta, entonces ya no puede desafiar
+                    desafio.setEnabled(false);
+                }
+                try {
+                    if(!controlador.empezoLaPartida()){
+                        estadoTurno.setText("Aún no empezó la partida.");
+                    } else if(pidiendoColor){
+                        estadoTurno.setText("Ya tiró una carta y debe elegir un color");
+                    } else if(!levanto && controlador.esSuTurno()){
+                        try {
+                            controlador.levantarCarta();
+                            levanto = true;
+                            controlador.preguntarSiPasaTurno(); //Muestro en ambas vistas si el jugador quiere pasar o tirar una carta
+                            //En cada turno solo puede levantar una carta
+                        } catch (RemoteException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    } else if(controlador.esSuTurno()){
+                        controlador.noPuedeLevantar();
+                        estadoTurno.setText("Ya levantó una carta, debe tirar o pasar el turno.");
+                    } else {
+                        estadoTurno.setText("Debe esperar a que sea su turno para levantar una carta.");
+                    }
+                } catch (RemoteException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+            }
+        });
+        desafio.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Debería poder presionarse SOLO si hay posibilidad de desafiar
+            }
+        });
         perfil.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(iPerfil == null){
-                    iPerfil = new VistaPerfil(VistaInterfazGrafica.this, controlador.getID());
+
+                    iPerfil = new VistaPerfil(VistaInterfazGrafica.this, controlador.idJugador());
+
                 } else if(!iPerfil.frame.isVisible()){
                     iPerfil.frame.setVisible(true);
                     iPerfil.setInTop();
                 }
-                iPerfil.actualizarPerfil(controlador.getID());
+
+                iPerfil.actualizarPerfil(controlador.idJugador());
+
             }
         });
         ranking.addActionListener(new ActionListener() {
@@ -177,21 +244,37 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
             }
         });
     }
+    @Override
+    public void yaLevanto(){
+        levanto=true;
+    }
     private void agregarListenerCarta(JButton boton){
         boton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(desafio.isEnabled()){
+                    //Si podía desafiar al jugador anterior y tiró una carta, entonce ya no puede desafiarlo, siguiente turno
+                    desafio.setEnabled(false);
+                }
+                try {
+                    if(boton.getBackground() == java.awt.Color.green && !pidiendoColor && controlador.esSuTurno()){//Si se puede tirar
+                        try {
+                            controlador.opcion(buscarPosicionBoton(boton));
+                            finalizoTurno();
+                            if(!controlador.esSuTurno()){
+                                estadoTurno.append("Esperando turno.");
+                            }
+                        } catch (RemoteException ex) {
+                            throw new RuntimeException(ex);
+                        }
 
-                if(boton.getBackground() == java.awt.Color.green && !pidiendoColor){//Si se puede tirar
-                    try {
-                        controlador.opcion(buscarPosicionBoton(boton));
-                        estadoTurno.setText("Esperando turno.");
-                    } catch (RemoteException ex) {
-                        throw new RuntimeException(ex);
+
+                    } else if(pidiendoColor){
+                        estadoTurno.append("Debe elegir un color y apretar 'confirmar'");
+
                     }
-
-                } else if(pidiendoColor){
-                    estadoTurno.setText("Debe elegir un color y apretar 'confirmar'");
+                } catch (RemoteException ex) {
+                    throw new RuntimeException(ex);
                 }
             }
         });
@@ -213,13 +296,63 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
             if(cyvBuscado.equals(cyvActual) && !encontrado){
                 int j = i + 1;
                 pos = String.valueOf(j);
-                quitarBotonCarta(listaCompleta.get(i));
+                quitarBotonCarta(b);
                 encontrado = true;
             }
         }
 
         return pos;
     }
+    @Override
+    public void otroJugadorListo() throws RemoteException {
+        estadoTurno.setText("Uno de los jugadores ya está listo.("+cantJugadoresListos()+"/"+cantJugadoresTotal()+")");
+    }
+    @Override
+    public int cantJugadoresListos() throws RemoteException {
+        return controlador.cantJugadoresListos();
+    }
+    @Override
+    public int cantJugadoresTotal() throws RemoteException {
+        return controlador.cantJugadoresConectados();
+    }
+
+    @Override
+    public void decirUNO() {
+
+    }
+
+    @Override
+    public void desafiarJugadorAnterior() throws RemoteException {
+        desafio.setEnabled(false);
+        controlador.desafiarJugador();
+    }
+
+    @Override
+    public void avisarQueNoDijoUNO() throws RemoteException {
+        controlador.avisarNoDijoUNO();
+    }
+    @Override
+    public void puedeDesafiar(){
+        //Muestro el boton de desafio
+        desafio.setEnabled(true);
+    }
+
+    @Override
+    public void pasarTurno() throws RemoteException {
+        pasarTurno.setEnabled(false);
+        controlador.pasarTurno();
+    }
+
+    @Override
+    public void mostrarOpcionPasarTurno(){
+        pasarTurno.setEnabled(true);
+    }
+
+    private void finalizoTurno(){
+        levanto = false;
+        pasarTurno.setEnabled(false);
+    }
+
     public void quitarBotonCarta(JButton b){
         boolean l1 = buscarBotonEnPanel(linea1, b);
         boolean l2 = buscarBotonEnPanel(linea2, b);
@@ -268,16 +401,9 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
     }
 
     @Override
-    public void levantarCarta() {
-        //Se levanta una carta automaticamente porque el jugador no
-        // tiene posibilidades de tirar otra carta
-        estadoTurno.setText("Se levantarán cartas hasta poder tirar una.");
-    }
-
-    @Override
     public void avisoInicio() {
         //Avisa que todos los jugadores están listos y el juego está por comenzar
-        estadoTurno.setText("Iniciando la partida.");
+        estadoTurno.append("Iniciando la partida.");
         marcarListo();
         comenzar();
     }
@@ -301,7 +427,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
     }
 
     @Override
-    public void pedirCambioColor() throws RemoteException {
+    public void pedirCambioColor() {
         //Pide al jugador que elija qué color quiere que sea el siguiente
         //Acá agrego al JPanel "cambioColor" un JComboBox que tenga las 4 opciones de color
         //El jugador elige el que quiere y luego le da click al boton "confirmar"
@@ -310,7 +436,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
         elegirColor.addItem("rojo");
         elegirColor.addItem("azul");
         elegirColor.setEnabled(true);
-        estadoTurno.setText("Elija un color para \nel cambio de color.");
+        estadoTurno.append("Elija un color para \nel cambio de color.");
         pidiendoColor = true;
     }
 
@@ -319,7 +445,11 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
         //Acá hago to-do el proceso de Agregar botones y agregarle la correspondiente imagen
         borrarCartas();
         JButton carta;
+        boolean cartasValidas = false;
         for(int i=0; i<colores.size(); i++){
+            if(validos.get(i)){
+                cartasValidas = true;
+            }
             if(valores.get(i) == TipoCarta.COMUN){
                 int v = controlador.obtenerNumero(i);
                 carta = deBotonACarta(colores.get(i).toString(), String.valueOf(v), validos.get(i));
@@ -328,7 +458,14 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
             }
             agregarCarta(carta);
         }
-        estadoTurno.setText("Es su turno, elija una carta.");
+        if(cartasValidas){
+            estadoTurno.setText("Es su turno, elija una carta.");
+        } else{
+            estadoTurno.setText("Es su turno, elija una carta.");
+            estadoTurno.setText("No tiene cartas para tirar, levante una del mazo de robo.");
+        } /*else if(!controlador.esSuTurno()){
+            estadoTurno.setText("Es el turno de otro jugador.\nEsperando turno");
+        }*/
     }
     private void borrarCartas(){
         botonesLinea1.removeAll(botonesLinea1);
@@ -356,6 +493,13 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
         carta.setIcon(icon);
         return carta;
     }
+    public void seCambioElColor(){
+        if(pidiendoColor){
+            elegirColor.removeAllItems();
+            elegirColor.setEnabled(false);
+            pidiendoColor = false;
+        }
+    }
 
     @Override
     public void marcarNoListo() {
@@ -366,4 +510,5 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
     public void marcarListo(){
         listo = true;
     }
+
 }

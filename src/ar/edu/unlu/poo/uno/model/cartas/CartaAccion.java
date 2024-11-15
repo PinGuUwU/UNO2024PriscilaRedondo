@@ -13,10 +13,7 @@ public class CartaAccion extends Carta{
         switch(super.valor()){
             case CAMBIO_SENTIDO -> partida.cambioDeSentido();
             case MAS_DOS -> partida.levantarDosCartas();
-            case BLOQUEO -> {
-                partida.siguienteTurno();
-                partida.siguienteTurno();
-            }
+            case BLOQUEO -> partida.bloquear();
         }
         return false;
     }

@@ -25,7 +25,7 @@ public class Ranking implements Serializable{
     public Ranking(){
         crearArchivo();//Lo hago para asegurarme que existe, de no existir lo crea
     }
-    public void crearArchivo(){
+    public void crearArchivo(){ //Serializacion
         File archivo = new File(nombreArchivo);
         try{
             if(archivo.createNewFile()){
@@ -40,6 +40,7 @@ public class Ranking implements Serializable{
     }
 
     public String agregarJugador(String username){
+        //Serializacion
         //Tuve que usar estructura try catch porque a la hora de usar
         //Los metodos (File) de estos objetos me lo exigían y lo busqué en internet
             int nuevoID = Integer.parseInt(this.ultimoID());
@@ -113,7 +114,7 @@ public class Ranking implements Serializable{
         return new ArrayList<>(jugadoresAll.subList(0, Math.min(5, jugadoresAll.size())));
     }
     public String ultimoID(){
-        String ultimaLinea = "";
+        String ultimaLinea = "";//Serializacion
         File archivoFile = new File(nombreArchivo);
         try(RandomAccessFile archivo = new RandomAccessFile(archivoFile.getPath(), "r")){
             long tamanioArchivo = archivo.length();
@@ -142,30 +143,8 @@ public class Ranking implements Serializable{
         //Retorno el primer valor, que es el id del jugador
         return separado[0];
     }
-    public String datosJugador(String id){
-        File file = new File(nombreArchivo);
-        String lineaBuscada = "";
-
-        try(RandomAccessFile archivo = new RandomAccessFile(file.getPath(), "r")){
-            String lineaActual = archivo.readLine();
-            //Mientras que la linea actual leida sea != de null
-            while ((lineaActual) != null) {
-                String[] datos = lineaActual.split(",");
-                if(datos[0].equalsIgnoreCase(id)){
-                    lineaBuscada = lineaActual;
-                    break;
-                    //Interrumpo el while para no buscar en to-do el archivo
-                }
-                lineaActual = archivo.readLine();
-            }
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-        return lineaBuscada;
-        //Retorno los datos tal cual está escrito en el archivo
-    }
     public String buscarIDJugadorName(String username){
-        File file = new File(nombreArchivo);
+        File file = new File(nombreArchivo);//Serializacion
         String lineaEncontrada = null;
         try(RandomAccessFile archivo = new RandomAccessFile(file.getPath(), "r")){
             String lineaActual = archivo.readLine();
@@ -189,7 +168,7 @@ public class Ranking implements Serializable{
         }
     }
     public String[] buscarDatosJugadorID(String id){
-        File file = new File(nombreArchivo);
+        File file = new File(nombreArchivo);//Serializacion
         String lineaEncontrada = null;
         try(RandomAccessFile archivo = new RandomAccessFile(file.getPath(), "r")){
             String lineaActual = archivo.readLine();
@@ -208,7 +187,7 @@ public class Ranking implements Serializable{
         return lineaEncontrada.split(",");
     }
     public void actualizarNombreJugador(String idJ, String nuevoNombre){
-        ArrayList<String> lineas = new ArrayList<>();
+        ArrayList<String> lineas = new ArrayList<>();//Serializacion
         boolean jugadorEncontrado = false;
 
         try(BufferedReader lector = new BufferedReader(new FileReader(nombreArchivo))){
@@ -242,7 +221,7 @@ public class Ranking implements Serializable{
         }
     }
     public void actualizarJugador(Jugador j){
-        ArrayList<String> lineas = new ArrayList<>();
+        ArrayList<String> lineas = new ArrayList<>();//Serializacion
         boolean jugadorEncontrado = false;
 
         try(BufferedReader lector = new BufferedReader(new FileReader(nombreArchivo))){

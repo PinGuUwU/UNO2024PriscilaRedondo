@@ -12,7 +12,7 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
     private int jugadoresListos = 0;
     private ArrayList<Jugador> jugadores = new ArrayList<>();
     private boolean sentido = true;//true = incrementa turno. false = decrementa turno;
-    private int turno; //Quizá podría servir hacer una clase que lleve esto
+    private TurnoPartida turno; //Quizá podría servir hacer una clase que lleve esto
     private MazoDeRobo mazoDeRobo;
     public MazoDeDescarte mazoDeDescarte;
 
@@ -29,7 +29,7 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
                 j.levantarCarta(carta);
             }
         }
-        turno = 0;
+        turno = new TurnoPartida(jugadores.size());
         actualizarInicioPartida();
         Carta carta = mazoDeRobo.robar();
         while(carta.valor() != TipoCarta.COMUN){//Fuerzo a que sea una carta comun
@@ -38,14 +38,18 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         mazoDeDescarte.agregar(carta);//Pongo la carta inicial en el mazo de descarte
         iniciarTurno();
     }
-
+    public void bloquear(){
+        turno.seguirTurno();
+        turno.seguirTurno();
+    }
+    @Override
     public int cantJugadoresListos(){
         System.out.println("cant jugadores: "+jugadores.size()+"cant jugadores listos:"+jugadoresListos);
         return jugadoresListos;
     }
 
     public void iniciarTurno() throws RemoteException {
-        Jugador jugadorActual = jugadores.get(turno);
+        Jugador jugadorActual = jugadores.get(turno.turnoActual());
         if(mazoDeRobo.sinCartas()){
             mazoDeRobo.inicializarMazo();
         }
@@ -58,34 +62,7 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         Si tiene cartas para tirar, puede tirar,
         si no estará obligado a levantar del mazo de robo hasta que quiera o pueda tirar
          */
-        this.turno = siguienteTurno();
-    }
-
-    public int siguienteTurno() throws RemoteException {
-        int turnoActual = this.turno;
-        //Turno del 1-4
-        //Debo corroborar que todos tengan cartas
-        for(Jugador j : jugadores){
-            if(j.cantCartasMano() == 0){
-                finalizarPartida(j);
-                break;
-            }
-        }
-        if(sentido){
-            if(turnoActual== (jugadores.size()-1)){
-                return 0;
-            } else {
-                turnoActual++;
-                return turnoActual;
-            }
-        } else { //if(!sentido)
-            if(turnoActual == 0){
-                return (jugadores.size()-1);
-            } else {
-                turnoActual--;
-                return turnoActual;
-            }
-        }
+        turno.siguienteTurno();
     }
 
     public void finalizarPartida(Jugador ganador) throws RemoteException {
@@ -101,7 +78,10 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         }
         actualizarJugadoresNoListos();
         jugadoresListos=0;
-        turno=-1;
+    }
+
+    public boolean estadoPartida() throws RemoteException{
+        return jugadores.size() == cantJugadoresListos();
     }
 
     private Jugador buscarJugador(String idJugador){
@@ -114,24 +94,15 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         return j;
     }
 
-    public void levantarCuatroCartas() throws RemoteException {
-        //Roba 4 cartas
-        for(int i=0; i<4; i++){
-            levantarCartaEspecial();
-        }
-    }
 
-    public void levantarDosCartas() throws RemoteException {
-        for(int i=0; i<2; i++){
-            levantarCartaEspecial();
-        }
-    }
-
-    public void levantarCartaEspecial() throws RemoteException {
+    public void levantarCartaEspecial(int sigTurno) throws RemoteException {
+        /*
+        Usado cuando un jugador esta obligado a levantar cartas
+        ya sea por una carta accion, por un desafio o porque no dijo uno y alguien aviso a tiempo
+         */
         if(mazoDeRobo.sinCartas()){
             mazoDeRobo.inicializarMazo();
-        }
-        int sigTurno = siguienteTurno();
+        } //Busco al siguiente jugador en la ronda para que robe las cartas que le corresponde
         Jugador j = jugadores.get(sigTurno);
         j.levantarCarta(mazoDeRobo.robar());
     }
@@ -140,21 +111,80 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         if(mazoDeRobo.sinCartas()){
             mazoDeRobo.inicializarMazo();
         }
-        Jugador j = jugadores.get(turno);
+        Jugador j = jugadores.get(turno.turnoActual());
         j.levantarCarta(mazoDeRobo.robar());
         actualizarCartasVista();
     }
+    public void cambioDeSentido(){
+        this.sentido = !sentido;
+    }
+
+    public void desafiadoLevantaCuatroCartas() throws RemoteException {
+        /*
+        Si desafiaron a un jugador (+4) y tiro de forma ilegar la carta
+        el desafiado debera levantar 4 cartas
+         */
+        for(int i=0; i<4; i++){
+            levantarCartaEspecial(turno.turnoActual());
+        }
+    }
+    public void levantarSeisCartas() throws RemoteException {
+        /*
+        Si desafiaron a un jugador (+4) y tiro de forma legar la carta
+        el desafiador debera levantar 6 cartas
+         */
+        for(int i=0; i<6; i++){
+            levantarCartaEspecial(turno.turnoAnterior());
+        }
+    }
+    public void levantarCuatroCartas() throws RemoteException {
+        //Roba 4 cartas
+        int sigTurno = turno.siguienteTurno();
+        for(int i=0; i<4; i++){
+            levantarCartaEspecial(sigTurno);
+        }
+    }
+
+    public void levantarDosCartas() throws RemoteException {
+        int sigTurno = turno.siguienteTurno();
+        for(int i=0; i<2; i++){
+            levantarCartaEspecial(sigTurno);
+        }
+    }
 
 
-
-    //IPARTIDA
+    @Override
+    public void desafio() throws RemoteException {
+        /*Aca le aviso al del turno anterior que fue desafiado
+        Usando turnoAnterior();
+        El mismo Objeto que se encarga de los turnos puede hacerse cargo
+        de fijarse que se debe hacer cuando fue desafiado
+        ver quien de los dos debe levantar cartas y cuantas cartas
+        Algo similar a lo que hice con cartas.jugar(this)
+         */
+        Mano manoJ = manoJugadorAnterior();
+        Carta descarte = mazoDeDescarte.anteultimaCarta();
+        if(Condicion.tieneParaTirar(manoJ, descarte)){
+            //Si tenia para tirar, entonces debera levantar esas 4 cartas como castigo
+            //Por tirarla de forma ilegal, el turno sigue normal para quien lo desafio
+            desafiadoLevantaCuatroCartas();
+        } else {
+            //Si el jugador no tenia para tirar, el que desafio
+            //Levantara 6 cartas
+            levantarSeisCartas();
+        }
+    }
 
     @Override
     public void agregarJugadorListo() throws RemoteException {
+        /*
+        sumo un jugador listo, cuando todos esten listos empieza la partida
+         */
         jugadoresListos+=1;
-        actualizarCartasVista();
-        actualizarInicioPartida();
-        if(jugadores.size() == cantJugadoresListos()){
+
+        actualizarJugadoresVista();
+        if(estadoPartida()){
+
             iniciarPartida();
         }
     }
@@ -166,32 +196,46 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
 
     @Override
     public Color getColorDescarte() throws RemoteException{
+        /*
+        Obtengo el color de la carta de descarte para
+        poder actualizarlo en la vista de los jugadores
+         */
         Carta carta = mazoDeDescarte.ultimaCarta();
         return carta.color();
     }
     @Override
     public TipoCarta getTipoDescarte() throws RemoteException{
+        /*
+        Obtengo el tipo de la carta de descarte para
+        poder actualizarlo en la vista de los jugadores
+         */
         Carta carta = mazoDeDescarte.ultimaCarta();
         return carta.valor();
     }
     @Override
     public int getNumeroDescarte() throws RemoteException{
+        /*
+        Si la carta de descarte es numerica, obtengo su valor para poder
+        actualizarlo en la vista de los jugadores
+         */
         Carta carta = mazoDeDescarte.ultimaCarta();
-        CartaNumerica cAux = (CartaNumerica) carta;
-        return cAux.getValor();
+        try{
+            CartaNumerica cAux = (CartaNumerica) carta;
+            return cAux.getValor();
+        } catch (NullPointerException e){
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     @Override
     public boolean esTurno(String id){
+        //Si el jugador por el cual consulto, es el mismo que el de la posicion
+        //Del turno, entonces es su turno (Para saber si puede ingresar opcion de carta o no)
+        Jugador j = jugadores.get(turno.turnoActual());
         if(jugadoresListos==0){
             return false;
-        } else if((jugadores.get(turno)).jugadorID().equals(id)){
-            //Si el jugador por el cual consulto, es el mismo que el de la posicion
-            //Del turno, entonces es su turno (Para saber si puede ingresar opcion de carta o no)
-            return true;
-        } else {
-            return false;
-        }
+        } else return j.jugadorID().equalsIgnoreCase(id);
     }
 
     @Override
@@ -228,7 +272,7 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
     public ArrayList<Boolean> getValidas(String id) {
         Condicion condiciones = new Condicion();
 
-        boolean cartasValidas = false;
+
         Jugador j = buscarJugador(id);
         Mano mano = j.mostrarCartas();
 
@@ -238,17 +282,12 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
             Carta carta = mano.leerCartaMano(i);
             Carta descarte = mazoDeDescarte.ultimaCarta();
             if(condiciones.sePuedeTirar(descarte, carta)){
-                cartasValidas = true;
                 posibles.add(true);
             } else {
                 posibles.add(false);
             }
         }
-        if(!cartasValidas){
-            return null;
-        } else {
-            return posibles;
-        }
+        return posibles;
     }
 
     @Override
@@ -258,7 +297,12 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
 
         Jugador j = buscarJugador(id);
         Carta carta = j.mostrarCarta(pos);
-
+        if(carta.valor() == TipoCarta.MAS_CUATRO){//Puede desafiar
+            avisarJugadorPuedeDesafiar();
+            //No se debe jugar la carta
+            turno.seguirTurno();
+            return true;
+        }
         Condicion condiciones = new Condicion();
 
         boolean seTiro = false;
@@ -267,6 +311,10 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
             seTiro = true;
             j.tirarCarta(pos);
             color = carta.jugar(this);
+            /**
+           MIRAR POR QUÈ CUANDO PIDE COLOR TAMBIEN LEVANTA CARTAS HASTA PODER TIRAR UNA
+             SE SUPONE QUE ESPERE A PEDIR COLOR Y FIN
+             **/
         }
         boolean finalizo = false;
         if(j.cantCartasMano() == 0){
@@ -278,26 +326,31 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
             //Entonces sigo al siguiente turno
             //Si no espero hasta que me de el color
             mazoDeDescarte.agregar(carta);
-            siguienteTurno();
+            turno.seguirTurno();
             actualizarCartaDescarte();
-            actualizarCartasVista();
         }//Si debe elegir color entonces el color de la carta y el descarte se actualizan en otro metodo
+        actualizarCartasVista();
         return seTiro;
-    }
-    public void cambioDeSentido(){
-        this.sentido = !sentido;
     }
 
     @Override
     public void elegirColor(Color color, String idj) throws RemoteException {
+        /*
+        Un jugador cambio el color
+         */
         CartaVacia carta = new CartaVacia(color);
         mazoDeDescarte.agregar(carta);
         actualizarCartaDescarte();
         actualizarCartasVista();
-        siguienteTurno();
+        turno.seguirTurno();
     }
     @Override
-    public void quitarJugador(String idJugador, ControladorVista cr) throws RemoteException {
+
+    public void quitarJugador(String idJugador) throws RemoteException {
+         /*
+        Un jugador se desconecto y debo sacarlo, la partida empieza de 0?
+         */
+
         Jugador j = buscarJugador(idJugador);
         jugadores.remove(j);
         jugadoresListos=0;
@@ -307,6 +360,9 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
 
     @Override
     public boolean agregarJugador(String id){
+        /*
+        agrego un jugador a la partida
+         */
         if(jugadores.size() == 4){
             return false; //No se puede agregar
         } else {
@@ -317,7 +373,7 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
             if(buscarJugador(id) == null){
                 jugadores.add(jugador);
                 //reset partida?
-                turno = 0;
+                turno = new TurnoPartida(jugadores.size());
                 //Si se suma un jugador se resetea la partida?
             }
             return true; //Se puede agregar
@@ -325,8 +381,10 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
     }
     @Override
     public int buscarNumeroCarta(int pos, String idJ){
+        /*
+        Este metodo esta en la ultima version de mi pc
+         */
         Jugador j = buscarJugador(idJ);
-        Carta carta = j.mostrarCarta(pos);
         int valor = -1;
         try{
             CartaNumerica cAux = (CartaNumerica) j.mostrarCarta(pos);
@@ -336,36 +394,96 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         }
         return valor;
     }
-            //OBSERVABLE REMOTO
+
+
 
     public void actualizarJugadoresNoListos() throws RemoteException {
+        /*
+        Aviso a los jugadores que la partida comenzo, fusionar con "actualizarInicioPartida();"
+         */
         this.notificarObservadores(Eventos.NUEVA_PARTIDA);
     }
 
     public void actualizarInicioPartida() throws RemoteException {
+         /*
+        Aviso a los jugadores que la partida comenzo
+         */
         this.notificarObservadores(Eventos.INICIAR_PARTIDA);
     }
 
     public void pedirColorJugador() throws RemoteException {
+        /*
+        Aviso a los jugadores que se espera que la persona con el turno actual
+        elija el color al cual quiere cambiar
+         */
         this.notificarObservadores(Eventos.PEDIR_COLOR);
     }
 
     @Override
-    public void actualizarCartaDescarte() throws RemoteException {
-        this.notificarObservadores(Eventos.CARTA_DESCARTE);
+
+    public boolean actualizarCartaDescarte() throws RemoteException {
+        /*
+        Aviso a los jugadores que la carta de descarte cambio y deben actualizarla
+         */
+        if(jugadoresListos == jugadores.size()){
+            this.notificarObservadores(Eventos.CARTA_DESCARTE);
+            return true;
+        } else {
+            return false;
+        }
+
     }
+    @Override
+    public void actualizarYaNoHayDesafio() throws RemoteException {
+        /*
+        Aviso al jugador del turno actual que decidio no desafiar a la persona
+        que le tiro un +4, entonces levanta esas 4 cartas y se saltea su turno
+         */
+        notificarObservadores(Eventos.YA_NO_SE_PUEDE_DESAFIAR);
+    }
+
 
     @Override
     public void actualizarCartasVista() throws RemoteException {
         this.notificarObservadores(Eventos.MOSTRAR_MANO);
     }
-    @Override
-    public void agregarObserver(ControladorVista controlador) throws RemoteException {
-        this.agregarObservador(controlador);
+
+    public void actualizarJugadoresVista() throws RemoteException {
+        this.notificarObservadores(Eventos.CAMBIO_JUGADORES);
     }
     @Override
-    public boolean yaEmpezo(){
-        return jugadoresListos == jugadores.size();
+    public void jugadorPaso() throws RemoteException {
+        turno.seguirTurno();
+        iniciarTurno();
     }
 
+
+    @Override
+    public void noDijoUNO() throws RemoteException {
+        /*
+        Chequeo si no dijo uno?
+        debo hacer un metodo que avise cuándo el jugador ya tiro, eso haría que ya no pueda "avisar"
+        Es un evento nuevo
+        Hago esto pero con el jugador del turno anterior
+        levantarDosCartas();
+         */
+    }
+    public void avisarJugadorPuedeDesafiar() throws RemoteException {
+        this.notificarObservadores(Eventos.PUEDE_DESAFIAR);
+
+    }
+
+    public void avisarJugadoresNoDijoUNO() throws RemoteException {
+        /*
+        Aviso a los demas jugadores que el jugador que acaba de tirar le queda 1 carta restanto
+        pero no dijo uno, asi que pueden avisar antes de que el sig jugador tire
+        para que tenga que levantar 2 cartas
+         */
+        this.notificarObservadores(Eventos.NO_DIJO_UNO);
+    }
+
+    @Override
+    public Mano manoJugadorAnterior() throws RemoteException {
+        return jugadores.get(turno.turnoAnterior()).mostrarCartas();
+    }
 }

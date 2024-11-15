@@ -14,12 +14,19 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class ControladorVista implements IControladorRemoto, Serializable {
-    String idJ;
+
     IPartida iPartida;
-    IVista consola;
-    IVista grafica;
-    public void conectarJugador(String idJ){
-        this.idJ = idJ;
+    ArrayList<IVista> vistas = new ArrayList<>();
+    String id;
+    public void conectar(IVista vista){
+        vistas.add(vista);
+    }
+    public void conectarID(String id){
+        this.id = id;
+    }
+    public String idJugador(){
+        return this.id;
+
     }
     public void conectarConsola(IVista consola){
         this.consola = consola;
@@ -30,28 +37,75 @@ public class ControladorVista implements IControladorRemoto, Serializable {
     public boolean partidaYaInicio() throws RemoteException {
         return iPartida.yaEmpezo();
     }
+
     public int cantJugadoresConectados() throws RemoteException{
         return iPartida.cantJugadores();
     }
+
+    public int cantJugadoresListos() throws RemoteException {
+        return iPartida.cantJugadoresListos();
+    }
     public boolean opcion(String op) throws RemoteException {
-        return iPartida.tirarCarta(idJ, op);
+        return iPartida.tirarCarta(id, op);
+
     }
     public void iniciar() throws RemoteException {
+        for(IVista v: vistas){
+            v.esperandoInicio();
+        }
         iPartida.agregarJugadorListo();
     }
+
+    public void preguntarSiPasaTurno(){
+        for(IVista v: vistas){
+            v.mostrarOpcionPasarTurno();
+        }
+    }
+    public void avisarQuePuedeDesafiar() throws RemoteException {
+        //Solo debe avisar a quien tiene el turno actual
+        for(IVista v: vistas){
+            v.puedeDesafiar();
+        }
+    }
+    public void desafiarJugador() throws RemoteException {
+        //Aviso a la partida que el jugador del turno actual quiere desafiar al jugador anterior (que tiro el +4)
+        iPartida.desafio();
+    }
+    public void pasarTurno() throws RemoteException {
+        iPartida.jugadorPaso();
+    }
+    public void jugadorDesafiado() throws RemoteException {
+        iPartida.desafio();
+    }
+    public void avisarNoDijoUNO() throws RemoteException {
+        iPartida.noDijoUNO();
+    }
     //Aca se hace la ejecución de "comandos"/"Acciones" en el juego
-    public void levantarCartaObligatorio(){
-        grafica.levantarCarta();
-        consola.levantarCarta();
+    public void levantarCarta() throws RemoteException {
+        iPartida.levantarCarta();
     }
     public boolean esSuTurno() throws RemoteException{
-        return iPartida.esTurno(this.idJ);
+        return iPartida.esTurno(id);
     }
     public void cambiarColor(Color color) throws RemoteException {
-        iPartida.elegirColor(color, idJ);
+        iPartida.elegirColor(color, id);
+        for(IVista v: vistas){
+            /*
+            Esto sirve para que una vista grafica le pueda informar a la otra que cambio el color
+            Mas que nada porque Interfaz grafica hace algo especifico cuando ya se cambio el color
+             */
+            v.seCambioElColor();
+        }
+    }
+    public boolean empezoLaPartida() throws RemoteException{
+        return iPartida.estadoPartida();
+
     }
     public boolean agregarJugador() throws RemoteException{
          return iPartida.agregarJugador(idJ);
+    }
+    public boolean puedoAgregarJugador() throws RemoteException{
+        return iPartida.agregarJugador(id);
     }
     public boolean esNumero(String valor){
         boolean resultado;
@@ -72,12 +126,17 @@ public class ControladorVista implements IControladorRemoto, Serializable {
             case BLOQUEO -> t ="Color: " + color + " | Efecto: Bloqueo";
             case MAS_CUATRO -> t ="Color: " + color + " | Efecto: +4 y cambio de color";
             case CAMBIO_COLOR -> t ="Color: " + color + " | Efecto: Cambio de color";
-            case COMUN -> {
-                t ="Color: " + color + " | Valor: " + obtenerNumero(pos);;
-            }
+
+            case COMUN -> t ="Color: " + color + " | Valor: " + obtenerNumero(pos);
             case VACIA -> t ="Color: " + color;
         };
         return t;
+    }
+    public void otroJugadorEstaListo() throws RemoteException {
+        for(IVista v: vistas){
+            v.otroJugadorListo();
+        }
+
     }
 
     @Override
@@ -93,66 +152,92 @@ public class ControladorVista implements IControladorRemoto, Serializable {
             switch((Eventos) cambio){
                 case INICIAR_PARTIDA -> avisarInicio();
                 case CARTA_DESCARTE -> actualizarDescarte();
-                case PEDIR_COLOR -> pedirElColor();
-                case MOSTRAR_MANO -> actualizarCartasJugador();
+                case PEDIR_COLOR -> {if(esSuTurno()) pedirElColor();}
+                case MOSTRAR_MANO -> {if(esSuTurno()) actualizarCartasJugador();}
                 case NUEVA_PARTIDA -> jugadorNoListo();
+                case CAMBIO_JUGADORES -> otroJugadorEstaListo();
+                case DESAFIO -> jugadorDesafiado();
+                case PUEDE_DESAFIAR -> {if(esSuTurno())avisarQuePuedeDesafiar();}
+                //case YA_NO_SE_PUEDE_DESAFIAR -> avisarQueYaNoPuedeDesafiar();
+                case NO_DIJO_UNO -> avisarNoDijoUNO();
+                //case YA_PASO_UNO -> avisarPasoUNO();
             }
         }
     }
     public void avisarInicio(){
-        grafica.avisoInicio();
-        consola.avisoInicio();
+
+        for(IVista vista: vistas){
+            vista.avisoInicio();
+        }
+
     }
+
     public void actualizarDescarte() throws RemoteException{
-        Color color = iPartida.getColorDescarte();
-        TipoCarta tipoCarta = iPartida.getTipoDescarte();
-        grafica.setDescarte(color, tipoCarta);
-        consola.setDescarte(color, tipoCarta);
+
+        for(IVista vista: vistas){
+            vista.setDescarte(iPartida.getColorDescarte(), iPartida.getTipoDescarte());
+        }
+
     }
+
+
     public void pedirElColor() throws RemoteException {
-        grafica.pedirCambioColor();
-        consola.pedirCambioColor();
+
+        for(IVista vista: vistas){
+            vista.pedirCambioColor();
+        }
     }
     public void actualizarCartasJugador() throws RemoteException {
-        ArrayList<Color> colores = iPartida.getColores(idJ);
-        ArrayList<TipoCarta> valores = iPartida.getValores(idJ);
-        ArrayList<Boolean> posibles = iPartida.getValidas(idJ);
-        if(posibles == null){
-            //Esto significa que no hay cartas validas para tirar
-            levantarCartaObligatorio();
-            iPartida.levantarCarta();
-        } else {
-            grafica.mostrarCartasJugador(colores, valores, posibles);
-            consola.mostrarCartasJugador(colores, valores, posibles);
+        ArrayList<Color> colores = iPartida.getColores(id);
+        ArrayList<TipoCarta> valores = iPartida.getValores(id);
+        ArrayList<Boolean> posibles = iPartida.getValidas(id);
+        for(IVista vista: vistas) {
+            vista.mostrarCartasJugador(colores, valores, posibles);
         }
     }
     public int obtenerNumero(int pos) throws RemoteException {
-        return iPartida.buscarNumeroCarta(pos, idJ);
+        return iPartida.buscarNumeroCarta(pos, id);
+
     }
     public int obtenerNumeroDescarte() throws RemoteException {
-        return iPartida.getNumeroDescarte();
+        try{
+            return iPartida.getNumeroDescarte();
+        } catch(NullPointerException e){
+            e.printStackTrace();
+            return 0;
+        }
     }
     public void desconectarJugador() throws RemoteException {
         if(iPartida!=null){
             //Si la partida ya se "creo" entonces elimino al jugador de ella
-            iPartida.quitarJugador(idJ, ControladorVista.this);
+
+            iPartida.quitarJugador(id);
+
         }
     }
     public String getID(){
         return idJ;
     }
     public void jugadorNoListo(){
-        grafica.marcarNoListo();
-        consola.marcarNoListo();
+
+        for(IVista vista: vistas){
+            vista.marcarNoListo();
+        }
+
     }
     public Color deStringAColorCarta(String color){
-        Color nuevoColor = null;
-        switch(color.toLowerCase()){
-            case "verde": nuevoColor = Color.VERDE;
-            case "rojo": nuevoColor = Color.ROJO;
-            case "amarillo": nuevoColor = Color.AMARILLO;
-            case "azul": nuevoColor = Color.AZUL;
+        return switch (color.toLowerCase()) {
+            case "verde" -> Color.VERDE;
+            case "rojo" -> Color.ROJO;
+            case "amarillo" -> Color.AMARILLO;
+            case "azul" -> Color.AZUL;
+            default -> Color.INVALIDO;
+        };
+    }
+
+    public void noPuedeLevantar() {
+        for(IVista v: vistas){
+            v.yaLevanto();
         }
-        return nuevoColor;
     }
 }

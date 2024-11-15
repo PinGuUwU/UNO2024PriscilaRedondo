@@ -10,7 +10,11 @@ import java.util.ArrayList;
 
 public interface IPartida extends IObservableRemoto{
 
-    void actualizarCartasVista() throws RemoteException;
+
+    void actualizarYaNoHayDesafio() throws RemoteException;
+
+    boolean actualizarCartasVista() throws RemoteException;
+
 
     int cantJugadores() throws RemoteException;
 
@@ -21,6 +25,14 @@ public interface IPartida extends IObservableRemoto{
     int buscarNumeroCarta(int pos, String idJ) throws RemoteException;
 
     void actualizarCartaDescarte() throws RemoteException;
+
+    int cantJugadoresListos() throws RemoteException;
+
+    ArrayList<Color> getColores(String id) throws RemoteException;
+
+    ArrayList<TipoCarta> getValores(String id) throws RemoteException;
+
+    ArrayList<Boolean> getValidas(String id) throws RemoteException;
 
     boolean tirarCarta(String op, String j) throws RemoteException;
 
@@ -36,17 +48,25 @@ public interface IPartida extends IObservableRemoto{
 
     void elegirColor(Color color, String idJ) throws RemoteException;
 
-    void quitarJugador(String idJugador, ControladorVista cr) throws RemoteException;
+
+    void quitarJugador(String idJ) throws RemoteException;
+
 
     boolean agregarJugador(String idJ) throws RemoteException;
 
-
-    ArrayList<Color> getColores(String id) throws RemoteException;
-
-    ArrayList<TipoCarta> getValores(String id) throws RemoteException;
-
-    ArrayList<Boolean> getValidas(String id) throws RemoteException;
-
     void levantarCarta() throws RemoteException;
 
+
+    boolean estadoPartida() throws RemoteException;
+
+
+    void jugadorPaso() throws RemoteException;
+
+
+
+    void noDijoUNO() throws RemoteException;
+
+    void desafio() throws RemoteException;
+
+    Mano manoJugadorAnterior() throws RemoteException;
 }
