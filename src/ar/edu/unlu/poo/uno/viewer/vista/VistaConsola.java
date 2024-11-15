@@ -191,21 +191,20 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
     }
 
     @Override
-    public void setDescarte(Color color, TipoCarta valor) throws RemoteException {
-        String esp = controlador.tipo(valor, color, -1, idJugador);
+    public void setDescarte(Color color, TipoCarta valor){
+        String esp = controlador.tipo(valor, color);
         if(esp != null){
             consola.append("            Ultima carta tirada: " + esp + "\n");
         } else {
             consola.append("            Ultima carta tirada: " + color.toString() + " " + valor.toString() + "\n");
         }
     }
-
     @Override
-    public void mostrarCartasJugador(ArrayList<Color> colores, ArrayList<TipoCarta> valores, ArrayList<Boolean> posibles) throws RemoteException {
+    public void mostrarCartasJugador(ArrayList<Color> colores, ArrayList<TipoCarta> valores, ArrayList<Boolean> posibles){
         String carta;
         consola.append("    Tu mano de cartas es: \n");
         for(int i=0; i<colores.size(); i++){
-            carta = "Carta " + i + " | " + (controlador.tipo(valores.get(i), colores.get(i), i, idJugador));
+            carta = "Carta " + i + " | " + (controlador.tipo(valores.get(i), colores.get(i)));
             if(posibles.get(i)){
                 carta += " | ('SI' se puede tirar)";
             } else {

@@ -59,14 +59,7 @@
         </constraints>
         <properties/>
         <border type="none"/>
-        <children>
-          <component id="16afc" class="javax.swing.JButton" binding="listoParaJugar">
-            <constraints/>
-            <properties>
-              <text value="Button"/>
-            </properties>
-          </component>
-        </children>
+        <children/>
       </grid>
       <grid id="68647" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
         <constraints>

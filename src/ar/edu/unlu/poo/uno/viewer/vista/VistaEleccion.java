@@ -39,7 +39,7 @@ public class VistaEleccion implements VentanaListener, Serializable {
             public void windowClosing(WindowEvent e) {
                 if(listener != null){
                     try {
-                        controlador.desconectarJugador(idJugador);
+                        listener.onVentanaCerrada("vistaeleccion");
                     } catch (RemoteException ex) {
                         throw new RuntimeException(ex);
                     }
@@ -54,10 +54,10 @@ public class VistaEleccion implements VentanaListener, Serializable {
         eligeComoQuieresJugarTextArea.setFocusable(false);
 
         iConsola = new VistaConsola(VistaEleccion.this, idJugador, controlador);
-        controlador.conectarConsola(iConsola);
+        controlador.conectar(iConsola);
         iConsola.frame.setVisible(false);
         iGrafica = new VistaInterfazGrafica(VistaEleccion.this, idJugador, controlador);
-        controlador.conectarGrafica(iGrafica);
+        controlador.conectar(iGrafica);
         iGrafica.frame.setVisible(false);
 
 
