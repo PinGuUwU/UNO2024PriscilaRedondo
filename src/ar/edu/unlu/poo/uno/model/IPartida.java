@@ -41,7 +41,7 @@ public interface IPartida extends IObservableRemoto{
 
     void elegirColor(Color color, String idJ) throws RemoteException;
 
-    void quitarJugador(String idJugador) throws RemoteException;
+    void quitarJugador(String idJ) throws RemoteException;
 
     boolean agregarJugador(String idJ) throws RemoteException;
 
@@ -49,7 +49,6 @@ public interface IPartida extends IObservableRemoto{
 
     boolean estadoPartida() throws RemoteException;
 
-    void actualizarJugadoresVista() throws RemoteException;
 
     void jugadorPaso() throws RemoteException;
 
@@ -57,10 +56,6 @@ public interface IPartida extends IObservableRemoto{
     void noDijoUNO() throws RemoteException;
 
     void desafio() throws RemoteException;
-
-    void desafiadoLevantaCuatroCartas() throws RemoteException;
-
-    void levantarSeisCartas() throws RemoteException;
 
     Mano manoJugadorAnterior() throws RemoteException;
 }

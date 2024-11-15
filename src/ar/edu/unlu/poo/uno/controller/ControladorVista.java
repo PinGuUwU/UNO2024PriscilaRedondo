@@ -70,9 +70,6 @@ public class ControladorVista implements IControladorRemoto, Serializable {
     public void jugadorDesafiado() throws RemoteException {
         iPartida.desafio();
     }
-    public void noPuedeLevantar(){
-
-    }
     public void avisarNoDijoUNO() throws RemoteException {
         iPartida.noDijoUNO();
     }
@@ -213,5 +210,11 @@ public class ControladorVista implements IControladorRemoto, Serializable {
             case "azul" -> Color.AZUL;
             default -> Color.INVALIDO;
         };
+    }
+
+    public void noPuedeLevantar() {
+        for(IVista v: vistas){
+            v.yaLevanto();
+        }
     }
 }

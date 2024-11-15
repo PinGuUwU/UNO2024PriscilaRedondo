@@ -25,9 +25,9 @@ public class ControladorRanking implements Serializable {
         ArrayList<Jugador> jugadores = ranking.getTopGanadores();
         List<String> nombres = new ArrayList<>();
         List<Integer> cantidad = new ArrayList<>();
-        for(int i=0; i<jugadores.size();i++){
-            nombres.add(jugadores.get(i).name());
-            cantidad.add(jugadores.get(i).partidasGanadas());
+        for (Jugador j : jugadores) {
+            nombres.add(j.name());
+            cantidad.add(j.partidasGanadas());
         }
         vista.actualizarRanking(nombres, cantidad);
     }
@@ -35,9 +35,9 @@ public class ControladorRanking implements Serializable {
         ArrayList<Jugador> jugadores = ranking.getTopPerdedores();
         List<String> nombres = new ArrayList<>();
         List<Integer> cantidad = new ArrayList<>();
-        for(int i=0; i<jugadores.size();i++){
-            nombres.add(jugadores.get(i).name());
-            cantidad.add(jugadores.get(i).partidasPerdidas());
+        for (Jugador j : jugadores) {
+            nombres.add(j.name());
+            cantidad.add(j.partidasPerdidas());
         }
         vista.actualizarRanking(nombres, cantidad);
     }

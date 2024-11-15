@@ -325,6 +325,10 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
     public void decirUNO() {
 
     }
+    @Override
+    public void yaLevanto(){
+        levanto=true;
+    }
 
     @Override
     public void desafiarJugadorAnterior() throws RemoteException {

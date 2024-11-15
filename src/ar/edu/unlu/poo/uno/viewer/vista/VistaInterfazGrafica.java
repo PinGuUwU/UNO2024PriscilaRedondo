@@ -235,6 +235,10 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
             }
         });
     }
+    @Override
+    public void yaLevanto(){
+        levanto=true;
+    }
     private void agregarListenerCarta(JButton boton){
         boton.addActionListener(new ActionListener() {
             @Override

@@ -39,7 +39,8 @@ public class Ranking implements Serializable{
 
     }
 
-    public String agregarJugador(String username){//Serializacion
+    public String agregarJugador(String username){
+        //Serializacion
         //Tuve que usar estructura try catch porque a la hora de usar
         //Los metodos (File) de estos objetos me lo exigían y lo busqué en internet
             int nuevoID = Integer.parseInt(this.ultimoID());

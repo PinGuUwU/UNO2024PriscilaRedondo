@@ -114,10 +114,65 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         j.levantarCarta(mazoDeRobo.robar());
         actualizarCartasVista();
     }
+    public void cambioDeSentido(){
+        this.sentido = !sentido;
+    }
+
+    public void desafiadoLevantaCuatroCartas() throws RemoteException {
+        /*
+        Si desafiaron a un jugador (+4) y tiro de forma ilegar la carta
+        el desafiado debera levantar 4 cartas
+         */
+        for(int i=0; i<4; i++){
+            levantarCartaEspecial(turno.turnoActual());
+        }
+    }
+    public void levantarSeisCartas() throws RemoteException {
+        /*
+        Si desafiaron a un jugador (+4) y tiro de forma legar la carta
+        el desafiador debera levantar 6 cartas
+         */
+        for(int i=0; i<6; i++){
+            levantarCartaEspecial(turno.turnoAnterior());
+        }
+    }
+    public void levantarCuatroCartas() throws RemoteException {
+        //Roba 4 cartas
+        int sigTurno = turno.siguienteTurno();
+        for(int i=0; i<4; i++){
+            levantarCartaEspecial(sigTurno);
+        }
+    }
+
+    public void levantarDosCartas() throws RemoteException {
+        int sigTurno = turno.siguienteTurno();
+        for(int i=0; i<2; i++){
+            levantarCartaEspecial(sigTurno);
+        }
+    }
 
 
-
-    //IPARTIDA
+    @Override
+    public void desafio() throws RemoteException {
+        /*Aca le aviso al del turno anterior que fue desafiado
+        Usando turnoAnterior();
+        El mismo Objeto que se encarga de los turnos puede hacerse cargo
+        de fijarse que se debe hacer cuando fue desafiado
+        ver quien de los dos debe levantar cartas y cuantas cartas
+        Algo similar a lo que hice con cartas.jugar(this)
+         */
+        Mano manoJ = manoJugadorAnterior();
+        Carta descarte = mazoDeDescarte.anteultimaCarta();
+        if(Condicion.tieneParaTirar(manoJ, descarte)){
+            //Si tenia para tirar, entonces debera levantar esas 4 cartas como castigo
+            //Por tirarla de forma ilegal, el turno sigue normal para quien lo desafio
+            desafiadoLevantaCuatroCartas();
+        } else {
+            //Si el jugador no tenia para tirar, el que desafio
+            //Levantara 6 cartas
+            levantarSeisCartas();
+        }
+    }
 
     @Override
     public void agregarJugadorListo() throws RemoteException {
@@ -273,9 +328,6 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         actualizarCartasVista();
         return seTiro;
     }
-    public void cambioDeSentido(){
-        this.sentido = !sentido;
-    }
 
     @Override
     public void elegirColor(Color color, String idj) throws RemoteException {
@@ -335,7 +387,8 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         }
         return valor;
     }
-            //OBSERVABLE REMOTO
+
+
 
     public void actualizarJugadoresNoListos() throws RemoteException {
         /*
@@ -390,7 +443,6 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
             return false;
         }
     }
-    @Override
     public void actualizarJugadoresVista() throws RemoteException {
         this.notificarObservadores(Eventos.CAMBIO_JUGADORES);
     }
@@ -415,28 +467,7 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         this.notificarObservadores(Eventos.PUEDE_DESAFIAR);
     }
 
-    @Override
-    public void desafio() throws RemoteException {
-        /*Aca le aviso al del turno anterior que fue desafiado
-        Usando turnoAnterior();
-        El mismo Objeto que se encarga de los turnos puede hacerse cargo
-        de fijarse que se debe hacer cuando fue desafiado
-        ver quien de los dos debe levantar cartas y cuantas cartas
-        Algo similar a lo que hice con cartas.jugar(this)
-         */
-        Mano manoJ = manoJugadorAnterior();
-        Carta descarte = mazoDeDescarte.anteultimaCarta();
-        if(Condicion.tieneParaTirar(manoJ, descarte)){
-            //Si tenia para tirar, entonces debera levantar esas 4 cartas como castigo
-            //Por tirarla de forma ilegal, el turno sigue normal para quien lo desafio
-            desafiadoLevantaCuatroCartas();
-        } else {
-            //Si el jugador no tenia para tirar, el que desafio
-            //Levantara 6 cartas
-            levantarSeisCartas();
-        }
-    }
-    public void avisarJugadoresNoDijoUno() throws RemoteException {
+    public void avisarJugadoresNoDijoUNO() throws RemoteException {
         /*
         Aviso a los demas jugadores que el jugador que acaba de tirar le queda 1 carta restanto
         pero no dijo uno, asi que pueden avisar antes de que el sig jugador tire
@@ -444,40 +475,7 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
          */
         this.notificarObservadores(Eventos.NO_DIJO_UNO);
     }
-    @Override
-    public void desafiadoLevantaCuatroCartas() throws RemoteException {
-        /*
-        Si desafiaron a un jugador (+4) y tiro de forma ilegar la carta
-        el desafiado debera levantar 4 cartas
-         */
-        for(int i=0; i<4; i++){
-            levantarCartaEspecial(turno.turnoActual());
-        }
-    }
-    @Override
-    public void levantarSeisCartas() throws RemoteException {
-        /*
-        Si desafiaron a un jugador (+4) y tiro de forma legar la carta
-        el desafiador debera levantar 6 cartas
-         */
-        for(int i=0; i<6; i++){
-            levantarCartaEspecial(turno.turnoAnterior());
-        }
-    }
-    public void levantarCuatroCartas() throws RemoteException {
-        //Roba 4 cartas
-        int sigTurno = turno.siguienteTurno();
-        for(int i=0; i<4; i++){
-            levantarCartaEspecial(sigTurno);
-        }
-    }
 
-    public void levantarDosCartas() throws RemoteException {
-        int sigTurno = turno.siguienteTurno();
-        for(int i=0; i<2; i++){
-            levantarCartaEspecial(sigTurno);
-        }
-    }
     @Override
     public Mano manoJugadorAnterior() throws RemoteException {
         return jugadores.get(turno.turnoAnterior()).mostrarCartas();

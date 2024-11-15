@@ -26,6 +26,7 @@ public interface IVista {
     int cantJugadoresListos() throws RemoteException;
 
     int cantJugadoresTotal() throws RemoteException;
+    void yaLevanto() throws RemoteException;
 
     void decirUNO();
 
