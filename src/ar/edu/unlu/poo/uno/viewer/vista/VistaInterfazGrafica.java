@@ -19,10 +19,10 @@ import java.util.ArrayList;
 import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 
 public class VistaInterfazGrafica implements VentanaListener, IVista, Serializable {
-    private final boolean puedeJugar;
-    private boolean listo = false;
     private boolean pidiendoColor = false;
+
     private boolean levanto = false;
+
     ControladorVista controlador;
     VentanaListener listener;
     VistaPerfil iPerfil;
@@ -42,10 +42,12 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
     private JButton robo;
     private JPanel cambioColor;
     private JComboBox<String> elegirColor;
+
     private JPanel panelBajo;
     private JButton pasarTurno;
     private JButton desafio;
     private JButton uno;
+
     private ArrayList<JButton> botonesLinea1 = new ArrayList<>();
 
     /*
@@ -67,6 +69,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
         this.listener = listener;
         if(!controlador.puedoAgregarJugador()){//Si no se puede agregar jugador
             estadoTurno.append("Partida llena.");
+
             puedeJugar = false;
         } else {//Solo doy el aviso, no voy a manejar nada mas
             puedeJugar = true;
@@ -111,14 +114,10 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
         frame.setVisible(true);
     }
     private void bienvenida(){
-        JButton listoParaJugar= new JButton();
         listoParaJugar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                linea1.remove(listoParaJugar);
-                linea1.repaint();
-                linea1.revalidate();
-                listo = true;
+                comenzar();
                 try {
                     controlador.iniciar();
                     marcarListo();
@@ -141,6 +140,12 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
         if (!controlador.empezoLaPartida()){
             estadoTurno.setText("Esperando a los demás jugadores.");
         }
+    }
+    public void comenzar(){
+        linea1.remove(listoParaJugar);
+        linea1.repaint();
+        linea1.revalidate();
+        listo = true;
     }
     private void agregarListeners(){
         pasarTurno.addActionListener(new ActionListener() {
@@ -214,12 +219,16 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(iPerfil == null){
+
                     iPerfil = new VistaPerfil(VistaInterfazGrafica.this, controlador.idJugador());
+
                 } else if(!iPerfil.frame.isVisible()){
                     iPerfil.frame.setVisible(true);
                     iPerfil.setInTop();
                 }
+
                 iPerfil.actualizarPerfil(controlador.idJugador());
+
             }
         });
         ranking.addActionListener(new ActionListener() {
@@ -259,8 +268,10 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
                             throw new RuntimeException(ex);
                         }
 
+
                     } else if(pidiendoColor){
                         estadoTurno.append("Debe elegir un color y apretar 'confirmar'");
+
                     }
                 } catch (RemoteException ex) {
                     throw new RuntimeException(ex);
@@ -394,6 +405,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
         //Avisa que todos los jugadores están listos y el juego está por comenzar
         estadoTurno.append("Iniciando la partida.");
         marcarListo();
+        comenzar();
     }
 
     @Override

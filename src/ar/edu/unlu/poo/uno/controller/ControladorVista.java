@@ -1,10 +1,9 @@
 package ar.edu.unlu.poo.uno.controller;
 
-import ar.edu.unlu.poo.uno.model.cartas.CartaNumerica;
+import ar.edu.unlu.poo.uno.model.Partida;
 import ar.edu.unlu.poo.uno.model.cartas.Color;
 import ar.edu.unlu.poo.uno.model.Eventos;
 import ar.edu.unlu.poo.uno.model.IPartida;
-import ar.edu.unlu.poo.uno.model.Ranking;
 import ar.edu.unlu.poo.uno.model.cartas.TipoCarta;
 import ar.edu.unlu.poo.uno.viewer.vista.IVista;
 import ar.edu.unlu.rmimvc.cliente.IControladorRemoto;
@@ -15,6 +14,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class ControladorVista implements IControladorRemoto, Serializable {
+
     IPartida iPartida;
     ArrayList<IVista> vistas = new ArrayList<>();
     String id;
@@ -26,22 +26,28 @@ public class ControladorVista implements IControladorRemoto, Serializable {
     }
     public String idJugador(){
         return this.id;
+
     }
-    public boolean mostrarManoJugador() throws RemoteException {
-        return iPartida.actualizarCartasVista();
+    public void conectarConsola(IVista consola){
+        this.consola = consola;
     }
-    public boolean mostrarCartaDescarte() throws RemoteException {
-        return iPartida.actualizarCartaDescarte();
+    public void conectarGrafica(IVista grafica){
+        this.grafica = grafica;
+    }
+    public boolean partidaYaInicio() throws RemoteException {
+        return iPartida.yaEmpezo();
     }
 
     public int cantJugadoresConectados() throws RemoteException{
         return iPartida.cantJugadores();
     }
+
     public int cantJugadoresListos() throws RemoteException {
         return iPartida.cantJugadoresListos();
     }
     public boolean opcion(String op) throws RemoteException {
         return iPartida.tirarCarta(id, op);
+
     }
     public void iniciar() throws RemoteException {
         for(IVista v: vistas){
@@ -49,6 +55,7 @@ public class ControladorVista implements IControladorRemoto, Serializable {
         }
         iPartida.agregarJugadorListo();
     }
+
     public void preguntarSiPasaTurno(){
         for(IVista v: vistas){
             v.mostrarOpcionPasarTurno();
@@ -92,9 +99,10 @@ public class ControladorVista implements IControladorRemoto, Serializable {
     }
     public boolean empezoLaPartida() throws RemoteException{
         return iPartida.estadoPartida();
+
     }
-    public boolean agregarJugador(String id) throws RemoteException{
-         return iPartida.agregarJugador(id);
+    public boolean agregarJugador() throws RemoteException{
+         return iPartida.agregarJugador(idJ);
     }
     public boolean puedoAgregarJugador() throws RemoteException{
         return iPartida.agregarJugador(id);
@@ -118,6 +126,7 @@ public class ControladorVista implements IControladorRemoto, Serializable {
             case BLOQUEO -> t ="Color: " + color + " | Efecto: Bloqueo";
             case MAS_CUATRO -> t ="Color: " + color + " | Efecto: +4 y cambio de color";
             case CAMBIO_COLOR -> t ="Color: " + color + " | Efecto: Cambio de color";
+
             case COMUN -> t ="Color: " + color + " | Valor: " + obtenerNumero(pos);
             case VACIA -> t ="Color: " + color;
         };
@@ -127,13 +136,14 @@ public class ControladorVista implements IControladorRemoto, Serializable {
         for(IVista v: vistas){
             v.otroJugadorListo();
         }
+
     }
 
     @Override
     public <T extends IObservableRemoto> void setModeloRemoto(T modeloRemoto) throws RemoteException {
         //iPartida = new Partida();
         this.iPartida = (IPartida) modeloRemoto;
-        //iPartida.agregarObserver(ControladorVista.this);
+        iPartida.agregarObserver(ControladorVista.this);
     }
 
     @Override
@@ -155,19 +165,24 @@ public class ControladorVista implements IControladorRemoto, Serializable {
         }
     }
     public void avisarInicio(){
+
         for(IVista vista: vistas){
             vista.avisoInicio();
         }
+
     }
 
     public void actualizarDescarte() throws RemoteException{
+
         for(IVista vista: vistas){
             vista.setDescarte(iPartida.getColorDescarte(), iPartida.getTipoDescarte());
         }
+
     }
 
 
     public void pedirElColor() throws RemoteException {
+
         for(IVista vista: vistas){
             vista.pedirCambioColor();
         }
@@ -182,6 +197,7 @@ public class ControladorVista implements IControladorRemoto, Serializable {
     }
     public int obtenerNumero(int pos) throws RemoteException {
         return iPartida.buscarNumeroCarta(pos, id);
+
     }
     public int obtenerNumeroDescarte() throws RemoteException {
         try{
@@ -194,13 +210,20 @@ public class ControladorVista implements IControladorRemoto, Serializable {
     public void desconectarJugador() throws RemoteException {
         if(iPartida!=null){
             //Si la partida ya se "creo" entonces elimino al jugador de ella
+
             iPartida.quitarJugador(id);
+
         }
     }
+    public String getID(){
+        return idJ;
+    }
     public void jugadorNoListo(){
+
         for(IVista vista: vistas){
             vista.marcarNoListo();
         }
+
     }
     public Color deStringAColorCarta(String color){
         return switch (color.toLowerCase()) {

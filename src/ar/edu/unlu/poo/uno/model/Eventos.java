@@ -7,6 +7,7 @@ public enum Eventos {
     -iniciar la partida
 
      */
+
     CARTA_DESCARTE, //Se avisa que debe actualizar la vista de la carta de descarte de los jugadores
     INICIAR_PARTIDA, //lo mismo que nueva partida, fusionar
     MOSTRAR_MANO, //se avisa que debe actualizar la vista de cartas de los jugadores
@@ -18,4 +19,5 @@ public enum Eventos {
     YA_NO_SE_PUEDE_DESAFIAR, //Ya no puede desafiar por el +4 porque tiro una carta ?
     NO_DIJO_UNO, //Aviso a los jugadores que pueden "avisar" que el anterior jugador no dijo uno antes de tirar su anteultima carta
     YA_PASO_UNO // Aviso a los jugadores que el siguiente jugador ya tiró así que ya no pueden avisar que alguien no dijo uno
+
 }

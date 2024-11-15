@@ -1,5 +1,6 @@
 package ar.edu.unlu.poo.uno.model;
 
+import ar.edu.unlu.poo.uno.controller.ControladorVista;
 import ar.edu.unlu.poo.uno.model.cartas.*;
 import ar.edu.unlu.rmimvc.observer.ObservableRemoto;
 
@@ -85,9 +86,9 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
 
     private Jugador buscarJugador(String idJugador){
        Jugador j = null;
-        for(int i=0; i<jugadores.size(); i++){
-            if((jugadores.get(i).jugadorID()).equals(idJugador)){
-                j = jugadores.get(i);
+        for (Jugador jugador : jugadores) {
+            if ((jugador.jugadorID()).equals(idJugador)) {
+                j = jugador;
             }
         }
         return j;
@@ -180,8 +181,10 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         sumo un jugador listo, cuando todos esten listos empieza la partida
          */
         jugadoresListos+=1;
+
         actualizarJugadoresVista();
         if(estadoPartida()){
+
             iniciarPartida();
         }
     }
@@ -269,6 +272,7 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
     public ArrayList<Boolean> getValidas(String id) {
         Condicion condiciones = new Condicion();
 
+
         Jugador j = buscarJugador(id);
         Mano mano = j.mostrarCartas();
 
@@ -341,13 +345,16 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         turno.seguirTurno();
     }
     @Override
+
     public void quitarJugador(String idJugador) throws RemoteException {
          /*
         Un jugador se desconecto y debo sacarlo, la partida empieza de 0?
          */
+
         Jugador j = buscarJugador(idJugador);
         jugadores.remove(j);
         jugadoresListos=0;
+        removerObservador(cr);
         iniciarPartida();
     }
 
@@ -413,6 +420,7 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
     }
 
     @Override
+
     public boolean actualizarCartaDescarte() throws RemoteException {
         /*
         Aviso a los jugadores que la carta de descarte cambio y deben actualizarla
@@ -423,6 +431,7 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         } else {
             return false;
         }
+
     }
     @Override
     public void actualizarYaNoHayDesafio() throws RemoteException {
@@ -435,14 +444,10 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
 
 
     @Override
-    public boolean actualizarCartasVista() throws RemoteException {
-        if(jugadoresListos == jugadores.size()){
-            this.notificarObservadores(Eventos.MOSTRAR_MANO);
-            return true;
-        } else {
-            return false;
-        }
+    public void actualizarCartasVista() throws RemoteException {
+        this.notificarObservadores(Eventos.MOSTRAR_MANO);
     }
+
     public void actualizarJugadoresVista() throws RemoteException {
         this.notificarObservadores(Eventos.CAMBIO_JUGADORES);
     }
@@ -465,6 +470,7 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
     }
     public void avisarJugadorPuedeDesafiar() throws RemoteException {
         this.notificarObservadores(Eventos.PUEDE_DESAFIAR);
+
     }
 
     public void avisarJugadoresNoDijoUNO() throws RemoteException {
