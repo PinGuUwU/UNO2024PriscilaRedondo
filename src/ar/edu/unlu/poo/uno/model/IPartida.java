@@ -1,6 +1,5 @@
 package ar.edu.unlu.poo.uno.model;
 
-import ar.edu.unlu.poo.uno.controller.ControladorVista;
 import ar.edu.unlu.poo.uno.model.cartas.Color;
 import ar.edu.unlu.poo.uno.model.cartas.TipoCarta;
 import ar.edu.unlu.rmimvc.observer.IObservableRemoto;
@@ -10,21 +9,15 @@ import java.util.ArrayList;
 
 public interface IPartida extends IObservableRemoto{
 
-
     void actualizarYaNoHayDesafio() throws RemoteException;
 
     boolean actualizarCartasVista() throws RemoteException;
 
-
     int cantJugadores() throws RemoteException;
-
-    void agregarObserver(ControladorVista controlador) throws RemoteException;
-
-    boolean yaEmpezo() throws RemoteException;
 
     int buscarNumeroCarta(int pos, String idJ) throws RemoteException;
 
-    void actualizarCartaDescarte() throws RemoteException;
+    boolean actualizarCartaDescarte() throws RemoteException;
 
     int cantJugadoresListos() throws RemoteException;
 
@@ -48,20 +41,16 @@ public interface IPartida extends IObservableRemoto{
 
     void elegirColor(Color color, String idJ) throws RemoteException;
 
-
     void quitarJugador(String idJ) throws RemoteException;
-
 
     boolean agregarJugador(String idJ) throws RemoteException;
 
     void levantarCarta() throws RemoteException;
 
-
     boolean estadoPartida() throws RemoteException;
 
 
     void jugadorPaso() throws RemoteException;
-
 
 
     void noDijoUNO() throws RemoteException;
