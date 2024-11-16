@@ -212,7 +212,7 @@ public class ControladorVista implements IControladorRemoto, Serializable {
         };
     }
 
-    public void noPuedeLevantar() {
+    public void noPuedeLevantar() throws RemoteException {
         for(IVista v: vistas){
             v.yaLevanto();
         }
