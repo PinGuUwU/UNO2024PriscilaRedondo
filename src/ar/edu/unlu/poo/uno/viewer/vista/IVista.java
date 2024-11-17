@@ -4,6 +4,7 @@ package ar.edu.unlu.poo.uno.viewer.vista;
 import ar.edu.unlu.poo.uno.model.cartas.Color;
 import ar.edu.unlu.poo.uno.model.cartas.TipoCarta;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
@@ -27,7 +28,7 @@ public interface IVista {
 
     int cantJugadoresTotal() throws RemoteException;
     void yaLevanto() throws RemoteException;
-
+    void noDesafiar();
     void decirUNO();
 
     void desafiarJugadorAnterior() throws RemoteException;
@@ -36,7 +37,7 @@ public interface IVista {
 
     void puedeDesafiar();
 
-    void pasarTurno() throws RemoteException;
+    void pasarTurno() throws IOException, ClassNotFoundException;
 
     void mostrarOpcionPasarTurno();
 }

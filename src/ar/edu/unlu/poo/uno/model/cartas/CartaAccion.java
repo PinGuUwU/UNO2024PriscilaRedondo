@@ -12,7 +12,7 @@ public class CartaAccion extends Carta{
     public boolean jugar(Partida partida) throws RemoteException {
         switch(super.valor()){
             case CAMBIO_SENTIDO -> partida.cambioDeSentido();
-            case MAS_DOS -> partida.levantarDosCartas();
+            case MAS_DOS -> partida.levantarCartas(2);
             case BLOQUEO -> partida.bloquear();
         }
         return false;

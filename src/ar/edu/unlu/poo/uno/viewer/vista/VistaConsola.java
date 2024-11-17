@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
     private JButton ranking;
     private JPanel principal;
 
-    public VistaConsola(VentanaListener listener,ControladorVista controlador) throws RemoteException {
+    public VistaConsola(VentanaListener listener,ControladorVista controlador) throws IOException, ClassNotFoundException {
         this.controlador = controlador;
         this.listener = listener;
         if(!controlador.puedoAgregarJugador()){//Si no se puede agregar jugador
@@ -60,7 +61,7 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
                 if(listener != null){
                     try {
                         listener.onVentanaCerrada("consola");
-                    } catch (RemoteException ex) {
+                    } catch (IOException | ClassNotFoundException ex) {
                         throw new RuntimeException(ex);
                     }
                     frame.setVisible(false);
@@ -97,7 +98,7 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
                 entradaDeTexto.setText("");
                 try {
                     buscarComando(a);
-                } catch (RemoteException ex) {
+                } catch (IOException | ClassNotFoundException ex) {
                     throw new RuntimeException(ex);
                 }
             }
@@ -111,7 +112,7 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
                 entradaDeTexto.setText("");
                 try {
                     buscarComando(a);
-                } catch (RemoteException ex) {
+                } catch (IOException | ClassNotFoundException ex) {
                     throw new RuntimeException(ex);
                 }
             }
@@ -125,7 +126,13 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
                     iPerfil.frame.setVisible(true);
                     iPerfil.setInTop();
                 }
-                iPerfil.actualizarPerfil(controlador.idJugador());
+                try {
+                    iPerfil.actualizarPerfil(controlador.idJugador());
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                } catch (ClassNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
         ranking.addActionListener(new ActionListener() {
@@ -147,7 +154,7 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
         consola.append("            Bienvenido al juego del UNO \nSi quieres saber los comandos ingresa '/help'\n");
         consola.append("            Para iniciar la partida coloca '/iniciar'\n");
     }
-    private void buscarComando(String comando) throws RemoteException {
+    private void buscarComando(String comando) throws IOException, ClassNotFoundException {
         if(!puedeJugar){ //Si no puede jugar no lo dejo ingresar nunca nada, debe si o si cambiar de server/puerto o no sé como funciona RMI con eso
             consola.append("        Debe entrar a otra partida, esta ya está llena.\n\n");
         } else {
@@ -188,6 +195,7 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
                 case "/mostrarmano" -> mostrarManoJugador();
                 case "/cantjugadores" -> mostrarCantJugadores();
                 case "/desafiar" -> desafiarJugadorAnterior();
+                case "/nodesafiar" -> controlador.avisarNoDesafia();
                 default -> {
                     if (controlador.esNumero(comando) && !pidiendoColor && controlador.esSuTurno()) {
                         //Si le toca pero no debe ingresar color
@@ -213,6 +221,10 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
         } else if(ventana.equalsIgnoreCase("ranking")){
             iRanking = null;
         }
+    }
+    @Override
+    public void noDesafiar(){
+        desafiar = false;
     }
 
     @Override
@@ -347,7 +359,7 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
     }
 
     @Override
-    public void pasarTurno() throws RemoteException {
+    public void pasarTurno() throws IOException, ClassNotFoundException {
         levanto = false;
         controlador.pasarTurno();
     }

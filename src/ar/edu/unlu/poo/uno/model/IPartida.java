@@ -4,6 +4,7 @@ import ar.edu.unlu.poo.uno.model.cartas.Color;
 import ar.edu.unlu.poo.uno.model.cartas.TipoCarta;
 import ar.edu.unlu.rmimvc.observer.IObservableRemoto;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
@@ -27,9 +28,9 @@ public interface IPartida extends IObservableRemoto{
 
     ArrayList<Boolean> getValidas(String id) throws RemoteException;
 
-    boolean tirarCarta(String op, String j) throws RemoteException;
+    boolean tirarCarta(String op, String j) throws IOException, ClassNotFoundException;
 
-    void agregarJugadorListo() throws RemoteException;
+    void agregarJugadorListo() throws IOException, ClassNotFoundException;
 
     Color getColorDescarte() throws RemoteException;
 
@@ -41,16 +42,18 @@ public interface IPartida extends IObservableRemoto{
 
     void elegirColor(Color color, String idJ) throws RemoteException;
 
-    void quitarJugador(String idJ) throws RemoteException;
+    void actualizarPorCambio() throws RemoteException;
 
-    boolean agregarJugador(String idJ) throws RemoteException;
+    void quitarJugador(String idJ) throws IOException, ClassNotFoundException;
+
+    boolean agregarJugador(String idJ) throws IOException, ClassNotFoundException;
 
     void levantarCarta() throws RemoteException;
 
     boolean estadoPartida() throws RemoteException;
 
 
-    void jugadorPaso() throws RemoteException;
+    void jugadorPaso() throws IOException, ClassNotFoundException;
 
 
     void noDijoUNO() throws RemoteException;

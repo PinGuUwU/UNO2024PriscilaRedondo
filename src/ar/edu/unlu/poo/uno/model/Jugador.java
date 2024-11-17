@@ -7,7 +7,7 @@ import java.io.Serializable;
 public class Jugador implements Serializable {
     private static final long serialVersionUID = 1L;
     private final String id; //id unico
-    private final String username;
+    private String username;
     private int partidasGanadas; //PUEDE QUE NO NECESITE GUARDARLAS, YA QUE ESTAN EN EL ARCHIVO, NO SE
     private int partidasPerdidas;
     private int puntosPartidaActual;
@@ -38,6 +38,9 @@ public class Jugador implements Serializable {
     }
     public Mano mostrarCartas(){ return mano; }
     public String name(){ return this.username; }
+    public void actualizarNombre(String name){
+        this.username = name;
+    }
     public int partidasGanadas(){ return this.partidasGanadas; }
     public int partidasPerdidas(){ return this.partidasPerdidas; }
     public String jugadorID(){ return this.id; }

@@ -3,6 +3,7 @@ package ar.edu.unlu.poo.uno.model;
 import ar.edu.unlu.poo.uno.model.cartas.*;
 import ar.edu.unlu.rmimvc.observer.ObservableRemoto;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         mazoDeRobo = new MazoDeRobo();
     }
 
-    public void iniciarPartida() throws RemoteException {
+    public void iniciarPartida() throws IOException, ClassNotFoundException {
         mazoDeRobo.inicializarMazo(); //Inicializo el mazo de cartas de robo
         for(int i=0; i<7; i++){//Cada jugador levanta 7 cartas
             for(Jugador j : jugadores){
@@ -47,7 +48,7 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         return jugadoresListos;
     }
 
-    public void iniciarTurno() throws RemoteException {
+    public void iniciarTurno() throws IOException, ClassNotFoundException {
         Jugador jugadorActual = jugadores.get(turno.turnoActual());
         if(mazoDeRobo.sinCartas()){
             mazoDeRobo.inicializarMazo();
@@ -64,17 +65,17 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         turno.siguienteTurno();
     }
 
-    public void finalizarPartida(Jugador ganador) throws RemoteException {
-        Ranking ranking = new Ranking();
+    public void finalizarPartida(Jugador ganador) throws IOException, ClassNotFoundException {
         for(Jugador j : jugadores){
             if(j == ganador){
                 ganador.actualizarPartidasGanadas();
-                ranking.actualizarJugador(ganador);
+                Serializacion.actualizarJugador(ganador);
             } else {
                 j.actualizarPartidasPerdidas();
-                ranking.actualizarJugador(j);
+                Serializacion.actualizarJugador(j);
             }
         }
+        actualizarPorCambio();
         actualizarJugadoresNoListos();
         jugadoresListos=0;
     }
@@ -136,21 +137,13 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
             levantarCartaEspecial(turno.turnoAnterior());
         }
     }
-    public void levantarCuatroCartas() throws RemoteException {
-        //Roba 4 cartas
+    public void levantarCartas(int cant) throws RemoteException {
+        //Cuando alguien tira +2
         int sigTurno = turno.siguienteTurno();
-        for(int i=0; i<4; i++){
+        for(int i=0; i<cant; i++){
             levantarCartaEspecial(sigTurno);
         }
     }
-
-    public void levantarDosCartas() throws RemoteException {
-        int sigTurno = turno.siguienteTurno();
-        for(int i=0; i<2; i++){
-            levantarCartaEspecial(sigTurno);
-        }
-    }
-
 
     @Override
     public void desafio() throws RemoteException {
@@ -172,10 +165,11 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
             //Levantara 6 cartas
             levantarSeisCartas();
         }
+        actualizarPorCambio();
     }
 
     @Override
-    public void agregarJugadorListo() throws RemoteException {
+    public void agregarJugadorListo() throws IOException, ClassNotFoundException {
         /*
         sumo un jugador listo, cuando todos esten listos empieza la partida
          */
@@ -287,23 +281,23 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
     }
 
     @Override
-    public boolean tirarCarta(String id, String posCarta) throws RemoteException {//Quizá debería devolver la carta para luego mostrarla?
+    public boolean tirarCarta(String id, String posCarta) throws IOException, ClassNotFoundException {//Quizá debería devolver la carta para luego mostrarla?
         int pos = Integer.parseInt(posCarta);
         pos--;//Porque las opciones empiezan en 1, mientras que la mano empieza en 0
 
         Jugador j = buscarJugador(id);
         Carta carta = j.mostrarCarta(pos);
+        /*
         if(carta.valor() == TipoCarta.MAS_CUATRO){//Puede desafiar
             avisarJugadorPuedeDesafiar();
             //No se debe jugar la carta
             turno.seguirTurno();
             return true;
-        }
-        Condicion condiciones = new Condicion();
+        }*/
 
         boolean seTiro = false;
         boolean color = false;
-        if(condiciones.sePuedeTirar(mazoDeDescarte.ultimaCarta(), carta)) {
+        if(Condicion.sePuedeTirar(mazoDeDescarte.ultimaCarta(), carta)) {
             seTiro = true;
             j.tirarCarta(pos);
             color = carta.jugar(this);
@@ -338,10 +332,17 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         mazoDeDescarte.agregar(carta);
         actualizarCartaDescarte();
         actualizarCartasVista();
-        turno.seguirTurno();
+        actualizarPorCambio();
+        if(mazoDeDescarte.ultimaCarta().valor() != TipoCarta.MAS_CUATRO){
+            turno.seguirTurno();
+        }
     }
     @Override
-    public void quitarJugador(String idJugador) throws RemoteException {
+    public void actualizarPorCambio() throws RemoteException {
+        this.notificarObservadores(Eventos.CAMBIO);
+    }
+    @Override
+    public void quitarJugador(String idJugador) throws IOException, ClassNotFoundException {
          /*
         Un jugador se desconecto y debo sacarlo, la partida empieza de 0?
          */
@@ -352,17 +353,14 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
     }
 
     @Override
-    public boolean agregarJugador(String id){
+    public boolean agregarJugador(String id) throws IOException, ClassNotFoundException {
         /*
         agrego un jugador a la partida
          */
         if(jugadores.size() == 4){
             return false; //No se puede agregar
         } else {
-            Ranking ranking = new Ranking();
-            String[] datos = ranking.buscarDatosJugadorID(id);
-
-            Jugador jugador = new Jugador(datos[0], datos[1], datos[2], datos[3]);
+            Jugador jugador = Serializacion.buscarDatosDeJugadorPorID(id);
             if(buscarJugador(id) == null){
                 jugadores.add(jugador);
                 //reset partida?
@@ -447,7 +445,7 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         this.notificarObservadores(Eventos.CAMBIO_JUGADORES);
     }
     @Override
-    public void jugadorPaso() throws RemoteException {
+    public void jugadorPaso() throws IOException, ClassNotFoundException {
         turno.seguirTurno();
         iniciarTurno();
     }
@@ -464,6 +462,7 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
          */
     }
     public void avisarJugadorPuedeDesafiar() throws RemoteException {
+        turno.seguirTurno();
         this.notificarObservadores(Eventos.PUEDE_DESAFIAR);
     }
 

@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.List;
@@ -45,7 +46,7 @@ public class VistaRanking implements Serializable {
                 if(listener != null){
                     try {
                         listener.onVentanaCerrada("ranking");
-                    } catch (RemoteException ex) {
+                    } catch (IOException | ClassNotFoundException ex) {
                         throw new RuntimeException(ex);
                     }
                 }
@@ -71,7 +72,11 @@ public class VistaRanking implements Serializable {
                     case 0 -> {
                         //muestro top ganadores
                         //jugadoresNombres.add() asi voy agregando los username
-                        controlador.top5Ganadores();
+                        try {
+                            controlador.top5Ganadores();
+                        } catch (IOException | ClassNotFoundException e) {
+                            throw new RuntimeException(e);
+                        }
                         //llamo a ranking con el metodo ganadores
                         //En ese metodo, ranking llama a VistaRanking
                         // vista.actualizarRanking
@@ -80,7 +85,11 @@ public class VistaRanking implements Serializable {
                     case 1 -> {
                         //muestr top perdedores
                         //jugadoresCantidad.add() asi voy agregando la cantidad de partidas ganadas/perdidas
-                        controlador.top5Perdedores();
+                        try {
+                            controlador.top5Perdedores();
+                        } catch (IOException | ClassNotFoundException e) {
+                            throw new RuntimeException(e);
+                        }
                         System.out.println("(actualizaRanking perdedores");
                     }
                 }

@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 
@@ -24,7 +25,7 @@ public class VistaEleccion implements VentanaListener, Serializable {
     private JPanel ventana;
     ControladorVista controlador;
 
-    public VistaEleccion(String idJugador, VentanaListener listener, ControladorVista controlador) throws RemoteException {
+    public VistaEleccion(String idJugador, VentanaListener listener, ControladorVista controlador) throws IOException, ClassNotFoundException {
         this.controlador = controlador;
         this.idJugador = idJugador;
         controlador.conectarID(idJugador);
@@ -41,7 +42,7 @@ public class VistaEleccion implements VentanaListener, Serializable {
                 if(listener != null){
                     try {
                         listener.onVentanaCerrada("vistaeleccion");
-                    } catch (RemoteException ex) {
+                    } catch (IOException | ClassNotFoundException ex) {
                         throw new RuntimeException(ex);
                     }
                     frame.setVisible(false);

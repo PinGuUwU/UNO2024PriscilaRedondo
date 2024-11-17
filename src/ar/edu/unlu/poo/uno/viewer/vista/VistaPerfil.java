@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 
@@ -45,7 +46,7 @@ public class VistaPerfil implements Serializable {
                 if(listener != null){
                     try {
                         listener.onVentanaCerrada("perfil");
-                    } catch (RemoteException ex) {
+                    } catch (IOException | ClassNotFoundException ex) {
                         throw new RuntimeException(ex);
                     }
                 }
@@ -66,7 +67,13 @@ public class VistaPerfil implements Serializable {
              */
                 //Cambiar en el archivo y to-do
                 user.setText(nuevoUsuario.getText());
-                controlador.actualizarNombreJugador(idJugador, nuevoUsuario.getText());
+                try {
+                    controlador.actualizarNombreJugador(idJugador, nuevoUsuario.getText());
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                } catch (ClassNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
         nuevoUsuario.addActionListener(new ActionListener() {
@@ -87,7 +94,7 @@ public class VistaPerfil implements Serializable {
         frame.setAlwaysOnTop(true);
     }
 
-    public void actualizarPerfil(String idJugador){
+    public void actualizarPerfil(String idJugador) throws IOException, ClassNotFoundException {
         String[] separado = controlador.datosJugadorID(idJugador);;
         actualizarNombre(separado[1]);
         actualizarPartidasGanados(separado[2]);

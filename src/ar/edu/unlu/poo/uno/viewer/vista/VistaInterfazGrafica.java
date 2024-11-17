@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -46,6 +47,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
     private JButton pasarTurno;
     private JButton desafio;
     private JButton uno;
+    private JButton noDesafiar;
     private ArrayList<JButton> botonesLinea1 = new ArrayList<>();
 
     /*
@@ -62,7 +64,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
 
      */
 
-    public VistaInterfazGrafica(VentanaListener listener,ControladorVista controlador) throws RemoteException {
+    public VistaInterfazGrafica(VentanaListener listener,ControladorVista controlador) throws IOException, ClassNotFoundException {
         this.controlador = controlador;
         this.listener = listener;
         if(!controlador.puedoAgregarJugador()){//Si no se puede agregar jugador
@@ -86,7 +88,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
                 if(listener != null){
                     try {
                         listener.onVentanaCerrada("consola");
-                    } catch (RemoteException ex) {
+                    } catch (IOException | ClassNotFoundException ex) {
                         throw new RuntimeException(ex);
                     }
                     frame.setVisible(false);
@@ -122,7 +124,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
                 try {
                     controlador.iniciar();
                     marcarListo();
-                } catch (RemoteException ex) {
+                } catch (IOException | ClassNotFoundException ex) {
                     throw new RuntimeException(ex);
                 }
                 try {
@@ -149,7 +151,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
                 try {
                     pasarTurno();
                     levanto = false;
-                } catch (RemoteException ex) {
+                } catch (IOException | ClassNotFoundException ex) {
                     throw new RuntimeException(ex);
                 }
             }
@@ -176,7 +178,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(desafio.isEnabled()){ //Si podía desafiar y levantó una carta, entonces ya no puede desafiar
-                    desafio.setEnabled(false);
+                    controlador.avisarNoDesafia();
                 }
                 try {
                     if(!controlador.empezoLaPartida()){
@@ -207,7 +209,19 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
         desafio.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //Debería poder presionarse SOLO si hay posibilidad de desafiar
+                //Si desafio entonces debe salir un mensaje por pantalla que diga si se tiró o no de forma legal
+                try {
+                    desafiarJugadorAnterior();
+                } catch (RemoteException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+        noDesafiar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Cuando elige no desafiar levanta 4 cartas automaticamente
+                controlador.avisarNoDesafia();
             }
         });
         perfil.addActionListener(new ActionListener() {
@@ -219,7 +233,13 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
                     iPerfil.frame.setVisible(true);
                     iPerfil.setInTop();
                 }
-                iPerfil.actualizarPerfil(controlador.idJugador());
+                try {
+                    iPerfil.actualizarPerfil(controlador.idJugador());
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                } catch (ClassNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
         ranking.addActionListener(new ActionListener() {
@@ -246,6 +266,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
                 if(desafio.isEnabled()){
                     //Si podía desafiar al jugador anterior y tiró una carta, entonce ya no puede desafiarlo, siguiente turno
                     desafio.setEnabled(false);
+                    noDesafiar.setEnabled(false);
                 }
                 try {
                     if(boton.getBackground() == java.awt.Color.green && !pidiendoColor && controlador.esSuTurno()){//Si se puede tirar
@@ -255,7 +276,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
                             if(!controlador.esSuTurno()){
                                 estadoTurno.append("Esperando turno.");
                             }
-                        } catch (RemoteException ex) {
+                        } catch (IOException | ClassNotFoundException ex) {
                             throw new RuntimeException(ex);
                         }
 
@@ -313,6 +334,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
     @Override
     public void desafiarJugadorAnterior() throws RemoteException {
         desafio.setEnabled(false);
+        noDesafiar.setEnabled(false);
         controlador.desafiarJugador();
     }
 
@@ -322,12 +344,18 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
     }
     @Override
     public void puedeDesafiar(){
-        //Muestro el boton de desafio
+        //Muestro el boton de desafio o no desafio
         desafio.setEnabled(true);
+        noDesafiar.setEnabled(true);
+    }
+    @Override
+    public void noDesafiar(){
+        desafio.setEnabled(false);
+        noDesafiar.setEnabled(false);
     }
 
     @Override
-    public void pasarTurno() throws RemoteException {
+    public void pasarTurno() throws IOException, ClassNotFoundException {
         pasarTurno.setEnabled(false);
         controlador.pasarTurno();
     }

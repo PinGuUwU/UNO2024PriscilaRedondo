@@ -10,6 +10,7 @@ import ar.edu.unlu.poo.uno.viewer.vista.IVista;
 import ar.edu.unlu.rmimvc.cliente.IControladorRemoto;
 import ar.edu.unlu.rmimvc.observer.IObservableRemoto;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -40,10 +41,10 @@ public class ControladorVista implements IControladorRemoto, Serializable {
     public int cantJugadoresListos() throws RemoteException {
         return iPartida.cantJugadoresListos();
     }
-    public boolean opcion(String op) throws RemoteException {
+    public boolean opcion(String op) throws IOException, ClassNotFoundException {
         return iPartida.tirarCarta(id, op);
     }
-    public void iniciar() throws RemoteException {
+    public void iniciar() throws IOException, ClassNotFoundException {
         for(IVista v: vistas){
             v.esperandoInicio();
         }
@@ -64,7 +65,7 @@ public class ControladorVista implements IControladorRemoto, Serializable {
         //Aviso a la partida que el jugador del turno actual quiere desafiar al jugador anterior (que tiro el +4)
         iPartida.desafio();
     }
-    public void pasarTurno() throws RemoteException {
+    public void pasarTurno() throws IOException, ClassNotFoundException {
         iPartida.jugadorPaso();
     }
     public void jugadorDesafiado() throws RemoteException {
@@ -93,11 +94,16 @@ public class ControladorVista implements IControladorRemoto, Serializable {
     public boolean empezoLaPartida() throws RemoteException{
         return iPartida.estadoPartida();
     }
-    public boolean agregarJugador(String id) throws RemoteException{
+    public boolean agregarJugador(String id) throws IOException, ClassNotFoundException {
          return iPartida.agregarJugador(id);
     }
-    public boolean puedoAgregarJugador() throws RemoteException{
+    public boolean puedoAgregarJugador() throws IOException, ClassNotFoundException {
         return iPartida.agregarJugador(id);
+    }
+    public void avisarNoDesafia(){
+        for(IVista v: vistas){
+            v.noDesafiar();
+        }
     }
     public boolean esNumero(String valor){
         boolean resultado;
@@ -151,6 +157,7 @@ public class ControladorVista implements IControladorRemoto, Serializable {
                 //case YA_NO_SE_PUEDE_DESAFIAR -> avisarQueYaNoPuedeDesafiar();
                 case NO_DIJO_UNO -> avisarNoDijoUNO();
                 //case YA_PASO_UNO -> avisarPasoUNO();
+                case CAMBIO -> actualizarCartasJugador();
             }
         }
     }
@@ -159,7 +166,6 @@ public class ControladorVista implements IControladorRemoto, Serializable {
             vista.avisoInicio();
         }
     }
-
     public void actualizarDescarte() throws RemoteException{
         for(IVista vista: vistas){
             vista.setDescarte(iPartida.getColorDescarte(), iPartida.getTipoDescarte());
@@ -191,7 +197,7 @@ public class ControladorVista implements IControladorRemoto, Serializable {
             return 0;
         }
     }
-    public void desconectarJugador() throws RemoteException {
+    public void desconectarJugador() throws IOException, ClassNotFoundException {
         if(iPartida!=null){
             //Si la partida ya se "creo" entonces elimino al jugador de ella
             iPartida.quitarJugador(id);
