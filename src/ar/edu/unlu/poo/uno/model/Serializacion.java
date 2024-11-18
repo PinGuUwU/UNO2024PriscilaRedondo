@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Serializacion implements Serializable {
     private static final String datosJugadores = "PlayersData.dat";
-    //private static final String partidasGuardadas = "GamesData.dat";
+    private static final String partidasGuardadas = "GamesData.dat";
     /*
     OBJETIVO DE LA CLASE:
         GUARDAR INFORMACIÓN DE LOS JUGADORES
@@ -19,6 +19,7 @@ public class Serializacion implements Serializable {
         leerDatosJugador() devuelve un 'string[]' con los datos 'id, name, pg, pp'
         ultimoID()
      */
+    //Jugadores
     public static String escribirDatosJugador(String name) throws IOException, ClassNotFoundException {
         //nuevo jugador
         // Obtener el ID del último jugador
@@ -156,7 +157,6 @@ public class Serializacion implements Serializable {
             objectOutputStream.writeObject(jugadores);
         }
     }
-
     public static void actualizarJugador(Jugador jugador) throws IOException, ClassNotFoundException {
         var inputStream = new FileInputStream(datosJugadores);
         var objectInputStream = new ObjectInputStream(inputStream);
@@ -185,4 +185,55 @@ public class Serializacion implements Serializable {
         return jugadores;
     }
 
+    //Guardar partida
+    public void guardarPartida(Partida partida) throws IOException, ClassNotFoundException {
+        //La carga y el guardado de partidas se va a hacer desde una pestaña llamada "partidas" se guardará
+        //en el momento en que se clickee "guardar", no cuando un jugador se desconecte
+        File archivo = new File(partidasGuardadas);
+        ArrayList<Partida> partidasGuardadas;
+        if(archivo.exists() && archivo.length() > 0){
+            try (FileInputStream inputStream = new FileInputStream(archivo);
+                 ObjectInputStream objectInputStream = new ObjectInputStream(inputStream)) {
+                partidasGuardadas = (ArrayList<Partida>) objectInputStream.readObject();
+            }
+        } else {
+            partidasGuardadas = new ArrayList<>();
+        }
+
+        partidasGuardadas.add(partida);
+
+        try (FileOutputStream outputStream = new FileOutputStream(archivo);
+             ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream)) {
+            objectOutputStream.writeObject(partidasGuardadas);
+        }
+    }
+    public ArrayList<Partida> partidasGuardadas(Jugador j) throws IOException, ClassNotFoundException {
+        /*
+        Este método busca las partidas guardadas que tiene cierto jugador y las retorna para
+        Porder mostrarlas en una vista, la vista se encargará, junto con el controlador correspondiente, de
+        informarle al jugador si puede o no cargar esa partida
+        El controlador también deberá hacerse cargo de verificar si están los jugadores necesarios para
+        retomar esa partida.
+         */
+        File archivo = new File(partidasGuardadas);
+        ArrayList<Partida> partidasGuardadas;
+        if(archivo.exists() && archivo.length() > 0){
+            try (FileInputStream inputStream = new FileInputStream(archivo);
+                 ObjectInputStream objectInputStream = new ObjectInputStream(inputStream)) {
+                partidasGuardadas = (ArrayList<Partida>) objectInputStream.readObject();
+            }
+        } else {
+            partidasGuardadas = new ArrayList<>();
+        }
+
+        ArrayList<Partida> partidasJugador = new ArrayList<>();
+        for(Partida p: partidasGuardadas){
+            Jugador encontrado = p.buscarJugador(j.jugadorID());
+            if(encontrado != null){
+                partidasJugador.add(p);
+            }
+        }
+
+        return partidasJugador;
+    }
 }

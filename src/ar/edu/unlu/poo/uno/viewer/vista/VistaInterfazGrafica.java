@@ -48,6 +48,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
     private JButton desafio;
     private JButton uno;
     private JButton noDesafiar;
+    private JButton partidas;
     private ArrayList<JButton> botonesLinea1 = new ArrayList<>();
 
     /*

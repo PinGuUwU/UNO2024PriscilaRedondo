@@ -98,6 +98,12 @@
               <text value="ranking"/>
             </properties>
           </component>
+          <component id="bdb15" class="javax.swing.JButton" binding="partidas">
+            <constraints/>
+            <properties>
+              <text value="PARTIDAS"/>
+            </properties>
+          </component>
         </children>
       </grid>
       <component id="3769c" class="javax.swing.JButton" binding="descarte">

@@ -40,7 +40,6 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
     }
     public void bloquear(){
         turno.seguirTurno();
-        turno.seguirTurno();
     }
     @Override
     public int cantJugadoresListos(){
@@ -84,11 +83,11 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         return jugadores.size() == cantJugadoresListos();
     }
 
-    private Jugador buscarJugador(String idJugador){
+    public Jugador buscarJugador(String idJugador){
        Jugador j = null;
-        for(int i=0; i<jugadores.size(); i++){
-            if((jugadores.get(i).jugadorID()).equals(idJugador)){
-                j = jugadores.get(i);
+        for (Jugador jugador : jugadores) {
+            if ((jugador.jugadorID()).equals(idJugador)) {
+                j = jugador;
             }
         }
         return j;
