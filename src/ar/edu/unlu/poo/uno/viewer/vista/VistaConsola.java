@@ -20,10 +20,8 @@ import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 
 public class VistaConsola implements VentanaListener, IVista, Serializable {
     private final boolean puedeJugar;
-    private boolean levanto = false;
     private boolean desafiar = false;
     private boolean listo = false;
-    private boolean pidiendoColor = false;
     ControladorVista controlador;
     VentanaListener listener;
     JFrame frame;
@@ -174,10 +172,14 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
                     if(desafiar){
                         desafiar = false;
                     }
-                    if(controlador.esSuTurno() && !levanto){
-                        levanto = true;
+                    if(controlador.isDijoUNO()){
+                        controlador.setDijoUNO(false);
+                        //Si había dicho uno anteriormente pero ahora levanto una carta, entonces tendrá que volver a decir uno si fuera el caso
+                    }
+                    if(controlador.esSuTurno() && !controlador.isLevanto()){
+                        controlador.setLevanto(true);
                         controlador.levantarCarta();
-                    } else if(levanto){
+                    } else if(controlador.isLevanto()){
                         consola.append("\nSolo puede levantar una carta por turno, si quiere puede pasar con '/pasar'.\n");
                     } else {
                         consola.append("\nDebe esperar a que sea su turno para levantar una carta.\n");
@@ -195,16 +197,19 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
                 case "/mostrarmano" -> mostrarManoJugador();
                 case "/cantjugadores" -> mostrarCantJugadores();
                 case "/desafiar" -> desafiarJugadorAnterior();
+                case "/apelaruno" -> {
+                    if(controlador.isPuedeApelar())apelarUNO();
+                }
                 case "/nodesafiar" -> controlador.avisarNoDesafia();
                 default -> {
-                    if (controlador.esNumero(comando) && !pidiendoColor && controlador.esSuTurno()) {
+                    if (controlador.esNumero(comando) && !controlador.isPidiendoColor() && controlador.esSuTurno()) {
                         //Si le toca pero no debe ingresar color
                         boolean seTiro = controlador.opcion(comando);
                         if (!seTiro) {
                             consola.append("No se pudo tirar la carta, elija una que sea posible tirar.\n\n");
                         }
                         desafiar = false;
-                    } else if (pidiendoColor) { //Si ingreso y le toca ingresar color
+                    } else if (controlador.isPidiendoColor()) { //Si ingreso y le toca ingresar color
                         isColor(comando);
                     } else {
                         consola.append("No se reconoce el comando ingresado, ingrese algo válido o revise el /help\n\n");
@@ -213,7 +218,10 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
             }
         }
     }
-
+    @Override
+    public void yaSeApelo(){
+        consola.append("\nYa no se puede apelar por el jugador que no dijo UNO.\n");
+    }
     @Override
     public void onVentanaCerrada(String ventana) {
         if(ventana.equalsIgnoreCase("perfil")){
@@ -269,7 +277,7 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
     }
     @Override
     public void pedirCambioColor() throws RemoteException {
-        pidiendoColor = true;
+        controlador.setPidiendoColor(true);
         mostrarManoJugador();
         consola.append("Ingrese el color al que desea cambiar. opciones:\n      Verde\n     Azul\n      Amarillo\n      Rojo\n");
     }
@@ -283,7 +291,7 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
         switch (color) {
             case VERDE, ROJO, AMARILLO, AZUL -> {
                 controlador.cambiarColor(color);
-                pidiendoColor = false;
+                controlador.setPidiendoColor(false);
             }
             case INVALIDO -> {
                 consola.append("\nIngrese un color válido de la lista.\n\n");
@@ -294,7 +302,7 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
 
     public void seCambioElColor(){
         consola.append("\nSe cambio el color exitosamente.\n");
-        pidiendoColor=false;
+        controlador.setPidiendoColor(false);
     }
 
 
@@ -335,11 +343,12 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
 
     @Override
     public void decirUNO() {
-
+        controlador.setDijoUNO(true);
+        consola.append("\nDijiste uno");
     }
     @Override
     public void yaLevanto(){
-        levanto=true;
+        controlador.setLevanto(true);
     }
 
     @Override
@@ -349,8 +358,11 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
     }
 
     @Override
-    public void avisarQueNoDijoUNO() throws RemoteException {
-        controlador.avisarNoDijoUNO();
+    public void avisarQueNoDijoUNO(){
+        consola.append("\nEl último jugador no dijo uno, escriba '/apelaruno' para apelar a tiempo.\n");
+    }
+    public void apelarUNO() throws RemoteException {
+        controlador.apelarNoDijoUNO();
     }
     @Override
     public void puedeDesafiar(){
@@ -360,13 +372,13 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
 
     @Override
     public void pasarTurno() throws IOException, ClassNotFoundException {
-        levanto = false;
+        controlador.setLevanto(false);
         controlador.pasarTurno();
     }
 
     @Override
     public void mostrarOpcionPasarTurno() {
-
+        consola.append("\nPara pasar turno '/pasar'.\n");
     }
 
 

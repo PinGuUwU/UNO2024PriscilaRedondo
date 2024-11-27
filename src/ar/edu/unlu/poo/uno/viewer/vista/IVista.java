@@ -19,6 +19,9 @@ public interface IVista {
 
     void pedirCambioColor() throws RemoteException;
     void mostrarCartasJugador(ArrayList<Color> colores, ArrayList<TipoCarta> valores, ArrayList<Boolean> validos) throws RemoteException;
+
+    void yaSeApelo();
+
     void marcarNoListo();
     void marcarListo();
 

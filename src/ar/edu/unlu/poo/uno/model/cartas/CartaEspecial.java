@@ -16,7 +16,6 @@ public class CartaEspecial extends Carta{
             case CAMBIO_COLOR -> partida.pedirColorJugador();
             case MAS_CUATRO -> {
                 partida.pedirColorJugador();
-                partida.avisarJugadorPuedeDesafiar();
                 /*
                 La persona tira el +4 y luego elige el color que quiere que vaya
                 Luego de eso, el siguiente jugador decide si desafía o no

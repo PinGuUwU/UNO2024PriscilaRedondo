@@ -28,8 +28,6 @@ public interface IPartida extends IObservableRemoto{
 
     ArrayList<Boolean> getValidas(String id) throws RemoteException;
 
-    boolean tirarCarta(String op, String j) throws IOException, ClassNotFoundException;
-
     void agregarJugadorListo() throws IOException, ClassNotFoundException;
 
     Color getColorDescarte() throws RemoteException;
@@ -40,6 +38,8 @@ public interface IPartida extends IObservableRemoto{
 
     boolean esTurno(String idJ) throws RemoteException;
 
+    boolean tirarCarta(String id, String posCarta, boolean uno) throws IOException, ClassNotFoundException;
+
     void elegirColor(Color color, String idJ) throws RemoteException;
 
     void actualizarPorCambio() throws RemoteException;
@@ -47,6 +47,8 @@ public interface IPartida extends IObservableRemoto{
     void quitarJugador(String idJ) throws IOException, ClassNotFoundException;
 
     boolean agregarJugador(String idJ) throws IOException, ClassNotFoundException;
+
+    void noDesafia() throws RemoteException ;
 
     void levantarCarta() throws RemoteException;
 

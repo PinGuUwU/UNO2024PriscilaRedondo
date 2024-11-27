@@ -73,6 +73,10 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
                 j.actualizarPartidasPerdidas();
                 Serializacion.actualizarJugador(j);
             }
+            for(int i=0; i< j.mostrarCartas().cantCartas(); i++){
+                //Borro todas las cartas de las manos de los jugadores
+                j.tirarCarta(0);
+            }
         }
         actualizarPorCambio();
         actualizarJugadoresNoListos();
@@ -105,7 +109,10 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         Jugador j = jugadores.get(sigTurno);
         j.levantarCarta(mazoDeRobo.robar());
     }
-
+    @Override
+    public void noDesafia() throws RemoteException {
+        turno.seguirTurno();
+    }
     public void levantarCarta() throws RemoteException {
         if(mazoDeRobo.sinCartas()){
             mazoDeRobo.inicializarMazo();
@@ -142,6 +149,7 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         for(int i=0; i<cant; i++){
             levantarCartaEspecial(sigTurno);
         }
+        turno.seguirTurno();
     }
 
     @Override
@@ -165,6 +173,7 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
             levantarSeisCartas();
         }
         actualizarPorCambio();
+        turno.seguirTurno();
     }
 
     @Override
@@ -280,7 +289,7 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
     }
 
     @Override
-    public boolean tirarCarta(String id, String posCarta) throws IOException, ClassNotFoundException {//Quizá debería devolver la carta para luego mostrarla?
+    public boolean tirarCarta(String id, String posCarta, boolean uno) throws IOException, ClassNotFoundException {//Quizá debería devolver la carta para luego mostrarla?
         int pos = Integer.parseInt(posCarta);
         pos--;//Porque las opciones empiezan en 1, mientras que la mano empieza en 0
 
@@ -293,9 +302,9 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
             turno.seguirTurno();
             return true;
         }*/
-
-        boolean seTiro = false;
         boolean color = false;
+        actualizarYaNoPuedeApelarUNO(); //Si ya se tiró otra carta entonces ya no se puede apelar
+        boolean seTiro = false;
         if(Condicion.sePuedeTirar(mazoDeDescarte.ultimaCarta(), carta)) {
             seTiro = true;
             j.tirarCarta(pos);
@@ -305,10 +314,24 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
              SE SUPONE QUE ESPERE A PEDIR COLOR Y FIN
              **/
         }
+        if(carta.valor() == TipoCarta.MAS_CUATRO){
+            //Si es un mas cuatro debo activar desafio LUEGO de que elija el color, entonces
+            //Agrego la carta al descarte
+            mazoDeDescarte.agregar(carta);
+            //Y ahora la máquina estará esperando que se elija el color
+            //Luego de elegir el color, si se inicia un desafio
+            //Se mirará la carta anterior al +4 y corroborará si se tiró de forma legal o ilegal
+        }
         boolean finalizo = false;
         if(j.cantCartasMano() == 0){
             finalizarPartida(j);
             finalizo = true;
+        }
+        if(j.mostrarCartas().cantCartas() == 1 && !uno){
+            //Si le queda una única carta entonces y no dijo uno, los demás podrán apelar
+            actualizarNoDijoUNO();
+        } else {
+            actualizarYaNoPuedeApelarUNO();
         }
         if(!color && seTiro && !finalizo){
             //Si no hay que pedir color al jugador del turno acutal
@@ -321,6 +344,12 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         actualizarCartasVista();
         return seTiro;
     }
+    public void actualizarNoDijoUNO() throws RemoteException {
+        this.notificarObservadores(Eventos.NO_DIJO_UNO);
+    }
+    public void actualizarYaNoPuedeApelarUNO() throws RemoteException {
+        this.notificarObservadores(Eventos.YA_PASO_UNO);
+    }
 
     @Override
     public void elegirColor(Color color, String idj) throws RemoteException {
@@ -332,9 +361,10 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         actualizarCartaDescarte();
         actualizarCartasVista();
         actualizarPorCambio();
-        if(mazoDeDescarte.ultimaCarta().valor() != TipoCarta.MAS_CUATRO){
-            turno.seguirTurno();
+        if(mazoDeDescarte.anteultimaCarta().valor() == TipoCarta.MAS_CUATRO){
+            avisarJugadorPuedeDesafiar();
         }
+        turno.seguirTurno();
     }
     @Override
     public void actualizarPorCambio() throws RemoteException {
@@ -453,12 +483,16 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
     @Override
     public void noDijoUNO() throws RemoteException {
         /*
-        Chequeo si no dijo uno?
-        debo hacer un metodo que avise cuándo el jugador ya tiro, eso haría que ya no pueda "avisar"
-        Es un evento nuevo
+        Chequeo si no dijo uno? no, ya está chequeado
         Hago esto pero con el jugador del turno anterior
         levantarDosCartas();
          */
+        levantarCartaEspecial(turno.turnoAnterior());
+        levantarCartaEspecial(turno.turnoAnterior());
+        actualizarSeApeloUNO();
+    }
+    public void actualizarSeApeloUNO() throws RemoteException {
+        this.notificarObservadores(Eventos.SE_APELO_EL_UNO);
     }
     public void avisarJugadorPuedeDesafiar() throws RemoteException {
         turno.seguirTurno();

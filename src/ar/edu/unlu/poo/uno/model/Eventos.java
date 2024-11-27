@@ -18,5 +18,6 @@ public enum Eventos {
     YA_NO_SE_PUEDE_DESAFIAR, //Ya no puede desafiar por el +4 porque tiro una carta ?
     NO_DIJO_UNO, //Aviso a los jugadores que pueden "avisar" que el anterior jugador no dijo uno antes de tirar su anteultima carta
     YA_PASO_UNO, // Aviso a los jugadores que el siguiente jugador ya tiró así que ya no pueden avisar que alguien no dijo uno
-    CAMBIO
+    CAMBIO,
+    SE_APELO_EL_UNO
 }

@@ -1,10 +1,8 @@
 package ar.edu.unlu.poo.uno.controller;
 
-import ar.edu.unlu.poo.uno.model.cartas.CartaNumerica;
 import ar.edu.unlu.poo.uno.model.cartas.Color;
 import ar.edu.unlu.poo.uno.model.Eventos;
 import ar.edu.unlu.poo.uno.model.IPartida;
-import ar.edu.unlu.poo.uno.model.Ranking;
 import ar.edu.unlu.poo.uno.model.cartas.TipoCarta;
 import ar.edu.unlu.poo.uno.viewer.vista.IVista;
 import ar.edu.unlu.rmimvc.cliente.IControladorRemoto;
@@ -16,9 +14,28 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class ControladorVista implements IControladorRemoto, Serializable {
+    private boolean pidiendoColor = false;
+    private boolean yaTiro = false;
+    private boolean levanto = false;
+    private boolean dijoUNO = false;
+    private boolean puedeApelar = false;
     IPartida iPartida;
     ArrayList<IVista> vistas = new ArrayList<>();
     String id;
+    public boolean isPidiendoColor(){return pidiendoColor;}
+    public void setPidiendoColor(boolean pidiendoColor){ this.pidiendoColor = pidiendoColor; }
+    public boolean isLevanto(){
+        return levanto;
+    }
+    public void setLevanto(boolean levanto){
+        this.levanto = levanto;
+    }
+    public boolean isDijoUNO(){
+        return dijoUNO;
+    }
+    public void setDijoUNO(boolean dijoUNO){
+        this.dijoUNO = dijoUNO;
+    }
     public void conectar(IVista vista){
         vistas.add(vista);
     }
@@ -42,7 +59,8 @@ public class ControladorVista implements IControladorRemoto, Serializable {
         return iPartida.cantJugadoresListos();
     }
     public boolean opcion(String op) throws IOException, ClassNotFoundException {
-        return iPartida.tirarCarta(id, op);
+        yaTiro = true;
+        return iPartida.tirarCarta(id, op, dijoUNO);
     }
     public void iniciar() throws IOException, ClassNotFoundException {
         for(IVista v: vistas){
@@ -71,15 +89,30 @@ public class ControladorVista implements IControladorRemoto, Serializable {
     public void jugadorDesafiado() throws RemoteException {
         iPartida.desafio();
     }
-    public void avisarNoDijoUNO() throws RemoteException {
+    public void apelarNoDijoUNO() throws RemoteException {
         iPartida.noDijoUNO();
+    }
+    public void avisarNoDijoUNO() throws RemoteException {
+        //Aviso a las vistas que el jugador anterior no dijo uno al tirar su anteúltima carta
+        if(!dijoUNO && !esSuTurno()){//Si no soy el jugador que dijo uno, entonces puedo apelar
+            for(IVista v: vistas){
+                v.avisarQueNoDijoUNO();
+            }
+        }
+
     }
     //Aca se hace la ejecución de "comandos"/"Acciones" en el juego
     public void levantarCarta() throws RemoteException {
         iPartida.levantarCarta();
     }
     public boolean esSuTurno() throws RemoteException{
-        return iPartida.esTurno(id);
+        boolean turno = iPartida.esTurno(id);
+        if(turno){
+            yaTiro = false;
+            return true;
+        } else {
+            return false;
+        }
     }
     public void cambiarColor(Color color) throws RemoteException {
         iPartida.elegirColor(color, id);
@@ -100,10 +133,11 @@ public class ControladorVista implements IControladorRemoto, Serializable {
     public boolean puedoAgregarJugador() throws IOException, ClassNotFoundException {
         return iPartida.agregarJugador(id);
     }
-    public void avisarNoDesafia(){
+    public void avisarNoDesafia() throws RemoteException {
         for(IVista v: vistas){
             v.noDesafiar();
         }
+        iPartida.noDesafia();
     }
     public boolean esNumero(String valor){
         boolean resultado;
@@ -137,19 +171,17 @@ public class ControladorVista implements IControladorRemoto, Serializable {
 
     @Override
     public <T extends IObservableRemoto> void setModeloRemoto(T modeloRemoto) throws RemoteException {
-        //iPartida = new Partida();
         this.iPartida = (IPartida) modeloRemoto;
-        //iPartida.agregarObserver(ControladorVista.this);
     }
 
     @Override
     public void actualizar(IObservableRemoto instanciaModelo, Object cambio) throws RemoteException {
         if(cambio instanceof Eventos){
             switch((Eventos) cambio){
-                case INICIAR_PARTIDA -> avisarInicio();
+                case INICIAR_PARTIDA -> avisarInicio();//No modificar
                 case CARTA_DESCARTE -> actualizarDescarte();
                 case PEDIR_COLOR -> {if(esSuTurno()) pedirElColor();}
-                case MOSTRAR_MANO -> {if(esSuTurno()) actualizarCartasJugador();}
+                case MOSTRAR_MANO -> actualizarCartasJugador();//{if(esSuTurno()) actualizarCartasJugador();}
                 case NUEVA_PARTIDA -> jugadorNoListo();
                 case CAMBIO_JUGADORES -> otroJugadorEstaListo();
                 case DESAFIO -> jugadorDesafiado();
@@ -158,8 +190,21 @@ public class ControladorVista implements IControladorRemoto, Serializable {
                 case NO_DIJO_UNO -> avisarNoDijoUNO();
                 //case YA_PASO_UNO -> avisarPasoUNO();
                 case CAMBIO -> actualizarCartasJugador();
+                case SE_APELO_EL_UNO -> {
+                    yaNoSePuedeApelar();
+                    actualizarCartasJugador();
+                }
             }
         }
+    }
+    public void yaNoSePuedeApelar(){
+        puedeApelar = false;
+        for(IVista v: vistas){
+            v.yaSeApelo();
+        }
+    }
+    public boolean isPuedeApelar(){
+        return puedeApelar;
     }
     public void avisarInicio(){
         for(IVista vista: vistas){
@@ -207,6 +252,12 @@ public class ControladorVista implements IControladorRemoto, Serializable {
         for(IVista vista: vistas){
             vista.marcarNoListo();
         }
+        levanto = false;
+        pidiendoColor = false;
+        dijoUNO = false;
+    }
+    public boolean isYaTiro(){
+        return yaTiro;
     }
     public Color deStringAColorCarta(String color){
         return switch (color.toLowerCase()) {
