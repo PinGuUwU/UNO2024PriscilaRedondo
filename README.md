@@ -3,7 +3,9 @@
 - OBJETIVO:
   - Quedarse sin cartas en la mano.
 
-
+# DATOS PERSONALES:
+  - Apellido y Nombre: Redondo Priscila
+  - Legajo: 168540
 
 # REGLAMENTO:
   - Un jugador puede tirar una carta si cumple alguna de las siguientes condiciones:
