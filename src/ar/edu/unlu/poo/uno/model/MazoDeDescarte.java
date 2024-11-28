@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class MazoDeDescarte implements Serializable {
+    private static final long serialVersionUID = 1L;
     private ArrayList<Carta> mazoActual;
 
     public MazoDeDescarte(){

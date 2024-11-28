@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 
 public class TurnoPartida implements Serializable {
+    private static final long serialVersionUID = 1L;
     /*
     Lleva el turno de la partida
     (0-3)

@@ -19,5 +19,6 @@ public enum Eventos {
     NO_DIJO_UNO, //Aviso a los jugadores que pueden "avisar" que el anterior jugador no dijo uno antes de tirar su anteultima carta
     YA_PASO_UNO, // Aviso a los jugadores que el siguiente jugador ya tiró así que ya no pueden avisar que alguien no dijo uno
     CAMBIO,
-    SE_APELO_EL_UNO
+    SE_APELO_EL_UNO,
+    CARGAR_PARTIDA //Se cargo una partida
 }

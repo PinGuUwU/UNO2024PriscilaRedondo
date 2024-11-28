@@ -9,6 +9,8 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class Partida extends ObservableRemoto implements IPartida, Serializable {
+    private static final long serialVersionUID = 1L;
+    private long id;
     private int jugadoresListos = 0;
     private ArrayList<Jugador> jugadores = new ArrayList<>();
     private boolean sentido = true;//true = incrementa turno. false = decrementa turno;
@@ -16,19 +18,28 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
     private MazoDeRobo mazoDeRobo;
     public MazoDeDescarte mazoDeDescarte;
     @Override
-    public void cargarPartida(Partida partida) throws RemoteException {
-        this.jugadoresListos = partida.jugadoresListos;
-        this.sentido = partida.sentido;
-        this.turno = partida.turno;
-        this.mazoDeDescarte = partida.mazoDeDescarte;
-        this.mazoDeRobo = partida.mazoDeRobo;
-        actualizarPorCambio(); //Creo que esto debería hacer que to-do se pueda cargar bien
+    public void cargarPartida(long id) throws IOException {
+        Partida nuevaPartida = Serializacion.buscarPartidaPorID(id);
+        this.id = nuevaPartida.id;
+        this.sentido = nuevaPartida.sentido;
+        this.turno = nuevaPartida.turno;
+        this.jugadores = nuevaPartida.jugadores;
+        this.mazoDeDescarte = nuevaPartida.mazoDeDescarte;
+        this.mazoDeRobo = nuevaPartida.mazoDeRobo;
+        actualizarPorCargaDePartida(); //Creo que esto debería hacer que to-do se pueda cargar bien
+    }
+    public void actualizarPorCargaDePartida() throws RemoteException {
+        this.notificarObservadores(Eventos.CARGAR_PARTIDA);
+    }
+    public long getId(){
+        return id;
     }
     @Override
     public void guardarPartida() throws IOException, ClassNotFoundException {
         Serializacion.guardarPartida(this);
     }
-    public Partida() {
+    public Partida(long id) {
+        this.id = id;
         mazoDeDescarte = new MazoDeDescarte();
         mazoDeRobo = new MazoDeRobo();
     }

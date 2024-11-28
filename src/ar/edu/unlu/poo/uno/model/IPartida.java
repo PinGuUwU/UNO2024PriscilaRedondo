@@ -18,7 +18,7 @@ public interface IPartida extends IObservableRemoto{
 
     boolean actualizarCartaDescarte() throws RemoteException;
 
-    void cargarPartida(Partida partida) throws RemoteException;
+    void cargarPartida(long id) throws IOException;
 
     void guardarPartida() throws IOException, ClassNotFoundException;
 

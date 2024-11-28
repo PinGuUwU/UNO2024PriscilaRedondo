@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Random;
 
 public class MazoDeRobo implements Serializable {
+    private static final long serialVersionUID = 1L;
     private ArrayList<Carta> mazo = new ArrayList<>();
     public Carta robar(){//Debo de retirar una carta al azar, porque el mazo está en orden.
         Random random = new Random(System.currentTimeMillis());

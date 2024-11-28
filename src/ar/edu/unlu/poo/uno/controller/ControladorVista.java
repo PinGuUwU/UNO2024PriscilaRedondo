@@ -199,6 +199,10 @@ public class ControladorVista implements IControladorRemoto, Serializable {
                     yaNoSePuedeApelar();
                     actualizarCartasJugador();
                 }
+                case CARGAR_PARTIDA -> {
+                    actualizarDescarte();
+                    actualizarCartasJugador();
+                }
             }
         }
     }
@@ -253,8 +257,8 @@ public class ControladorVista implements IControladorRemoto, Serializable {
             iPartida.quitarJugador(id);
         }
     }
-    public void cargarNuevaPartida(Partida p) throws RemoteException {
-        iPartida.cargarPartida(p);
+    public void cargarNuevaPartida(long id) throws IOException {
+        iPartida.cargarPartida(id);
     }
     public void jugadorNoListo(){
         for(IVista vista: vistas){

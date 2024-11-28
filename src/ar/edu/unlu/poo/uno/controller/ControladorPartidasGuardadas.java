@@ -15,10 +15,10 @@ public class ControladorPartidasGuardadas implements Serializable {
         this.controlador = controlador;
     }
     public ArrayList<Partida> cargarPartidasGuardadas(String id) throws IOException, ClassNotFoundException {
-        return Serializacion.partidasGuardadas(id);
+        return Serializacion.partidasGuardadasPorJugador(id);
     }
-    public void cargarPartida(Partida p) throws RemoteException {
-        controlador.cargarNuevaPartida(p);
+    public void cargarPartida(long id) throws IOException {
+        controlador.cargarNuevaPartida(id);
     }
     public ArrayList<Jugador> jugadoresPartidaActual() throws RemoteException {
         return controlador.jugadores();

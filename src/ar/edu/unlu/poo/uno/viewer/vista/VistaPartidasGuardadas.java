@@ -23,24 +23,23 @@ import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 
 public class VistaPartidasGuardadas implements Serializable{
     private final String id;
-    private ControladorPartidasGuardadas controlador;
+    private final ControladorPartidasGuardadas controlador;
     JFrame frame;
     private JPanel ventana;
     private JButton guardarPartida;
     private JScrollPane mostrarPartidas;
-    private JPanel panelPartidas; // Panel contenedor para las partidas
+    private final JPanel panelPartidas; // Panel contenedor para las partidas
 
     public VistaPartidasGuardadas(VentanaListener listener, String id, ControladorVista controladorVista) throws IOException, ClassNotFoundException {
         this.controlador = new ControladorPartidasGuardadas(controladorVista);
         this.id = id;
 
-        JFrame frame = new JFrame("Partidas Guardadas");
+        frame = new JFrame("Partidas Guardadas");
         frame.setSize(720, 480);
         frame.setLocationRelativeTo(null);
 
         ventana = new JPanel(new BorderLayout());
         guardarPartida = new JButton("Guardar Partida");
-
         // Configurar el panel contenedor para las partidas
         panelPartidas = new JPanel();
         panelPartidas.setLayout(new BoxLayout(panelPartidas, BoxLayout.Y_AXIS));
@@ -54,18 +53,7 @@ public class VistaPartidasGuardadas implements Serializable{
 
         agregarListeners();
         agregarPartidas();
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                if(listener != null){
-                    try {
-                        listener.onVentanaCerrada("partidasguardadas");
-                    } catch (IOException | ClassNotFoundException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                }
-            }
-        });
+
         frame.add(ventana);
         frame.setVisible(true);
 
@@ -126,10 +114,17 @@ public class VistaPartidasGuardadas implements Serializable{
         boolean estanTodosLosJugadores = true;
         infoPartida.append("JUGADORES: ");
 
-        ArrayList<Jugador> jugadores = controlador.jugadoresPartidaActual();
+            /*
+            Comprobar por qué me lo sigue mostrando en verde las partidas que no puedo cargar
+             */
+        ArrayList<Jugador> jugadoresPartidaActual = controlador.jugadoresPartidaActual();
+        ArrayList<Jugador> jugadoresPartidaACargar = partida.jugadores();
+        if(jugadoresPartidaACargar.size() != jugadoresPartidaActual.size()){
+            estanTodosLosJugadores = false;
+        }
         for (int i = 0; i < partida.cantJugadores(); i++) {
-            Jugador j = partida.buscarJugador(jugadores.get(i).jugadorID());
-            if (j != null) {
+            Jugador j = partida.jugadores().get(i);
+            if (jugadoresPartidaACargar.contains(j)) {
                 infoPartida.append(j.name() + ", ");
             } else {
                 estanTodosLosJugadores = false;
@@ -138,14 +133,26 @@ public class VistaPartidasGuardadas implements Serializable{
 
         opcion.add(infoPartida);
 
-        JButton cargar = new JButton("Cargar");
-        cargar.setBackground(estanTodosLosJugadores ? Color.GREEN : Color.RED);
-        cargar.setToolTipText(estanTodosLosJugadores ? "SÍ se puede cargar." : "NO se puede cargar.");
-        cargar.addActionListener(e -> {
-            try {
-                controlador.cargarPartida(partida);
-            } catch (RemoteException ex) {
-                throw new RuntimeException(ex);
+        JButton cargar = new JButton("CARGAR");
+        if(!estanTodosLosJugadores){
+            //Si no están todos los jugadores
+            cargar.setBackground(java.awt.Color.red);
+            cargar.setToolTipText("NO se puede cargar.");
+        } else {
+            //Si están todos los jugadores
+            cargar.setBackground(java.awt.Color.green);
+            cargar.setToolTipText("SÍ se puede cargar.");
+        }
+        cargar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(cargar.getBackground()!=java.awt.Color.red){
+                    try {
+                        controlador.cargarPartida(partida.getId());
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
             }
         });
 

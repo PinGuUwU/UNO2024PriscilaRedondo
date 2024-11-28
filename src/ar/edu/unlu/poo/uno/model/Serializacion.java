@@ -6,6 +6,7 @@ import java.util.ArrayList;
 public class Serializacion implements Serializable {
     private static final String datosJugadores = "PlayersData.dat";
     private static final String partidasGuardadas = "GamesData.dat";
+    private static final String ultimoIDPartida = "IDPartidas.dat";
     /*
     OBJETIVO DE LA CLASE:
         GUARDAR INFORMACIÓN DE LOS JUGADORES
@@ -214,7 +215,12 @@ public class Serializacion implements Serializable {
             partidasGuardadas = new ArrayList<>();
         }
 
-       partidasGuardadas.remove(partida);
+        for(Partida p: partidasGuardadas){
+            if(p.getId() == partida.getId()){
+                partidasGuardadas.remove(p);
+                break;
+            }
+        }
 
         try (FileOutputStream outputStream = new FileOutputStream(archivo);
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream)) {
@@ -235,15 +241,49 @@ public class Serializacion implements Serializable {
         } else {
             partidasGuardadas = new ArrayList<>();
         }
+        boolean encontrado = false;
+        for (int i = 0; i < partidasGuardadas.size(); i++) {
+            if (partidasGuardadas.get(i).getId() == partida.getId()) {
+                // Si la partida con el mismo ID se encuentra, reemplazamos
+                partidasGuardadas.set(i, partida);
+                encontrado = true;
+                break;
+            }
+        }
 
-        partidasGuardadas.add(partida);
+        // Si no se encontró la partida, la agregamos
+        if (!encontrado) {
+            partidasGuardadas.add(partida);
+        }
 
         try (FileOutputStream outputStream = new FileOutputStream(archivo);
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream)) {
             objectOutputStream.writeObject(partidasGuardadas);
         }
     }
-    public static ArrayList<Partida> partidasGuardadas(String id) throws IOException, ClassNotFoundException {
+    public static Partida buscarPartidaPorID(long id) throws IOException {
+        File archivo = new File(partidasGuardadas);
+        ArrayList<Partida> partidasGuardadas;
+        if(archivo.exists() && archivo.length() > 0){
+            try (FileInputStream inputStream = new FileInputStream(archivo);
+                 ObjectInputStream objectInputStream = new ObjectInputStream(inputStream)) {
+                partidasGuardadas = (ArrayList<Partida>) objectInputStream.readObject();
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            partidasGuardadas = new ArrayList<>();
+        }
+
+        // Buscar la partida por id
+        for (Partida partida : partidasGuardadas) {
+            if (partida.getId() == id) {
+                return partida;  // encontrada
+            }
+        }
+        return null;
+    }
+    public static ArrayList<Partida> partidasGuardadasPorJugador(String id) throws IOException, ClassNotFoundException {
         /*
         Este método busca las partidas guardadas que tiene cierto jugador y las retorna para
         Porder mostrarlas en una vista, la vista se encargará, junto con el controlador correspondiente, de
@@ -272,5 +312,32 @@ public class Serializacion implements Serializable {
         }
 
         return partidasJugador;
+    }
+    //ID PARTIDA
+    public static void actualizarUltimoIDPartida(long id) throws IOException {
+        File archivo = new File(ultimoIDPartida);
+
+        try (DataOutputStream dataOutputStream = new DataOutputStream(new FileOutputStream(archivo))) {
+            dataOutputStream.writeLong(id);
+        }
+    }
+    public static long ultimoIDPartida() throws IOException {
+        File archivo = new File(ultimoIDPartida);
+        long ultimoID = 1;
+
+        // existe el archivo?
+        if (!archivo.exists() || archivo.length() == 0) {
+            // Si no existe lo creo
+            actualizarUltimoIDPartida(ultimoID);
+        } else {
+            try (DataInputStream dataInputStream = new DataInputStream(new FileInputStream(archivo))) {
+                ultimoID = dataInputStream.readLong();  // Leo el id long
+            }
+        }
+
+        ultimoID++;  // incremento el ID
+        actualizarUltimoIDPartida(ultimoID);  // actualizo el ultimo ID
+
+        return ultimoID;
     }
 }
