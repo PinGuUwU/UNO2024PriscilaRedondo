@@ -27,6 +27,7 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
     JFrame frame;
     VistaRanking iRanking;
     VistaPerfil iPerfil;
+    VistaPartidasGuardadas iPartidasGuardadas;
     private JButton enter;
     private JTextField entradaDeTexto;
     private JTextArea consola;
@@ -34,6 +35,7 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
     private JButton perfil;
     private JButton ranking;
     private JPanel principal;
+    private JButton partidas;
 
     public VistaConsola(VentanaListener listener,ControladorVista controlador) throws IOException, ClassNotFoundException {
         this.controlador = controlador;
@@ -126,9 +128,7 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
                 }
                 try {
                     iPerfil.actualizarPerfil(controlador.idJugador());
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                } catch (ClassNotFoundException ex) {
+                } catch (IOException | ClassNotFoundException ex) {
                     throw new RuntimeException(ex);
                 }
             }
@@ -141,7 +141,20 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
                 } else if(!iRanking.frame.isVisible()){
                     iRanking.frame.setVisible(true);
                     iRanking.setInTop();
-                    //Tengo qeu volver a agregar el item "elige opcion"
+                }
+            }
+        });
+        partidas.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(iPartidasGuardadas == null){
+                    try {
+                        iPartidasGuardadas = new VistaPartidasGuardadas(VistaConsola.this, controlador.idJugador(), controlador);
+                    } catch (IOException | ClassNotFoundException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                } else if(!iPartidasGuardadas.frame.isVisible()){
+                    iPartidasGuardadas.frame.setVisible(true);
                 }
             }
         });
@@ -228,6 +241,8 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
             iPerfil = null;
         } else if(ventana.equalsIgnoreCase("ranking")){
             iRanking = null;
+        } else if(ventana.equalsIgnoreCase("partidasguardadas")){
+            iPartidasGuardadas = null;
         }
     }
     @Override
@@ -284,6 +299,7 @@ public class VistaConsola implements VentanaListener, IVista, Serializable {
     @Override
     public void avisoInicio(){
         marcarListo();
+        partidas.setEnabled(true);
         consola.append("\nTodos los jugadores están listos, la partida está por comenzar.\n\n\n");
     }
     private void isColor(String comando) throws RemoteException {

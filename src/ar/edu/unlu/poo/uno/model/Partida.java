@@ -15,7 +15,19 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
     private TurnoPartida turno; //Quizá podría servir hacer una clase que lleve esto
     private MazoDeRobo mazoDeRobo;
     public MazoDeDescarte mazoDeDescarte;
-
+    @Override
+    public void cargarPartida(Partida partida) throws RemoteException {
+        this.jugadoresListos = partida.jugadoresListos;
+        this.sentido = partida.sentido;
+        this.turno = partida.turno;
+        this.mazoDeDescarte = partida.mazoDeDescarte;
+        this.mazoDeRobo = partida.mazoDeRobo;
+        actualizarPorCambio(); //Creo que esto debería hacer que to-do se pueda cargar bien
+    }
+    @Override
+    public void guardarPartida() throws IOException, ClassNotFoundException {
+        Serializacion.guardarPartida(this);
+    }
     public Partida() {
         mazoDeDescarte = new MazoDeDescarte();
         mazoDeRobo = new MazoDeRobo();
@@ -68,9 +80,11 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         for(Jugador j : jugadores){
             if(j == ganador){
                 ganador.actualizarPartidasGanadas();
+                System.out.println("Ganador\nPartidas Ganadas:"+j.partidasGanadas()+"Perdidas"+j.partidasPerdidas());
                 Serializacion.actualizarJugador(ganador);
             } else {
                 j.actualizarPartidasPerdidas();
+                System.out.println("Perdedor\nPartidas Ganadas:"+j.partidasGanadas()+"Perdidas"+j.partidasPerdidas());
                 Serializacion.actualizarJugador(j);
             }
             for(int i=0; i< j.mostrarCartas().cantCartas(); i++){
@@ -192,7 +206,10 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
     public int cantJugadores(){
         return jugadores.size();
     }
-
+    @Override
+    public ArrayList<Jugador> jugadores(){
+        return jugadores;
+    }
     @Override
     public Color getColorDescarte() throws RemoteException{
         /*
@@ -451,15 +468,6 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
             return false;
         }
     }
-    @Override
-    public void actualizarYaNoHayDesafio() throws RemoteException {
-        /*
-        Aviso al jugador del turno actual que decidio no desafiar a la persona
-        que le tiro un +4, entonces levanta esas 4 cartas y se saltea su turno
-         */
-        notificarObservadores(Eventos.YA_NO_SE_PUEDE_DESAFIAR);
-    }
-
 
     @Override
     public boolean actualizarCartasVista() throws RemoteException {

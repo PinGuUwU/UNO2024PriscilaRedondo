@@ -110,6 +110,7 @@
           <component id="bdb15" class="javax.swing.JButton" binding="partidas">
             <constraints/>
             <properties>
+              <enabled value="false"/>
               <text value="PARTIDAS"/>
             </properties>
           </component>

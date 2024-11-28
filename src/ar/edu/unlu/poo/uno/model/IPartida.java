@@ -10,8 +10,6 @@ import java.util.ArrayList;
 
 public interface IPartida extends IObservableRemoto{
 
-    void actualizarYaNoHayDesafio() throws RemoteException;
-
     boolean actualizarCartasVista() throws RemoteException;
 
     int cantJugadores() throws RemoteException;
@@ -19,6 +17,10 @@ public interface IPartida extends IObservableRemoto{
     int buscarNumeroCarta(int pos, String idJ) throws RemoteException;
 
     boolean actualizarCartaDescarte() throws RemoteException;
+
+    void cargarPartida(Partida partida) throws RemoteException;
+
+    void guardarPartida() throws IOException, ClassNotFoundException;
 
     int cantJugadoresListos() throws RemoteException;
 
@@ -29,6 +31,8 @@ public interface IPartida extends IObservableRemoto{
     ArrayList<Boolean> getValidas(String id) throws RemoteException;
 
     void agregarJugadorListo() throws IOException, ClassNotFoundException;
+
+    ArrayList<Jugador> jugadores() throws RemoteException;
 
     Color getColorDescarte() throws RemoteException;
 

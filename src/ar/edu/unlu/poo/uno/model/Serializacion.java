@@ -158,19 +158,32 @@ public class Serializacion implements Serializable {
         }
     }
     public static void actualizarJugador(Jugador jugador) throws IOException, ClassNotFoundException {
-        var inputStream = new FileInputStream(datosJugadores);
-        var objectInputStream = new ObjectInputStream(inputStream);
-        ArrayList<Jugador> jugadores = (ArrayList<Jugador>) objectInputStream.readObject();
-        ArrayList<Jugador> jugadoresModificado = new ArrayList<>();
-        for(Jugador j: jugadores){
-            if(j.jugadorID().equalsIgnoreCase(jugador.jugadorID())) {
-                j = jugador;
-            }
-            jugadoresModificado.add(j);
+        File archivo = new File(datosJugadores);
+        ArrayList<Jugador> jugadores;
+
+
+
+        // lista de jugadores existentes
+        try (FileInputStream inputStream = new FileInputStream(archivo);
+             ObjectInputStream objectInputStream = new ObjectInputStream(inputStream)) {
+            jugadores = (ArrayList<Jugador>) objectInputStream.readObject();
         }
-        var outputStream = new FileOutputStream(datosJugadores);
-        var objectOutputStream = new ObjectOutputStream(outputStream);
-        objectOutputStream.writeObject(jugadores);
+
+        // Buscar el jugador para actualizarlo
+        for (int i = 0; i < jugadores.size(); i++) {
+            if (jugadores.get(i).jugadorID().equalsIgnoreCase(jugador.jugadorID())) {
+                jugadores.set(i, jugador); // Actualizo el jugador
+                //Test
+                System.out.println("ganadas:"+jugador.partidasGanadas()+"perdidas:"+jugador.partidasPerdidas());
+                break;
+            }
+        }
+
+        // Escribo la lista con el jugador actualizado
+        try (FileOutputStream outputStream = new FileOutputStream(archivo);
+             ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream)) {
+            objectOutputStream.writeObject(jugadores);
+        }
     }
     public static ArrayList<Jugador> jugadores() throws IOException, ClassNotFoundException {
         File archivo = new File(datosJugadores);
@@ -185,12 +198,35 @@ public class Serializacion implements Serializable {
         return jugadores;
     }
 
-    //Guardar partida
-    public void guardarPartida(Partida partida) throws IOException, ClassNotFoundException {
+    //METODOS PARA GUARDAR, CARGAR Y ELIMINAR PARTIDAS
+    public static void eliminarPartida(Partida partida) throws IOException, ClassNotFoundException {
         //La carga y el guardado de partidas se va a hacer desde una pestaña llamada "partidas" se guardará
         //en el momento en que se clickee "guardar", no cuando un jugador se desconecte
         File archivo = new File(partidasGuardadas);
         ArrayList<Partida> partidasGuardadas;
+
+        if(archivo.exists() && archivo.length() > 0){
+            try (FileInputStream inputStream = new FileInputStream(archivo);
+                 ObjectInputStream objectInputStream = new ObjectInputStream(inputStream)) {
+                partidasGuardadas = (ArrayList<Partida>) objectInputStream.readObject();
+            }
+        } else {
+            partidasGuardadas = new ArrayList<>();
+        }
+
+       partidasGuardadas.remove(partida);
+
+        try (FileOutputStream outputStream = new FileOutputStream(archivo);
+             ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream)) {
+            objectOutputStream.writeObject(partidasGuardadas);
+        }
+    }
+    public static void guardarPartida(Partida partida) throws IOException, ClassNotFoundException {
+        //La carga y el guardado de partidas se va a hacer desde una pestaña llamada "partidas" se guardará
+        //en el momento en que se clickee "guardar", no cuando un jugador se desconecte
+        File archivo = new File(partidasGuardadas);
+        ArrayList<Partida> partidasGuardadas;
+
         if(archivo.exists() && archivo.length() > 0){
             try (FileInputStream inputStream = new FileInputStream(archivo);
                  ObjectInputStream objectInputStream = new ObjectInputStream(inputStream)) {
@@ -207,7 +243,7 @@ public class Serializacion implements Serializable {
             objectOutputStream.writeObject(partidasGuardadas);
         }
     }
-    public ArrayList<Partida> partidasGuardadas(Jugador j) throws IOException, ClassNotFoundException {
+    public static ArrayList<Partida> partidasGuardadas(String id) throws IOException, ClassNotFoundException {
         /*
         Este método busca las partidas guardadas que tiene cierto jugador y las retorna para
         Porder mostrarlas en una vista, la vista se encargará, junto con el controlador correspondiente, de
@@ -228,7 +264,8 @@ public class Serializacion implements Serializable {
 
         ArrayList<Partida> partidasJugador = new ArrayList<>();
         for(Partida p: partidasGuardadas){
-            Jugador encontrado = p.buscarJugador(j.jugadorID());
+            Jugador encontrado = p.buscarJugador(id);
+            //Si la partida contiene a ese jugador la agrego al array que se devolverá
             if(encontrado != null){
                 partidasJugador.add(p);
             }

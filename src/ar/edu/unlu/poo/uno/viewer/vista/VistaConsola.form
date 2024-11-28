@@ -36,7 +36,9 @@
         <children>
           <component id="d93e6" class="javax.swing.JTextArea" binding="consola">
             <constraints/>
-            <properties/>
+            <properties>
+              <editable value="false"/>
+            </properties>
           </component>
         </children>
       </scrollpane>
@@ -57,6 +59,13 @@
             <constraints/>
             <properties>
               <text value="Ranking"/>
+            </properties>
+          </component>
+          <component id="3122" class="javax.swing.JButton" binding="partidas">
+            <constraints/>
+            <properties>
+              <enabled value="false"/>
+              <text value="PARTIDAS"/>
             </properties>
           </component>
         </children>

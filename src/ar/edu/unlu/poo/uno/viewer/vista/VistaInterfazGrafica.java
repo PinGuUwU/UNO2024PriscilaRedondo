@@ -26,6 +26,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
     VentanaListener listener;
     VistaPerfil iPerfil;
     VistaRanking iRanking;
+    VistaPartidasGuardadas iPartidasGuardadas;
     JFrame frame;
     private JPanel ventana;
     private JTextArea estadoTurno;
@@ -280,6 +281,20 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
                 }
             }
         });
+        partidas.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(iPartidasGuardadas == null){
+                    try {
+                        iPartidasGuardadas = new VistaPartidasGuardadas(VistaInterfazGrafica.this, controlador.idJugador(), controlador);
+                    } catch (IOException | ClassNotFoundException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                } else if(!iPartidasGuardadas.frame.isVisible()){
+                    iPartidasGuardadas.frame.setVisible(true);
+                }
+            }
+        });
     }
     @Override
     public void yaLevanto(){
@@ -440,6 +455,8 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
             iPerfil = null;
         } else if(ventana.equalsIgnoreCase("ranking")){
             iRanking = null;
+        } else if(ventana.equalsIgnoreCase("partidasguardadas")){
+            iPartidasGuardadas = null;
         }
     }
 
@@ -447,6 +464,7 @@ public class VistaInterfazGrafica implements VentanaListener, IVista, Serializab
     public void avisoInicio() {
         //Avisa que todos los jugadores están listos y el juego está por comenzar
         estadoTurno.setText("Iniciando la partida.");
+        partidas.setEnabled(true);
         marcarListo();
     }
 

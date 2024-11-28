@@ -1,8 +1,9 @@
 package ar.edu.unlu.poo.uno.model;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 
-public class TurnoPartida {
+public class TurnoPartida implements Serializable {
     /*
     Lleva el turno de la partida
     (0-3)

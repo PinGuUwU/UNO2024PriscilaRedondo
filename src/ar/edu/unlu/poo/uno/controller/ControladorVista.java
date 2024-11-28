@@ -1,5 +1,7 @@
 package ar.edu.unlu.poo.uno.controller;
 
+import ar.edu.unlu.poo.uno.model.Jugador;
+import ar.edu.unlu.poo.uno.model.Partida;
 import ar.edu.unlu.poo.uno.model.cartas.Color;
 import ar.edu.unlu.poo.uno.model.Eventos;
 import ar.edu.unlu.poo.uno.model.IPartida;
@@ -100,6 +102,9 @@ public class ControladorVista implements IControladorRemoto, Serializable {
             }
         }
 
+    }
+    public ArrayList<Jugador> jugadores() throws RemoteException {
+        return iPartida.jugadores();
     }
     //Aca se hace la ejecución de "comandos"/"Acciones" en el juego
     public void levantarCarta() throws RemoteException {
@@ -248,6 +253,9 @@ public class ControladorVista implements IControladorRemoto, Serializable {
             iPartida.quitarJugador(id);
         }
     }
+    public void cargarNuevaPartida(Partida p) throws RemoteException {
+        iPartida.cargarPartida(p);
+    }
     public void jugadorNoListo(){
         for(IVista vista: vistas){
             vista.marcarNoListo();
@@ -255,6 +263,9 @@ public class ControladorVista implements IControladorRemoto, Serializable {
         levanto = false;
         pidiendoColor = false;
         dijoUNO = false;
+    }
+    public void guardarPartidaActual() throws IOException, ClassNotFoundException {
+        iPartida.guardarPartida();
     }
     public boolean isYaTiro(){
         return yaTiro;
