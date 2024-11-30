@@ -3,7 +3,9 @@
 - OBJETIVO:
   - Quedarse sin cartas en la mano.
 
-
+# DATOS PERSONALES:
+  - Apellido y Nombre: Redondo Priscila
+  - Legajo: 168540
 
 # REGLAMENTO:
   - Un jugador puede tirar una carta si cumple alguna de las siguientes condiciones:
@@ -22,11 +24,16 @@
       - Si jugó el +4 de formal legal, el jugador que desafió toma 6 cartas en vez de 4
       - Si jugó el +4 de forma ilegal, el jugador desafiado deberá tomar 4 cartas
 
-
   - El ganador es el primero que se queda con 0 cartas en la mano.
 
 
+# SITUACIONES ESPECÍFICAS DENTRO DEL JUEGO:
+  - Si estás en una situación en donde pones apelar UNO y también desafiar por un +4 entonces:
+    - Primero: deberá decidir si desafiar o no
+    - Segundo: apelar, si así quisiera
+  - Si se guarda la partida actual, se sigue jugando y se la vuelve a guardar, no se creará un nuevo "slot" de guardado, si no que se reemplazará la primera vez que se guardó por la última vez
 
+  
   # CARTAS DE ACCIÓN:
   - CARTA MAS DOS:
       - Cuando se tira esta carta, el siguiente jugador debe tomar dos cartas y no puede tirar ninguna carta en esa ronda.
@@ -50,3 +57,6 @@
   - Tercero: Una vez ingresados todos los datos anteriores, se le pedirá su usuario. Deberá ingresar su nombre de usuario, si ya existe cargará sus datos, sino lo creará sin consultar.
   - Cuarto: Se le abrirá una ventana con las opcines "CONSOLA" y "PANTALLA" puede elegir la que quiera para comenzar a jugar.
   - SI UN JUGADOR SE DESCONECTA Y SE CONECTA OTRO CON EL MISMO VALOR DE PUERTO DE CLIENTE PUEDE GENERAR ERRORES, SE RECOMIENDA REINICIAR EL SERVIDOR EN ESOS CASOS
+
+# UML
+![UML](UML_UNO_FINAL.jpg)
