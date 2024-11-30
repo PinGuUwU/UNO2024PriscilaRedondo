@@ -46,8 +46,6 @@ public interface IPartida extends IObservableRemoto{
 
     void elegirColor(Color color, String idJ) throws RemoteException;
 
-    void actualizarPorCambio() throws RemoteException;
-
     void quitarJugador(String idJ) throws IOException, ClassNotFoundException;
 
     boolean agregarJugador(String idJ) throws IOException, ClassNotFoundException;
@@ -58,9 +56,7 @@ public interface IPartida extends IObservableRemoto{
 
     boolean estadoPartida() throws RemoteException;
 
-
     void jugadorPaso() throws IOException, ClassNotFoundException;
-
 
     void noDijoUNO() throws RemoteException;
 

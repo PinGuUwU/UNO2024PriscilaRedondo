@@ -15,7 +15,6 @@ import java.rmi.RemoteException;
 import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 
 public class VistaEleccion implements VentanaListener, Serializable {
-    private String idJugador;
     JFrame frame;
     VistaConsola iConsola;
     VistaInterfazGrafica iGrafica;
@@ -27,7 +26,6 @@ public class VistaEleccion implements VentanaListener, Serializable {
 
     public VistaEleccion(String idJugador, VentanaListener listener, ControladorVista controlador) throws IOException, ClassNotFoundException {
         this.controlador = controlador;
-        this.idJugador = idJugador;
         controlador.conectarID(idJugador);
         frame = new JFrame("UNO");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -77,7 +75,6 @@ public class VistaEleccion implements VentanaListener, Serializable {
                 } catch (RemoteException ex) {
                     throw new RuntimeException(ex);
                 }
-                //Hacer que solo se cree una consola, lo mismo con perfil y ranking
             }
         });
         pantalla.addActionListener(new ActionListener() {
@@ -91,9 +88,11 @@ public class VistaEleccion implements VentanaListener, Serializable {
             }
         });
     }
+
     public void abrirConsola() throws RemoteException {
         iConsola.frame.setVisible(true);
     }
+
     public void abrirInterfazGrafica() throws RemoteException {
         iGrafica.frame.setVisible(true);
     }

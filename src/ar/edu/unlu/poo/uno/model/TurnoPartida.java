@@ -1,7 +1,6 @@
 package ar.edu.unlu.poo.uno.model;
 
 import java.io.Serializable;
-import java.rmi.RemoteException;
 
 public class TurnoPartida implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -10,19 +9,23 @@ public class TurnoPartida implements Serializable {
     (0-3)
     verifica si el jugador ya levanto, si ya levanto entonces no puede volver a levantar, debe pasar o tirar una carta
      */
-    int turno;
-    int cantJugadores;
-    boolean sentido;
+    private int turno;
+    private int cantJugadores;
+    private boolean sentido;
+
     public TurnoPartida(int cantJugadores){
         this.turno=0;
         this.cantJugadores = cantJugadores;
     }
+
     public int turnoActual(){
         return this.turno;
     }
+
     public void seguirTurno(){
         this.turno = siguienteTurno();
     }
+
     public int siguienteTurno(){
         int turnoActual = this.turno;
         //Turno del 1-4 (0-3)
@@ -41,6 +44,7 @@ public class TurnoPartida implements Serializable {
         }
         return turnoActual;
     }
+
     public int turnoAnterior(){
         int turnoActual = this.turno;
         if(sentido){//Principio a fin
@@ -58,4 +62,5 @@ public class TurnoPartida implements Serializable {
         }
         return turnoActual;
     }
+
 }

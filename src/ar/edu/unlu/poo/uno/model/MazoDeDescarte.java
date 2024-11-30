@@ -10,15 +10,19 @@ public class MazoDeDescarte implements Serializable {
     private ArrayList<Carta> mazoActual;
 
     public MazoDeDescarte(){
-        mazoActual = new ArrayList<Carta>();
+        mazoActual = new ArrayList<>();
     }
+
     public void agregar(Carta nuevaCarta){
         mazoActual.add(nuevaCarta);
     }
+
     public Carta ultimaCarta(){
         return mazoActual.get(mazoActual.size()-1);
     }
+
     public Carta anteultimaCarta(){
         return mazoActual.get(mazoActual.size()-2);
     }
+
 }

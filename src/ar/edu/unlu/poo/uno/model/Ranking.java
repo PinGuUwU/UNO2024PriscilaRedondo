@@ -22,6 +22,7 @@ public class Ranking implements Serializable{
         // y Math.min(5, .size) hace que si hay menos de 5 jugadores en la ArrayList, te devuelva esos que haya
         return new ArrayList<>(jugadores.subList(0, Math.min(5, jugadores.size())));
     }
+
     public ArrayList<Jugador> getTopPerdedores() throws IOException, ClassNotFoundException {
         ArrayList<Jugador> jugadoresAll = Serializacion.jugadores();
         /*Esto de jugadoresAll.sort sirve para poder recorrer to-do el ArrayList
@@ -34,7 +35,7 @@ public class Ranking implements Serializable{
                 return Integer.compare(j2.partidasPerdidas(), j1.partidasPerdidas());
             }
         });
-        //Esta operacion es muy rebuscada
+        //Esta operacion es muy rebuscada, he utilizado cosas parecidas en C
         //.subList(0, 5)  devuelve una sublista de las primeras 5 posiciones (mejores jugadores)
         // y Math.min(5, .size) hace que si hay menos de 5 jugadores en la ArrayList, te devuelva esos que haya
         return new ArrayList<>(jugadoresAll.subList(0, Math.min(5, jugadoresAll.size())));

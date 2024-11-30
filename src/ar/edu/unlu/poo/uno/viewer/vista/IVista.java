@@ -14,10 +14,13 @@ public interface IVista {
     void esperandoInicio() throws RemoteException;
 
     void otroJugadorListo() throws RemoteException;
+
     void avisoInicio();
+
     void setDescarte(Color color, TipoCarta valor) throws RemoteException;
 
     void pedirCambioColor() throws RemoteException;
+
     void mostrarCartasJugador(ArrayList<Color> colores, ArrayList<TipoCarta> valores, ArrayList<Boolean> validos) throws RemoteException;
 
     void yaSeApelo();
@@ -30,8 +33,11 @@ public interface IVista {
     int cantJugadoresListos() throws RemoteException;
 
     int cantJugadoresTotal() throws RemoteException;
+
     void yaLevanto() throws RemoteException;
+
     void noDesafiar();
+
     void decirUNO();
 
     void desafiarJugadorAnterior() throws RemoteException;

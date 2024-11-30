@@ -14,14 +14,13 @@ public class ControladorRanking implements Serializable {
     VistaRanking vista;
 
     public ControladorRanking(VistaRanking vista){
+        //Constructor
         this.vista = vista;
         ranking = new Ranking();
     }
-    //Tambien debe poder hacer ABM, pero le deja to-do el trabajo al ranking
-    //Controlador se encarga de mandarle mensajes a la vista y de "traducir" ciertos mensajes
-    //Por eso no conoce la estructura de ninguno de los dos, pero si que cosas puede mandarles
 
     public void top5Ganadores() throws IOException, ClassNotFoundException {
+        //Devuelve una lista con los 5 jugadores con mayor cantidad de partidas ganadas
         ArrayList<Jugador> jugadores = ranking.getTopGanadores();
         List<String> nombres = new ArrayList<>();
         List<Integer> cantidad = new ArrayList<>();
@@ -31,7 +30,9 @@ public class ControladorRanking implements Serializable {
         }
         vista.actualizarRanking(nombres, cantidad);
     }
+
     public void top5Perdedores() throws IOException, ClassNotFoundException {
+        //Devuelve una lista con los 5 jugadores con mayor cantidad de partidas perdidas
         ArrayList<Jugador> jugadores = ranking.getTopPerdedores();
         List<String> nombres = new ArrayList<>();
         List<Integer> cantidad = new ArrayList<>();

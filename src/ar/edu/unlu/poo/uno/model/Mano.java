@@ -14,13 +14,17 @@ public class Mano implements Serializable {
     public void entregarCarta(int pos){
         manoActual.remove(pos);
     }
+
     public void recibeCarta(Carta carta){
         manoActual.add(carta);
     }
+
     public Carta leerCartaMano(int pos){
         return manoActual.get(pos);
     }
+
     public int cantCartas(){
         return manoActual.size();
     }
+
 }

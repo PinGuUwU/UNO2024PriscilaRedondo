@@ -11,13 +11,17 @@ import java.util.Random;
 public class MazoDeRobo implements Serializable {
     private static final long serialVersionUID = 1L;
     private ArrayList<Carta> mazo = new ArrayList<>();
-    public Carta robar(){//Debo de retirar una carta al azar, porque el mazo está en orden.
+
+    public Carta robar(){
+        //Debo de retirar una carta al azar, porque el mazo está en orden.
         Random random = new Random(System.currentTimeMillis());
         int numAleatorio = random.nextInt(mazo.size());
         Carta carta = mazo.get(numAleatorio);
         mazo.remove(numAleatorio); //Primero elimino esa carta del mazo
         return carta;//Luego se la doy al "jugador"
     }
+
+    //INICIALIZAR MAZO COMPLETO
     /*
     public void inicializarMazo(){
         for(Color color: Arrays.asList(Color.ROJO, Color.AZUL, Color.VERDE, Color.AMARILLO)){
@@ -73,10 +77,7 @@ public class MazoDeRobo implements Serializable {
 
     public boolean sinCartas(){
         //retorna true si no tiene cartas
-        if(mazo.size() == 0){
-            return true;
-        } else {
-            return false;
-        }
+        return mazo.isEmpty();
     }
+
 }

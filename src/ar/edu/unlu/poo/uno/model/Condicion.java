@@ -5,11 +5,7 @@ import ar.edu.unlu.poo.uno.model.cartas.CartaNumerica;
 import ar.edu.unlu.poo.uno.model.cartas.Color;
 import ar.edu.unlu.poo.uno.model.cartas.TipoCarta;
 
-import java.io.IOException;
 import java.io.Serializable;
-
-import static ar.edu.unlu.poo.uno.model.cartas.TipoCarta.CAMBIO_COLOR;
-import static ar.edu.unlu.poo.uno.model.cartas.TipoCarta.MAS_CUATRO;
 
 public class Condicion implements Serializable {
     /*

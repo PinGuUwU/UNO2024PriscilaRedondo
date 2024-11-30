@@ -20,7 +20,8 @@ public class Serializacion implements Serializable {
         leerDatosJugador() devuelve un 'string[]' con los datos 'id, name, pg, pp'
         ultimoID()
      */
-    //Jugadores
+
+    //JUGADORES
     public static String escribirDatosJugador(String name) throws IOException, ClassNotFoundException {
         //nuevo jugador
         // Obtener el ID del último jugador
@@ -54,8 +55,9 @@ public class Serializacion implements Serializable {
 
         return String.valueOf(nuevoID);
     }
-    public static String leerDatosJugador(String name) throws IOException, ClassNotFoundException {
-        //jugador existente
+
+    public static String buscarIDdeJugadorPorNombre(String name) throws IOException, ClassNotFoundException {
+        //a partir de nombre devuelvo el ID del jugador
         String id = "";
         var inputStream = new FileInputStream(datosJugadores);
         var objectInputStream = new ObjectInputStream(inputStream);
@@ -67,7 +69,9 @@ public class Serializacion implements Serializable {
         }
         return id;
     }
+
     public static String ultimoID() throws IOException, ClassNotFoundException {
+        //Busco el último ID utilizado en jugadores
         File archivo = new File(datosJugadores);
         if (!archivo.exists()) {
             return "1";
@@ -89,6 +93,7 @@ public class Serializacion implements Serializable {
             return String.valueOf(id);
         }
     }
+
     public static boolean existeJugador(String name) throws IOException, ClassNotFoundException {
         //Compruebo acá si el archivo existe ya que es el primer método que se utiliza de Serializacion en todo el juego
         File archivo = new File(datosJugadores);
@@ -115,7 +120,9 @@ public class Serializacion implements Serializable {
         }
         return false;
     }
+
     public static Jugador buscarDatosDeJugadorPorID(String id) throws IOException, ClassNotFoundException {
+        //Busco un jugador por el ID pasado por parámetro
         File archivo = new File(datosJugadores);
 
         Jugador jugador = null;
@@ -135,7 +142,9 @@ public class Serializacion implements Serializable {
         }
         return jugador;
     }
+
     public static void actualizarNombreJugador(String id, String nuevoNombre) throws IOException, ClassNotFoundException {
+        //Actualizo el nombre de un jugador
         File archivo = new File(datosJugadores);
 
         ArrayList<Jugador> jugadores;
@@ -158,11 +167,11 @@ public class Serializacion implements Serializable {
             objectOutputStream.writeObject(jugadores);
         }
     }
+
     public static void actualizarJugador(Jugador jugador) throws IOException, ClassNotFoundException {
+        //actualizo los datos de un jugador
         File archivo = new File(datosJugadores);
         ArrayList<Jugador> jugadores;
-
-
 
         // lista de jugadores existentes
         try (FileInputStream inputStream = new FileInputStream(archivo);
@@ -186,7 +195,9 @@ public class Serializacion implements Serializable {
             objectOutputStream.writeObject(jugadores);
         }
     }
+
     public static ArrayList<Jugador> jugadores() throws IOException, ClassNotFoundException {
+        //Retorno todos los jugadores registrados
         File archivo = new File(datosJugadores);
         ArrayList<Jugador> jugadores;
         try (FileInputStream inputStream = new FileInputStream(archivo);
@@ -200,9 +211,9 @@ public class Serializacion implements Serializable {
     }
 
     //METODOS PARA GUARDAR, CARGAR Y ELIMINAR PARTIDAS
+
     public static void eliminarPartida(Partida partida) throws IOException, ClassNotFoundException {
-        //La carga y el guardado de partidas se va a hacer desde una pestaña llamada "partidas" se guardará
-        //en el momento en que se clickee "guardar", no cuando un jugador se desconecte
+        //Busco la partida, comparo ID hasta encontrarla y eliminarla
         File archivo = new File(partidasGuardadas);
         ArrayList<Partida> partidasGuardadas;
 
@@ -227,6 +238,7 @@ public class Serializacion implements Serializable {
             objectOutputStream.writeObject(partidasGuardadas);
         }
     }
+
     public static void guardarPartida(Partida partida) throws IOException, ClassNotFoundException {
         //La carga y el guardado de partidas se va a hacer desde una pestaña llamada "partidas" se guardará
         //en el momento en que se clickee "guardar", no cuando un jugador se desconecte
@@ -261,7 +273,9 @@ public class Serializacion implements Serializable {
             objectOutputStream.writeObject(partidasGuardadas);
         }
     }
+
     public static Partida buscarPartidaPorID(long id) throws IOException {
+        //Busco la partida con el ID pasado por parámetro
         File archivo = new File(partidasGuardadas);
         ArrayList<Partida> partidasGuardadas;
         if(archivo.exists() && archivo.length() > 0){
@@ -283,6 +297,7 @@ public class Serializacion implements Serializable {
         }
         return null;
     }
+
     public static ArrayList<Partida> partidasGuardadasPorJugador(String id) throws IOException, ClassNotFoundException {
         /*
         Este método busca las partidas guardadas que tiene cierto jugador y las retorna para
@@ -313,15 +328,21 @@ public class Serializacion implements Serializable {
 
         return partidasJugador;
     }
+
     //ID PARTIDA
+
     public static void actualizarUltimoIDPartida(long id) throws IOException {
+        //Actualizo el ID almacenado en el archivo
         File archivo = new File(ultimoIDPartida);
 
         try (DataOutputStream dataOutputStream = new DataOutputStream(new FileOutputStream(archivo))) {
             dataOutputStream.writeLong(id);
         }
     }
+
     public static long ultimoIDPartida() throws IOException {
+        //Retorna un nuevo ID para la nueva partida instanciada y guarda el valor del ID en un archivo
+        //Para que cuando se cree una nueva partida, se pueda asignar el siguiente ID
         File archivo = new File(ultimoIDPartida);
         long ultimoID = 1;
 
@@ -340,4 +361,5 @@ public class Serializacion implements Serializable {
 
         return ultimoID;
     }
+
 }

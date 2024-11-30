@@ -10,7 +10,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.Serializable;
-import java.rmi.RemoteException;
 import java.util.List;
 
 import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
@@ -62,6 +61,7 @@ public class VistaRanking implements Serializable {
         comboBox1.addItem("Ordenar por partidas ganadas:");//index 0
         comboBox1.addItem("Ordenar por partidas perdidas:");//index 1
     }
+
     private void agregarListeners(){
         comboBox1.addActionListener(new ActionListener() {
             @Override
@@ -97,6 +97,7 @@ public class VistaRanking implements Serializable {
             }
         });
     }
+
     public void actualizarRanking(List<String> nombres, List<Integer> cantidad) {
         // Limpiar los JTextAreas antes de añadir nuevos elementos
         jugadoresNombre.setText("");
@@ -113,6 +114,7 @@ public class VistaRanking implements Serializable {
         jugadoresCantidad.revalidate();
         System.out.println("(actualizaRanking)");
     }
+
     public void setInTop(){
         frame.setAlwaysOnTop(true);
     }

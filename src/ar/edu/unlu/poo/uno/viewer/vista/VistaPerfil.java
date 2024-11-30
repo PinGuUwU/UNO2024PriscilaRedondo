@@ -10,12 +10,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.Serializable;
-import java.rmi.RemoteException;
 
 import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 
 public class VistaPerfil implements Serializable {
-    private String idJugador;
+    private final String idJugador;
     VentanaListener listener;
     ControladorPerfil controlador;
     JFrame frame;
@@ -60,36 +59,16 @@ public class VistaPerfil implements Serializable {
         confirmarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            /*
-            consola.append(entradaDeTexto.getText());
-                consola.append("\n");
-                entradaDeTexto.setText("");
-             */
-                //Cambiar en el archivo y to-do
                 user.setText(nuevoUsuario.getText());
                 try {
                     controlador.actualizarNombreJugador(idJugador, nuevoUsuario.getText());
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                } catch (ClassNotFoundException ex) {
+                } catch (IOException | ClassNotFoundException ex) {
                     throw new RuntimeException(ex);
                 }
             }
         });
-        nuevoUsuario.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String nuevoNombre = e.getActionCommand();
-            /*
-            consola.append(entradaDeTexto.getText());
-                consola.append("\n");
-                entradaDeTexto.setText("");
-             */
-                //Cambiar en el archivo y to-do
-                user.setText(nuevoNombre);
-            }
-        });
     }
+
     public void setInTop(){
         frame.setAlwaysOnTop(true);
     }
@@ -100,13 +79,17 @@ public class VistaPerfil implements Serializable {
         actualizarPartidasGanados(separado[2]);
         actualizarPartidasPerdidos(separado[3]);
     }
+
     public void actualizarNombre(String name){
         user.setText(name);
     }
+
     private void actualizarPartidasGanados(String pg){
         partidasGanadas.setText(pg);
     }
+
     private void actualizarPartidasPerdidos(String pp){
         partidasPerdidas.setText(pp);
     }
+
 }

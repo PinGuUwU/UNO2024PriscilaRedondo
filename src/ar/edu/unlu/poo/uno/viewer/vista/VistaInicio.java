@@ -2,20 +2,14 @@ package ar.edu.unlu.poo.uno.viewer.vista;
 
 import ar.edu.unlu.poo.uno.controller.ControladorVista;
 import ar.edu.unlu.poo.uno.listener.VentanaListener;
-import ar.edu.unlu.poo.uno.model.Ranking;
 import ar.edu.unlu.poo.uno.model.Serializacion;
 
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.Serializable;
-import java.rmi.RemoteException;
-
-import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 
 public class VistaInicio implements VentanaListener, Serializable {
     JFrame frame;
@@ -26,7 +20,7 @@ public class VistaInicio implements VentanaListener, Serializable {
     private JButton confirmarButton;
     private JPanel ventana;
 
-    public VistaInicio(ControladorVista controlador) throws RemoteException {
+    public VistaInicio(ControladorVista controlador) {
         setControladorVista(controlador);
         frame = new JFrame("UNO");
         frame.setLocation(720, 480);
@@ -38,6 +32,7 @@ public class VistaInicio implements VentanaListener, Serializable {
 
         frame.add(ventana);
     }
+
     public void agregarListeners(){
         confirmarButton.addActionListener(new ActionListener() {
             @Override
@@ -45,7 +40,7 @@ public class VistaInicio implements VentanaListener, Serializable {
                 String idJugador = "";
                 try {
                     if(Serializacion.existeJugador(usuario.getText())){
-                        idJugador = Serializacion.leerDatosJugador(usuario.getText());
+                        idJugador = Serializacion.buscarIDdeJugadorPorNombre(usuario.getText());
                     } else {
                         idJugador = Serializacion.escribirDatosJugador(usuario.getText());
 
@@ -53,11 +48,7 @@ public class VistaInicio implements VentanaListener, Serializable {
                 } catch (IOException | ClassNotFoundException ex) {
                     throw new RuntimeException(ex);
                 }
-                /*
-                idJugador = ranking.buscarIDJugadorName(usuario.getText());
-                if( idJugador == null){
-                }
-                 */
+
                 try {
                     abrirEleccion(idJugador);
                 } catch (IOException | ClassNotFoundException ex) {
@@ -66,10 +57,13 @@ public class VistaInicio implements VentanaListener, Serializable {
             }
         });
     }
+
     public void iniciar(){
         frame.setVisible(true);
     }
+
     public void abrirEleccion(String idJugador) throws IOException, ClassNotFoundException {
+        //Abro la VistaEleccion luego de que el jugador ingresó su nombre y se leyó/escribió sus datos en el archivo de jugadores
         if(!controlador.agregarJugador(idJugador)){
             ingreseSuNombreDeTextArea.setText("No puede entrar a la partida, ya tiene 4 jugadores.");
         } else {
@@ -78,6 +72,7 @@ public class VistaInicio implements VentanaListener, Serializable {
             vistaEleccion = new VistaEleccion(idJugador, VistaInicio.this, controlador);
         }
     }
+
     public void setControladorVista(ControladorVista controlador){
         this.controlador = controlador;
     }

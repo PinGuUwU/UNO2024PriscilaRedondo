@@ -1,6 +1,6 @@
 package ar.edu.unlu.poo.uno.viewer.vista;
 
-import ar.edu.unlu.poo.uno.controller.ControladorPartidasGuardadas;
+import ar.edu.unlu.poo.uno.controller.ControladorPartidaGuardada;
 import ar.edu.unlu.poo.uno.controller.ControladorVista;
 import ar.edu.unlu.poo.uno.listener.VentanaListener;
 import ar.edu.unlu.poo.uno.model.Jugador;
@@ -19,19 +19,17 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
-
-public class VistaPartidasGuardadas implements Serializable{
+public class VistaPartidaGuardada implements Serializable{
     private final String id;
-    private final ControladorPartidasGuardadas controlador;
+    private final ControladorPartidaGuardada controlador;
     JFrame frame;
     private JPanel ventana;
     private JButton guardarPartida;
     private JScrollPane mostrarPartidas;
     private final JPanel panelPartidas; // Panel contenedor para las partidas
 
-    public VistaPartidasGuardadas(VentanaListener listener, String id, ControladorVista controladorVista) throws IOException, ClassNotFoundException {
-        this.controlador = new ControladorPartidasGuardadas(controladorVista);
+    public VistaPartidaGuardada(VentanaListener listener, String id, ControladorVista controladorVista) throws IOException, ClassNotFoundException {
+        this.controlador = new ControladorPartidaGuardada(controladorVista);
         this.id = id;
 
         frame = new JFrame("Partidas Guardadas");
@@ -104,19 +102,17 @@ public class VistaPartidasGuardadas implements Serializable{
     }
 
     private void agregarPanelPartida(Partida partida, int nro) throws RemoteException {
+        //Genero un panel nuevo para mostrar toda la información importante de la partida pasada por parámetro
         JPanel opcion = new JPanel();
         opcion.setLayout(new GridLayout(1, 3));
 
         JTextArea infoPartida = new JTextArea();
         infoPartida.setEditable(false);
         infoPartida.append("PARTIDA " + nro + "\n");
-
+        //El nro de partida
         boolean estanTodosLosJugadores = true;
         infoPartida.append("JUGADORES: ");
-
-            /*
-            Comprobar por qué me lo sigue mostrando en verde las partidas que no puedo cargar
-             */
+        //Los nombres de los jugadores que conforman la partida
         ArrayList<Jugador> jugadoresPartidaActual = controlador.jugadoresPartidaActual();
         ArrayList<Jugador> jugadoresPartidaACargar = partida.jugadores();
         if(jugadoresPartidaACargar.size() != jugadoresPartidaActual.size()){
@@ -131,8 +127,9 @@ public class VistaPartidasGuardadas implements Serializable{
             }
         }
 
-        opcion.add(infoPartida);
 
+        opcion.add(infoPartida);
+        //El botón para cargar una partida
         JButton cargar = new JButton("CARGAR");
         if(!estanTodosLosJugadores){
             //Si no están todos los jugadores
@@ -156,6 +153,7 @@ public class VistaPartidasGuardadas implements Serializable{
             }
         });
 
+        //Botón para eliminar una partida guardada
         JButton eliminar = new JButton("Eliminar");
         eliminar.addActionListener(e -> {
             try {
