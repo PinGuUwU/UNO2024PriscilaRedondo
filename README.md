@@ -57,3 +57,6 @@
   - Tercero: Una vez ingresados todos los datos anteriores, se le pedirá su usuario. Deberá ingresar su nombre de usuario, si ya existe cargará sus datos, sino lo creará sin consultar.
   - Cuarto: Se le abrirá una ventana con las opcines "CONSOLA" y "PANTALLA" puede elegir la que quiera para comenzar a jugar.
   - SI UN JUGADOR SE DESCONECTA Y SE CONECTA OTRO CON EL MISMO VALOR DE PUERTO DE CLIENTE PUEDE GENERAR ERRORES, SE RECOMIENDA REINICIAR EL SERVIDOR EN ESOS CASOS
+
+# UML
+link directo
