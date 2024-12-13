@@ -382,4 +382,8 @@ public class ControladorVista implements IControladorRemoto, Serializable {
         }
     }
 
+    public boolean buscarJugadorPorID(String idJ) throws RemoteException {
+        return iPartida.existeJugadorPorID(idJ);
+    }
+
 }

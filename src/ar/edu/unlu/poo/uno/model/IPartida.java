@@ -52,6 +52,8 @@ public interface IPartida extends IObservableRemoto{
 
     void noDesafia() throws RemoteException ;
 
+    boolean existeJugadorPorID(String idJugador)throws RemoteException ;
+
     void levantarCarta() throws RemoteException;
 
     boolean estadoPartida() throws RemoteException;

@@ -101,6 +101,16 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
         }
         return j;
     }
+    @Override
+    public boolean existeJugadorPorID(String id){
+        boolean encontrado = false;
+        for (Jugador jugador : jugadores) {
+            if ((jugador.jugadorID()).equals(id)) {
+                encontrado = true;
+            }
+        }
+        return encontrado;
+    }
 
     public void levantarCartaEspecial(int sigTurno) throws RemoteException {
         /*
@@ -250,6 +260,10 @@ public class Partida extends ObservableRemoto implements IPartida, Serializable 
                 //reset partida?
                 turno = new TurnoPartida(jugadores.size());
                 //Si se suma un jugador se resetea la partida?
+            }
+            for(int i=0; i< jugador.mostrarCartas().cantCartas(); i++){
+                //Borro todas las cartas de las manos de los jugadores
+                jugador.tirarCarta(0);
             }
             return true; //Se puede agregar
         }

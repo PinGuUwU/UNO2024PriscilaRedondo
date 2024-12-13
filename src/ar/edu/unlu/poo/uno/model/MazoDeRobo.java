@@ -22,7 +22,6 @@ public class MazoDeRobo implements Serializable {
     }
 
     //INICIALIZAR MAZO COMPLETO
-    /*
     public void inicializarMazo(){
         for(Color color: Arrays.asList(Color.ROJO, Color.AZUL, Color.VERDE, Color.AMARILLO)){
             //Inicializo el 0
@@ -47,8 +46,11 @@ public class MazoDeRobo implements Serializable {
             mazo.add(new CartaEspecial(TipoCarta.MAS_CUATRO));
         }
 
-    }*/
+    }
+
+
     //INICIALIZAR PARA PRUEBAS RÁPIDAS DE UN SOLO COLOR
+    /*
      public void inicializarMazo(){
         for(Color color: List.of(Color.VERDE)){
             //Inicializo el 0
@@ -74,6 +76,7 @@ public class MazoDeRobo implements Serializable {
         }
 
     }
+     */
 
     public boolean sinCartas(){
         //retorna true si no tiene cartas

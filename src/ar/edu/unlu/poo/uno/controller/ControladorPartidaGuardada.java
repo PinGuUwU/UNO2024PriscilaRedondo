@@ -27,6 +27,9 @@ public class ControladorPartidaGuardada implements Serializable {
         //Cargo una partida mediante su ID
         controlador.cargarNuevaPartida(id);
     }
+    public boolean buscarJugador(Jugador j) throws RemoteException {
+        return controlador.buscarJugadorPorID(j.jugadorID());
+    }
 
     public ArrayList<Partida> cargarPartidasGuardadas(String id) throws IOException, ClassNotFoundException {
         //Devuelvo las partidas en las cuales está presente el jugador con el ID pasado por parámetro

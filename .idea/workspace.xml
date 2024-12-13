@@ -4,99 +4,38 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fbc73718-ef9d-4267-986d-1866a4d5820a" name="Changes" comment="UNO version 1 12/08/2024 sin mvc, solo las clases y un poquito de testeo">
-      <change beforePath="$PROJECT_DIR$/historico.txt" beforeDir="false" />
-    </list>
+    <list default="true" id="ac371a71-2504-4a7f-b196-32b5ab6e59e5" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Interface" />
-        <option value="JUnit5 Test Class" />
-        <option value="Class" />
-      </list>
-    </option>
-  </component>
-  <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="e5e36084c2e3a1210ef9f4aa2c1ab898b7de8ac6" />
-      </map>
-    </option>
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="MarkdownSettingsMigration">
-    <option name="stateVersion" value="1" />
-  </component>
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 0
-}</component>
-  <component name="ProjectId" id="2ldRzWgTPkLD75LDrEvA70yY6Db" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
-    <ConfirmationsSetting value="2" id="Add" />
-  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 1
+}]]></component>
+  <component name="ProjectId" id="2qBFUAd1iz0seEtAXeiHo7LJZCR" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;UI_DESIGNER_EDITOR_MODE.PaletteManager.SHOW&quot;: &quot;true&quot;,
-    &quot;UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.SHOW&quot;: &quot;true&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;create.test.in.the.same.root&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/alumno/Redondo-Priscila/UNO2024PriscilaRedondo-testeando-cartas&quot;,
-    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/Pri/IdeaProjects/UNO2024PriscilaRedondo/src/Main.java&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "/home/alumno/IdeaProjects/UNO",
+    "onboarding.tips.debug.path": "/home/alumno/IdeaProjects/UNO/src/Main.java"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
-    <key name="CreateTestDialog.Recents.Supers">
-      <recent name="" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Pri\IdeaProjects\UNO2024PriscilaRedondo\lib" />
-      <recent name="C:\Users\Pri\IdeaProjects\UNO2024PriscilaRedondo\src" />
-      <recent name="C:\Users\Pri\IdeaProjects\UNO2024PriscilaRedondo\src\ar\edu\unlu\poo\uno\viewer\vista" />
-      <recent name="C:\Users\Pri\IdeaProjects\UNO2024PriscilaRedondo\src\ar\edu\unlu\poo\uno\model\clases" />
-      <recent name="C:\Users\Pri\IdeaProjects\UNO2024PriscilaRedondo\src\ar\edu\unlu\poo\uno\controller" />
-    </key>
-    <key name="ExtractSuperBase.RECENT_KEYS">
-      <recent name="ar.edu.unlu.poo.uno.model.clases" />
-    </key>
-    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
-      <recent name="ar.edu.unlu.poo.uno.model" />
-      <recent name="ar.edu.unlu.poo.uno.model.clases" />
-    </key>
-    <key name="CreateTestDialog.RecentsKey">
-      <recent name="ar.edu.unlu.poo.uno.model" />
-      <recent name="ar.edu.unlu.poo.tests" />
-      <recent name="ar.edu.unlu.poo.uno.model.clases" />
-      <recent name="" />
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/src" />
     </key>
   </component>
   <component name="RunManager" selected="Application.AppCliente">
     <configuration name="AppCliente" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="ar.edu.unlu.poo.uno.cliente.AppCliente" />
-      <module name="UNO2024PriscilaRedondo" />
+      <module name="UNO" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="ar.edu.unlu.poo.uno.cliente.*" />
@@ -109,7 +48,7 @@
     </configuration>
     <configuration name="AppServidor" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="ar.edu.unlu.poo.uno.servidor.AppServidor" />
-      <module name="UNO2024PriscilaRedondo" />
+      <module name="UNO" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="ar.edu.unlu.poo.uno.servidor.*" />
@@ -120,112 +59,33 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Main" />
-      <module name="UNO2024PriscilaRedondo" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="All in UNO2024PriscilaRedondo" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="UNO2024PriscilaRedondo" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="TEST_OBJECT" value="package" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="RankingTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="UNO2024PriscilaRedondo" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ar.edu.unlu.poo.uno.model.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="ar.edu.unlu.poo.uno.model" />
-      <option name="MAIN_CLASS_NAME" value="ar.edu.unlu.poo.uno.model.RankingTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.AppCliente" />
         <item itemvalue="Application.AppServidor" />
-        <item itemvalue="JUnit.All in UNO2024PriscilaRedondo" />
-        <item itemvalue="Application.Main" />
-        <item itemvalue="JUnit.RankingTest" />
       </list>
     </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="fbc73718-ef9d-4267-986d-1866a4d5820a" name="Changes" comment="" />
-      <created>1725508396721</created>
+      <changelist id="ac371a71-2504-4a7f-b196-32b5ab6e59e5" name="Changes" comment="" />
+      <created>1734128076067</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1725508396721</updated>
+      <updated>1734128076067</updated>
     </task>
-    <task id="LOCAL-00001" summary="UNO version 1 12/08/2024 sin mvc, solo las clases y un poquito de testeo">
-      <option name="closed" value="true" />
-      <created>1726145615088</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1726145615088</updated>
-    </task>
-    <option name="localTasksCounter" value="2" />
     <servers />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="UNO version 1 12/08/2024 sin mvc, solo las clases y un poquito de testeo" />
-    <option name="LAST_COMMIT_MESSAGE" value="UNO version 1 12/08/2024 sin mvc, solo las clases y un poquito de testeo" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <breakpoint type="java-exception">
-          <properties class="java.lang.ClassCastException" package="java.lang" />
-          <option name="timeStamp" value="79" />
-        </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/ar/edu/unlu/poo/uno/controller/ControladorVista.java</url>
-          <line>224</line>
-          <option name="timeStamp" value="117" />
+          <url>file://$PROJECT_DIR$/src/Main.java</url>
+          <line>13</line>
+          <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
-    <watches-manager>
-      <configuration name="Application">
-        <watch expression="jugadorActual.mano.manoActual.get(2)" />
-        <watch expression="mazoDeDescarte.mazoActual" />
-        <watch expression="((RemoteObjectInvocationHandler)this.h).ref" custom="java.rmi.server.RemoteObjectInvocationHandler,java.lang.reflect.Proxy" />
-        <watch expression="mano.manoActual.get(1)" />
-        <watch expression="mano.manoActual.get(1)" />
-      </configuration>
-    </watches-manager>
-  </component>
-  <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/UNO2024PriscilaRedondo$AppServidor.ic" NAME="AppServidor Coverage Results" MODIFIED="1729636775568" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
-      <FILTER>ar.edu.unlu.poo.uno.servidor.*</FILTER>
-    </SUITE>
-    <SUITE FILE_PATH="coverage/UNO2024PriscilaRedondo$AppCliente.ic" NAME="AppCliente Coverage Results" MODIFIED="1729636789016" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
-      <FILTER>ar.edu.unlu.poo.uno.cliente.*</FILTER>
-    </SUITE>
   </component>
 </project>

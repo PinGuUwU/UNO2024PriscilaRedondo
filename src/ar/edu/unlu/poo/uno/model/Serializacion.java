@@ -4,9 +4,9 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class Serializacion implements Serializable {
-    private static final String datosJugadores = "PlayersData.dat";
-    private static final String partidasGuardadas = "GamesData.dat";
-    private static final String ultimoIDPartida = "IDPartidas.dat";
+    private static final String datosJugadores = "PlayersDataNuevo.dat";
+    private static final String partidasGuardadas = "GamesDataNuevo.dat";
+    private static final String ultimoIDPartida = "IDPartidasNuevo.dat";
     /*
     OBJETIVO DE LA CLASE:
         GUARDAR INFORMACIÓN DE LOS JUGADORES

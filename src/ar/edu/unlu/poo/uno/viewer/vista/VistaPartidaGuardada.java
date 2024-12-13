@@ -120,11 +120,11 @@ public class VistaPartidaGuardada implements Serializable{
         }
         for (int i = 0; i < partida.cantJugadores(); i++) {
             Jugador j = partida.jugadores().get(i);
-            if (jugadoresPartidaACargar.contains(j)) {
-                infoPartida.append(j.name() + ", ");
-            } else {
+            boolean existe = controlador.buscarJugador(j);
+            if (!existe) {
                 estanTodosLosJugadores = false;
             }
+            infoPartida.append(j.name() + ", ");
         }
 
 
@@ -133,17 +133,17 @@ public class VistaPartidaGuardada implements Serializable{
         JButton cargar = new JButton("CARGAR");
         if(!estanTodosLosJugadores){
             //Si no están todos los jugadores
-            cargar.setBackground(java.awt.Color.red);
+            cargar.setBackground(Color.red);
             cargar.setToolTipText("NO se puede cargar.");
         } else {
             //Si están todos los jugadores
-            cargar.setBackground(java.awt.Color.green);
+            cargar.setBackground(Color.green);
             cargar.setToolTipText("SÍ se puede cargar.");
         }
         cargar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(cargar.getBackground()!=java.awt.Color.red){
+                if(cargar.getBackground()!= Color.red){
                     try {
                         controlador.cargarPartida(partida.getId());
                     } catch (IOException ex) {
