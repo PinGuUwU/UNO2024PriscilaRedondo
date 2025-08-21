@@ -5,7 +5,9 @@
 
 # DATOS PERSONALES:
   - Apellido y Nombre: Redondo Priscila
-  - Legajo: 168540
+  - Proyecto final realizado para la materia 'Programación Oriendada a Objetos' de la carrera Lic. en sistemas de información.
+  - Nota obtenida: 8
+  - El proyecto lo realice completamente sola, recibiendo feedback de los profesores.
 
 # REGLAMENTO:
   - Un jugador puede tirar una carta si cumple alguna de las siguientes condiciones:
